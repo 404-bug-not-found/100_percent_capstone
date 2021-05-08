@@ -1,5 +1,6 @@
-package com.hundred.percent.capstone.Invoicify.company;
+package com.hundred.percent.capstone.Invoicify.company.controller;
 
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class CompanyController {
 
     @PostMapping("/addCompany")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addCompany(@RequestBody String companyDto){
+    public void addCompany(@RequestBody CompanyDTO companyDto){
 
     }
 }

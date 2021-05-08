@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,8 +38,10 @@ public class CompanyIT {
 
     @Test
     public void postCompanyTest() throws Exception {
+        CompanyDTO companyDTO = new CompanyDTO();
+
         mockMvc.perform(post("/companies/addCompany")
-                .content(objectMapper.writeValueAsString(""))
+                .content(objectMapper.writeValueAsString(companyDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
