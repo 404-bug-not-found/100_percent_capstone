@@ -38,7 +38,7 @@ public class CompanyIT {
 
     @Test
     public void postCompanyTest() throws Exception {
-        CompanyDTO companyDTO = new CompanyDTO();
+        CompanyDTO companyDTO = new CompanyDTO("Cognizant","1234 drive","David","Accounts Payable","1-123-456-7890");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(companyDTO))
