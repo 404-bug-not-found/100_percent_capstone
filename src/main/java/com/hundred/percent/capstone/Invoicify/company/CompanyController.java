@@ -1,8 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/companies")
@@ -11,5 +10,11 @@ public class CompanyController {
     @GetMapping
     public String getCompanies(){
         return "[]";
+    }
+
+    @PostMapping("/addCompany")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void addCompany(@RequestBody String companyDto){
+
     }
 }
