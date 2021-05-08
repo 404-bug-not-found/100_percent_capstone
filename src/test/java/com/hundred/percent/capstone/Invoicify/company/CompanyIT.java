@@ -45,7 +45,7 @@ public class CompanyIT {
 
     @Test
     public void postCompanyTest() throws Exception {
-        CompanyDTO companyDTO = new CompanyDTO("Cognizant","1234 drive","David","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant","1234 drive","David","Accounts Payable","1-123-456-7890");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(companyDTO))
@@ -59,8 +59,8 @@ public class CompanyIT {
     @Test
     public void getMultipleCompanyTest() throws Exception {
 
-        CompanyDTO input1 = new CompanyDTO("Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("FDM-123","Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("CTS-123","Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(input1))
@@ -77,6 +77,7 @@ public class CompanyIT {
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
+                .andExpect(jsonPath("[1].invoice_number").value("CTS-123"))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
                 .andExpect(jsonPath("[1].address").value("5678 drive"))
                 .andExpect(jsonPath("[1].contact_name").value("Iqbal"))

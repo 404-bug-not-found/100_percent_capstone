@@ -27,28 +27,28 @@ public class CompanyServiceTest {
 
     @Test
     public void createTest() {
-        CompanyDTO companyDTO = new CompanyDTO("Cognizant","1234 drive","Iqbal","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant","1234 drive","Iqbal","Accounts Payable","1-123-456-7890");
 
         companyService.createCompany(companyDTO);
 
         verify(mockCompanyRepository).save(
-                new CompanyEntity("Cognizant","1234 drive","Iqbal","Accounts Payable","1-123-456-7890")
+                new CompanyEntity("CTS-123","Cognizant","1234 drive","Iqbal","Accounts Payable","1-123-456-7890")
         );
     }
 
     @Test
     public void findAllTest() {
 
-        CompanyEntity entity1 = new CompanyEntity("Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
-        CompanyEntity entity2 = new CompanyEntity("Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000");
+        CompanyEntity entity1 = new CompanyEntity("FDM-123","Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyEntity entity2 = new CompanyEntity("CTS-123","Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1,entity2));
 
-        List<CompanyEntity> actual = companyService.getAllCompanies();
+        List<CompanyDTO> actual = companyService.getAllCompanies();
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
-                List.of(new CompanyEntity("Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890"),
-                        new CompanyEntity("Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000"))
+                List.of(new CompanyDTO("FDM-123","Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890"),
+                        new CompanyDTO("CTS-123","Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000"))
         );
 
     }
