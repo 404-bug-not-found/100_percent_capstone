@@ -85,7 +85,7 @@ public class CompanyIT {
                 .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
-                        fieldWithPath("[1].id").description("Company ID"),
+                        fieldWithPath("[1].invoice_number").description("CTS-123"),
                         fieldWithPath("[1].name").description("Cognizant"),
                         fieldWithPath("[1].address").description("5678 drive"),
                         fieldWithPath("[1].contact_name").description("Iqbal"),
