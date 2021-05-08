@@ -1,4 +1,4 @@
-package com0.percent.capstone.Invoicify;
+package com.hundred.percent.capstone.Invoicify;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
