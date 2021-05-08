@@ -26,6 +26,11 @@ public class CompanyEntity {
     String contact_title;
     String contact_phone_number;
 
-    public CompanyEntity(String cognizant, String s, String david, String accounts_payable, String s1) {
+    public CompanyEntity(String name, String address, String contact_name, String contact_title, String contact_phone_number) {
+        this.name = name;
+        this.address = address;
+        this.contact_name = contact_name;
+        this.contact_title = contact_title;
+        this.contact_phone_number = contact_phone_number;
     }
 }

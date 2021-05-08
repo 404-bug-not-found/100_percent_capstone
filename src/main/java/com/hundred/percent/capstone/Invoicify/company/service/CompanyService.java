@@ -6,13 +6,21 @@ import com.hundred.percent.capstone.Invoicify.company.repository.CompanyReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CompanyService {
 
     @Autowired
-    CompanyRepository repository;
+    CompanyRepository companyRepository;
 
     public void createCompany(CompanyDTO companyDTO) {
-        repository.save(new CompanyEntity(companyDTO.getName(), companyDTO.getAddress(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
+        companyRepository.save(new CompanyEntity(companyDTO.getName(), companyDTO.getAddress(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
+    }
+
+    public List<CompanyEntity> getAllCompanies(){
+
+        return companyRepository.findAll();
+
     }
 }

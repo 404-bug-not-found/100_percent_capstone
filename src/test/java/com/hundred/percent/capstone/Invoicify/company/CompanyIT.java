@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.company;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,4 +47,30 @@ public class CompanyIT {
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
+
+    @Test
+    public void getMultipleCompanyTest() throws Exception {
+
+        CompanyDTO input1 = new CompanyDTO("Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000");
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(get("/companies"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(2))
+                .andDo(print());
+
+    }
+
 }
