@@ -53,6 +53,18 @@ public class CompanyServiceTest {
 
     }
 
+    @Test(expected = CompanyExistsException.class)
+    public void duplicateCompnayNameTest() {
+
+        CompanyEntity entity1 = new CompanyEntity("Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+
+        when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
+        companyService.createCompany(companyDTO);
+
+
+    }
+
 
 
 }
