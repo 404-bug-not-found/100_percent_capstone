@@ -1,0 +1,16 @@
+getCompanies
+
+.request
+include::{snippets}/getCompanies/http-request.adoc[]
+
+.response
+include::{snippets}/getCompanies/http-response.adoc[]
+
+postCompany
+
+.request
+include::{snippets}/postCompany/http-request.adoc[]
+
+.response
+include::{snippets}/postCompany/http-response.adoc[]
+
