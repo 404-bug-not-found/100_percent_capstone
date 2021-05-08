@@ -1,4 +1,4 @@
-package com0.percent.capstone.Invoicify;
+package com.hundred.percent.capstone.Invoicify;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
