@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.100.percent.capstone'
@@ -28,6 +29,35 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-test {
-	useJUnitPlatform()
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
 }
+
+test {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+	toolVersion = "0.8.6"
+}
+jacocoTestReport {
+	reports {
+		dependsOn test // tests are required to run before generating the report
+		html.destination layout.buildDirectory.dir('reports/jacocoHtml').get().asFile
+	}
+}
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.20
+			}
+		}
+	}
+}
+
+
+
+
