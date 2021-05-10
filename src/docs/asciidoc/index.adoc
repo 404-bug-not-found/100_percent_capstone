@@ -14,3 +14,10 @@ include::{snippets}/postCompany/http-request.adoc[]
 .response
 include::{snippets}/postCompany/http-response.adoc[]
 
+duplicateCompanyName
+
+.request
+include::{snippets}/duplicateCompanyName/http-request.adoc[]
+
+.response
+include::{snippets}/duplicateCompanyName/http-response.adoc[]
