@@ -20,13 +20,15 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    String invoice_number;
     String name;
     String address;
     String contact_name;
     String contact_title;
     String contact_phone_number;
 
-    public CompanyEntity(String name, String address, String contact_name, String contact_title, String contact_phone_number) {
+    public CompanyEntity(String invoice_number,String name, String address, String contact_name, String contact_title, String contact_phone_number) {
+        this.invoice_number = invoice_number;
         this.name = name;
         this.address = address;
         this.contact_name = contact_name;
