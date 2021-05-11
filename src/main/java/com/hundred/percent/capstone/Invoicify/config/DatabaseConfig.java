@@ -1,4 +1,4 @@
-package com.hundred.percent.capstone.Invoicify.company;
+package com.hundred.percent.capstone.Invoicify.config;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
