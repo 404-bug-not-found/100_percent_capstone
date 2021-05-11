@@ -1,14 +1,10 @@
 package com.hundred.percent.capstone.Invoicify.invoice;
 
 
-import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
-import com.hundred.percent.capstone.Invoicify.company.dto.InvoiceDTO;
-import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
-import com.hundred.percent.capstone.Invoicify.company.entity.InvoiceEntity;
-import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
-import com.hundred.percent.capstone.Invoicify.company.repository.InvoiceRepository;
-import com.hundred.percent.capstone.Invoicify.company.service.CompanyService;
-import com.hundred.percent.capstone.Invoicify.company.service.InvoiceService;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
+import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
+import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

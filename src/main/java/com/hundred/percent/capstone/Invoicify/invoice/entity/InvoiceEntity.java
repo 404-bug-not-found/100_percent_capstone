@@ -1,4 +1,4 @@
-package com.hundred.percent.capstone.Invoicify.company.entity;
+package com.hundred.percent.capstone.Invoicify.invoice.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

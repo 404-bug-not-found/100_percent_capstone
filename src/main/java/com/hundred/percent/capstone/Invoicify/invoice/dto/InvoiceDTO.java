@@ -1,6 +1,5 @@
-package com.hundred.percent.capstone.Invoicify.company.dto;
+package com.hundred.percent.capstone.Invoicify.invoice.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

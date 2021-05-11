@@ -1,16 +1,15 @@
-package com.hundred.percent.capstone.Invoicify.company.service;
+package com.hundred.percent.capstone.Invoicify.invoice.service;
 
 
-import com.hundred.percent.capstone.Invoicify.company.dto.InvoiceDTO;
-
-import com.hundred.percent.capstone.Invoicify.company.entity.InvoiceEntity;
-
-import com.hundred.percent.capstone.Invoicify.company.repository.InvoiceRepository;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
+import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class InvoiceService {
 

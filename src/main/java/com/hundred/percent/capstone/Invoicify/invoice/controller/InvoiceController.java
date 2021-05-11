@@ -1,8 +1,8 @@
-package com.hundred.percent.capstone.Invoicify.company.controller;
+package com.hundred.percent.capstone.Invoicify.invoice.controller;
 
 
-import com.hundred.percent.capstone.Invoicify.company.dto.InvoiceDTO;
-import com.hundred.percent.capstone.Invoicify.company.service.InvoiceService;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

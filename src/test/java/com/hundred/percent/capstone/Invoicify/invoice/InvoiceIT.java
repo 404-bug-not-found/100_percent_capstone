@@ -1,11 +1,10 @@
 package com.hundred.percent.capstone.Invoicify.invoice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
-import com.hundred.percent.capstone.Invoicify.company.dto.InvoiceDTO;
-import com.hundred.percent.capstone.Invoicify.company.entity.InvoiceEntity;
-import com.hundred.percent.capstone.Invoicify.company.repository.InvoiceRepository;
-import com.hundred.percent.capstone.Invoicify.company.service.InvoiceService;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
+import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
+import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
