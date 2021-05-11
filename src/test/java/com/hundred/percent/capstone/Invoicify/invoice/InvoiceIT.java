@@ -56,12 +56,16 @@ public class InvoiceIT {
 
     @Test
     public void getInvoiceTest() throws Exception {
-        List<String> items = new ArrayList<String>();
-        items.add("A");
-        items.add("B");
+        List<ItemEntity> items1 = new ArrayList<ItemEntity>();
+        items1.add(new ItemEntity("Item1",20));
+        items1.add(new ItemEntity("Item2",30));
 
-        InvoiceEntity d1=new InvoiceEntity(1, items);
-        InvoiceEntity d2=new InvoiceEntity(2, items);
+        List<ItemEntity> items2 = new ArrayList<ItemEntity>();
+        items2.add(new ItemEntity("Item3",20));
+        items2.add(new ItemEntity("Item4",30));
+
+        InvoiceEntity d1=new InvoiceEntity(1, items1);
+        InvoiceEntity d2=new InvoiceEntity(2, items2);
         when(this.repository.findAll())
                 .thenReturn(
                         Arrays.asList(
@@ -71,14 +75,8 @@ public class InvoiceIT {
         List<InvoiceDTO> actual=this.service.getAllInvoice();
         assertThat(actual).isEqualTo(
                 Arrays.asList(
-                        new InvoiceDTO(1, items),
-                        new InvoiceDTO(2, items)
+                        new InvoiceDTO(1, items1),
+                        new InvoiceDTO(2, items2)
                 ));
-
-
     }
-
-
-
-
 }
