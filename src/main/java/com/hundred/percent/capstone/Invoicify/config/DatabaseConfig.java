@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.config;
 
+import com.hundred.percent.capstone.Invoicify.utilities.ExcludeGeneratedFromJaCoCo;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import java.net.URISyntaxException;
 @Profile("heroku")
 public class DatabaseConfig {
 
+    @ExcludeGeneratedFromJaCoCo
     @Bean
     public DataSource dataSource() throws URISyntaxException {
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -26,5 +28,9 @@ public class DatabaseConfig {
                 .username(username)
                 .password(password)
                 .build();
+    }
+
+    public DatabaseConfig(){
+
     }
 }

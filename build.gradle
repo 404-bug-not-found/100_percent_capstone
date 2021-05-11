@@ -54,28 +54,14 @@ jacocoTestReport {
 		dependsOn test // tests are required to run before generating the report
 		html.destination layout.buildDirectory.dir('reports/jacocoHtml').get().asFile
 	}
-	afterEvaluate {
-		classDirectories.setFrom(
-				files(classDirectories.files.collect{
-					fileTree(dir: it,
-							exclude: [
-									'**/dto/**',
-									'**/entity/**',
-									'**/repository/**',
-									'**/exception/**',
-									'**/config/**',
-									'com.hundread.percent.capstone.Invoicify/InvoicifyApplication.class'
-							])
-				})
-		)
-	}
+
 }
 jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			enabled = true
 			limit {
-				minimum = 0.90
+				minimum = 1.0
 			}
 		}
 	}
