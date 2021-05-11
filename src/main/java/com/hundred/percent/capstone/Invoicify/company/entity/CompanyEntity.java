@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
+import com.hundred.percent.capstone.Invoicify.company.Address;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,12 +23,13 @@ public class CompanyEntity {
     private UUID id;
     String invoice_number;
     String name;
-    String address;
+    //String address;
+    Address address;
     String contact_name;
     String contact_title;
     String contact_phone_number;
 
-    public CompanyEntity(String invoice_number,String name, String address, String contact_name, String contact_title, String contact_phone_number) {
+    public CompanyEntity(String invoice_number,String name, Address address, String contact_name, String contact_title, String contact_phone_number) {
         this.invoice_number = invoice_number;
         this.name = name;
         this.address = address;
