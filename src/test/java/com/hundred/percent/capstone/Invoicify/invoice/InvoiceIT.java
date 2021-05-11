@@ -2,7 +2,9 @@ package com.hundred.percent.capstone.Invoicify.invoice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
+import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.junit.jupiter.api.Test;
@@ -64,6 +66,14 @@ public class InvoiceIT {
         items2.add(new ItemEntity("Item3",20));
         items2.add(new ItemEntity("Item4",30));
 
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
+        itemsDTO1.add(new ItemDTO("Item2",30));
+
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item3",20));
+        itemsDTO2.add(new ItemDTO("Item4",30));
+
         InvoiceEntity d1=new InvoiceEntity(1, items1);
         InvoiceEntity d2=new InvoiceEntity(2, items2);
         when(this.repository.findAll())
@@ -75,8 +85,8 @@ public class InvoiceIT {
         List<InvoiceDTO> actual=this.service.getAllInvoice();
         assertThat(actual).isEqualTo(
                 Arrays.asList(
-                        new InvoiceDTO(1, items1),
-                        new InvoiceDTO(2, items2)
+                        new InvoiceDTO(1, itemsDTO1),
+                        new InvoiceDTO(2, itemsDTO2)
                 ));
     }
 }

@@ -7,17 +7,13 @@ import javax.persistence.ElementCollection;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-//@AllArgsConstructor
 public class InvoiceDTO {
     int invoiceNumber;
     @ElementCollection
-    private List<String> items;
-
-    public InvoiceDTO(int invoiceNumber,List<String> items)
+    private List<ItemDTO> items;
+    public InvoiceDTO(int invoiceNumber,List<ItemDTO> items)
     {
         this.invoiceNumber=invoiceNumber;
-
         this.items = items;
     }
 

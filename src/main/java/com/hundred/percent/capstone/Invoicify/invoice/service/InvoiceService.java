@@ -2,11 +2,14 @@ package com.hundred.percent.capstone.Invoicify.invoice.service;
 
 
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
+import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,17 +20,34 @@ public class InvoiceService {
     InvoiceRepository invoiceRepository;
 
     public void createInvoice(InvoiceDTO invoiceDTO) {
-        invoiceRepository.save(new InvoiceEntity(invoiceDTO.getInvoiceNumber(),invoiceDTO.getItems()));
+        ArrayList<ItemEntity> items = new ArrayList<ItemEntity>(invoiceDTO.getItems()
+                .stream()
+                .map(itemDTO -> {
+                    ItemEntity e =new ItemEntity(itemDTO.getDescription(),
+                            itemDTO.getPrice());
+                    return e;
+                }).collect(Collectors.toList()));
+
+        invoiceRepository.save(new InvoiceEntity(invoiceDTO.getInvoiceNumber(),items));
     }
 
     public List<InvoiceDTO> getAllInvoice(){
 
-        //return invoiceRepository.findAll();
+
 
         return invoiceRepository.findAll()
                 .stream()
                 .map(invoiceEntity -> {
-                    return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),invoiceEntity.getItems()
+
+                    ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                            .stream()
+                            .map(itemEntity -> {
+                                ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                                        itemEntity.getPrice());
+                                return e;
+                            }).collect(Collectors.toList()));
+
+                    return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),items
                     );
                 })
                 .collect(Collectors.toList());

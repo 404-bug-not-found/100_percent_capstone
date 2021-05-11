@@ -14,15 +14,16 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@Table(name="Invoice")
 public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     int invoiceNumber;
-    @ElementCollection
-    private List<String> items;
+    @OneToMany
+    private List<ItemEntity> items;
 
-    public InvoiceEntity(int invoiceNumber, List<String> items) {
+    public InvoiceEntity(int invoiceNumber, List<ItemEntity> items) {
         this.invoiceNumber = invoiceNumber;
         this.items = items;
     }

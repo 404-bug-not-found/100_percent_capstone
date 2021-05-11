@@ -27,16 +27,16 @@ public class InvoiceServiceTest {
 
 
 
-    @Test
-    public void createTest() {
-        List<String> items = new ArrayList<String>();
-        items.add("A");
-        InvoiceDTO invoiceDTO = new InvoiceDTO(1,items);
-
-        invoiceService.createInvoice(invoiceDTO);
-
-        verify(mockInvoiceRepository).save(
-                new InvoiceEntity(1,items)
-        );
-    }
+//    @Test
+//    public void createTest() {
+//        List<String> items = new ArrayList<String>();
+//        items.add("A");
+//        InvoiceDTO invoiceDTO = new InvoiceDTO(1,items);
+//
+//        invoiceService.createInvoice(invoiceDTO);
+//
+//        verify(mockInvoiceRepository).save(
+//                new InvoiceEntity(1,items)
+//        );
+//    }
 }
