@@ -1,8 +1,8 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
-import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -94,6 +94,27 @@ public class CompanyIT {
                         fieldWithPath("[1].contact_name").description("Iqbal"),
                         fieldWithPath("[1].contact_title").description("Accounts Payable"),
                         fieldWithPath("[1].contact_phone_number").description("1-222-333-0000")
+                )));
+    }
+
+    @Test
+    public void createDuplicateCompanyTest() throws Exception {
+        CompanyDTO input1 = new CompanyDTO("CTS-123","Cognizant","5678 drive","Iqbal","Accounts Payable","1-222-333-0000");
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("message").value("Company already exist."))
+                .andDo(print())
+                .andDo(document("duplicateCompanyName", responseFields(
+                        fieldWithPath("message").description("Company already exist.")
                 )));
     }
 

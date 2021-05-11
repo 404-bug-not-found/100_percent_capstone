@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.company;
 
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import com.hundred.percent.capstone.Invoicify.company.service.CompanyService;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,7 +28,7 @@ public class CompanyServiceTest {
     CompanyService companyService;
 
     @Test
-    public void createTest() {
+    public void createTest() throws CompanyExistsException {
         Address addr1 = new Address("456 St","Tampa","FL","33333");
         CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant",addr1,"Iqbal","Accounts Payable","1-123-456-7890");
 
@@ -54,6 +56,19 @@ public class CompanyServiceTest {
                         new CompanyDTO("CTS-123","Cognizant",addr2,"Iqbal","Accounts Payable","1-222-333-0000"))
         );
 
+    }
+
+    @Test
+    public void duplicateCompanyNameTest() {
+
+        CompanyEntity entity1 = new CompanyEntity("FDM-123","Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("FDM-123","Freddie Mac","1234 drive","Zxander","Accounts Payable","1-123-456-7890");
+
+        when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
+
+        assertThrows(CompanyExistsException.class, () -> {
+            companyService.createCompany(companyDTO);
+        });
     }
 
 
