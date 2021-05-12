@@ -1,4 +1,4 @@
-package com.hundred.percent.capstone.Invoicify.company;
+package com.hundred.percent.capstone.Invoicify.address.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
@@ -23,18 +23,15 @@ public class AddressEntity {
     String state;
     String zip;
 
-    @OneToOne(
-            mappedBy = "address",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    @JsonIgnore
-    private CompanyEntity companyEntity;
+    @ManyToOne
+    @JoinColumn(name="company_id")
+    CompanyEntity companyEntity;
 
-    public AddressEntity(String addr_line1, String city, String state, String zip) {
+    public AddressEntity(String addr_line1, String city, String state, String zip, CompanyEntity companyEntity) {
         this.addr_line1 = addr_line1;
         this.city = city;
         this.state = state;
         this.zip = zip;
+        this.companyEntity = companyEntity;
     }
 }
