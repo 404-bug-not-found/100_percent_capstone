@@ -24,7 +24,7 @@ public class InvoiceService {
                 .stream()
                 .map(itemDTO -> {
                     ItemEntity e =new ItemEntity(itemDTO.getDescription(),
-                            itemDTO.getPrice());
+                            itemDTO.getPrice(),itemDTO.getQuantity());
                     return e;
                 }).collect(Collectors.toList()));
 
@@ -32,9 +32,6 @@ public class InvoiceService {
     }
 
     public List<InvoiceDTO> getAllInvoice(){
-
-
-
         return invoiceRepository.findAll()
                 .stream()
                 .map(invoiceEntity -> {
@@ -43,7 +40,8 @@ public class InvoiceService {
                             .stream()
                             .map(itemEntity -> {
                                 ItemDTO e =new ItemDTO(itemEntity.getDescription(),
-                                        itemEntity.getPrice());
+                                        itemEntity.getPrice(), itemEntity.getQuantity()
+                                        ,itemEntity.getFeeType(),itemEntity.getTotalPrice());
                                 return e;
                             }).collect(Collectors.toList()));
 
@@ -51,7 +49,6 @@ public class InvoiceService {
                     );
                 })
                 .collect(Collectors.toList());
-
     }
 
 

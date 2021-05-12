@@ -22,7 +22,7 @@ public class InvoiceEntity {
     int invoiceNumber;
     @OneToMany
     private List<ItemEntity> items;
-
+    private int totalPrice;
     public InvoiceEntity(int invoiceNumber, List<ItemEntity> items) {
         this.invoiceNumber = invoiceNumber;
         this.items = items;
