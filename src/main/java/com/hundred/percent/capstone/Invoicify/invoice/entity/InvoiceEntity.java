@@ -21,6 +21,7 @@ public class InvoiceEntity {
     private UUID id;
     int invoiceNumber;
     @OneToMany
+    @JoinColumn(name="item_id")
     private List<ItemEntity> items;
     private int totalPrice;
     public InvoiceEntity(int invoiceNumber, List<ItemEntity> items) {

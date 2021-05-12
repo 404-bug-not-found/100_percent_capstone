@@ -37,7 +37,6 @@ public class InvoiceService {
 
     public List<InvoiceDTO> getAllInvoices()
     {
-
         return this.invoiceRepository.findAll()
                 .stream()
                 .map(invoiceEntity -> {
@@ -50,11 +49,8 @@ public class InvoiceService {
                                 return e;
                             }).collect(Collectors.toList()));
 
-                    return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),items
-                    );
+                    return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),items);
                 })
                 .collect(Collectors.toList());
     }
-
-
 }

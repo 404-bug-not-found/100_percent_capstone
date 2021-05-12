@@ -62,14 +62,24 @@ public class InvoiceIT {
         itemsDTO1.add(new ItemDTO("Item1",20));
         InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
 
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item2",20));
+        InvoiceDTO d2=new InvoiceDTO(1, itemsDTO2);
+
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
 
-//        mockMvc.perform(get("/invoices"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("length()").value(1))
-//                .andDo(print());
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d2))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated());
+
+        mockMvc.perform(get("/invoices"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(2))
+                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"));
     }
 }
