@@ -30,8 +30,6 @@ public class InvoiceServiceTest {
     @InjectMocks
     InvoiceService service;
 
-    @InjectMocks
-    InvoiceService invoiceService;
     @Test
     public void getInvoiceTest() throws Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
@@ -64,6 +62,20 @@ public class InvoiceServiceTest {
                         new InvoiceDTO(1, itemsDTO1),
                         new InvoiceDTO(2, itemsDTO2)
                 ));
+    }
+    @Test
+    public void createInvoiceTest() throws Exception {
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
+        InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
+        this.service.createInvoice(d1);
+        List<InvoiceDTO> actual=this.service.getAllInvoice();
+
+        List<ItemEntity> items1 = new ArrayList<ItemEntity>();
+        items1.add(new ItemEntity("Item1",20));
+        InvoiceEntity ent = new InvoiceEntity(1, items1);
+        verify(repository).save(ent);
+
     }
 
 }

@@ -27,14 +27,20 @@ public class ItemDTO {
     public ItemDTO(String description, int price,int quantity) {
         this.description = description;
         this.price = price;
-        this.feeType = FeeType.RateBased;
+        if(quantity ==1)
+            this.feeType = FeeType.FlatFee;
+        else
+            this.feeType = FeeType.RateBased;
         this.quantity = quantity;
         this.totalPrice = this.price * this.quantity;
     }
     public ItemDTO(String description, int price,int quantity,FeeType feeType,int totalPrice) {
         this.description = description;
         this.price = price;
-        this.feeType = feeType;
+        if(quantity ==1)
+            this.feeType = FeeType.FlatFee;
+        else
+            this.feeType = FeeType.RateBased;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }

@@ -33,7 +33,10 @@ public class ItemEntity {
     public ItemEntity(String description, int price,int quantity) {
         this.description = description;
         this.price = price;
-        this.feeType = FeeType.RateBased;
+        if(quantity ==1)
+            this.feeType = FeeType.FlatFee;
+        else
+            this.feeType = FeeType.RateBased;
         this.quantity = quantity;
         this.totalPrice = this.price * this.quantity;
     }

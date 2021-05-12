@@ -28,11 +28,12 @@ public class InvoiceService {
                     return e;
                 }).collect(Collectors.toList()));
 
-        invoiceRepository.save(new InvoiceEntity(invoiceDTO.getInvoiceNumber(),items));
+        this.invoiceRepository.save(new InvoiceEntity(invoiceDTO.getInvoiceNumber(),items));
     }
 
-    public List<InvoiceDTO> getAllInvoice(){
-        return invoiceRepository.findAll()
+    public List<InvoiceDTO> getAllInvoice()
+    {
+        return this.invoiceRepository.findAll()
                 .stream()
                 .map(invoiceEntity -> {
 
