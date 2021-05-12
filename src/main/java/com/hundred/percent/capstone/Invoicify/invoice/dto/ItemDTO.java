@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Getter
 @Setter
+@NoArgsConstructor
 public class ItemDTO {
     private String description;
     private FeeType feeType;

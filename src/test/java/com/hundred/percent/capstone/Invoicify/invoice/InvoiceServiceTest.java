@@ -31,7 +31,7 @@ public class InvoiceServiceTest {
     InvoiceService service;
 
     @Test
-    public void getInvoiceTest() throws Exception {
+    public void getInvoicesTest() throws Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
         items1.add(new ItemEntity("Item2",30,3));

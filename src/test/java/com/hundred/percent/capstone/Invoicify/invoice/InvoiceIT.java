@@ -66,8 +66,5 @@ public class InvoiceIT {
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
-
     }
-
-
 }
