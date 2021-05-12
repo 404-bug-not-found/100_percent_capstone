@@ -75,7 +75,5 @@ public class InvoiceServiceTest {
         items1.add(new ItemEntity("Item1",20));
         InvoiceEntity ent = new InvoiceEntity(1, items1);
         verify(repository).save(ent);
-
     }
-
 }
