@@ -7,6 +7,7 @@ import javax.persistence.ElementCollection;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class InvoiceDTO {
     int invoiceNumber;
     @ElementCollection

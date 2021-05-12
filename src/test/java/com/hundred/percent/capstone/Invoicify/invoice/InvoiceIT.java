@@ -57,7 +57,7 @@ public class InvoiceIT {
                 .andDo(print());
     }
     @Test
-    public void createInvoiceTest() throws Exception{
+    public void createAndGetInvoiceTest() throws Exception{
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
         InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
@@ -66,5 +66,10 @@ public class InvoiceIT {
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated());
+
+//        mockMvc.perform(get("/invoices"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("length()").value(1))
+//                .andDo(print());
     }
 }

@@ -20,7 +20,8 @@ public class InvoiceController {
     public List<InvoiceDTO> getAllInvoices(){
         return invoiceService.getAllInvoices();
     }
-    @PostMapping()
+
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createAnInvoice(@RequestBody InvoiceDTO invoiceDTO){
         this.invoiceService.createInvoice(invoiceDTO);
