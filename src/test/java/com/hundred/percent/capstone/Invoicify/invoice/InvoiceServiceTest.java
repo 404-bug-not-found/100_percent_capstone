@@ -56,7 +56,7 @@ public class InvoiceServiceTest {
                                 d1,
                                 d2));
 
-        List<InvoiceDTO> actual=this.service.getAllInvoice();
+        List<InvoiceDTO> actual=this.service.getAllInvoices();
         assertThat(actual).isEqualTo(
                 Arrays.asList(
                         new InvoiceDTO(1, itemsDTO1),
@@ -69,7 +69,7 @@ public class InvoiceServiceTest {
         itemsDTO1.add(new ItemDTO("Item1",20));
         InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
         this.service.createInvoice(d1);
-        List<InvoiceDTO> actual=this.service.getAllInvoice();
+        List<InvoiceDTO> actual=this.service.getAllInvoices();
 
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));

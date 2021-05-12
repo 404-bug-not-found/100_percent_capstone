@@ -18,9 +18,8 @@ public class InvoiceController {
     InvoiceService invoiceService;
 
     @GetMapping
-    public List<InvoiceDTO> getInvoices(){
-
-        return invoiceService.getAllInvoice();
+    public List<InvoiceDTO> getAllInvoices(){
+        return invoiceService.getAllInvoices();
     }
 
 

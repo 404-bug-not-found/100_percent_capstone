@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
@@ -54,6 +55,18 @@ public class InvoiceIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(0))
                 .andDo(print());
+    }
+    @Test
+    public void createInvoiceTest() throws Exception{
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
+        InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d1))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated());
+
     }
 
 

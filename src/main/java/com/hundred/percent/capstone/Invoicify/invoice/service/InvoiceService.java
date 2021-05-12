@@ -31,7 +31,7 @@ public class InvoiceService {
         this.invoiceRepository.save(new InvoiceEntity(invoiceDTO.getInvoiceNumber(),items));
     }
 
-    public List<InvoiceDTO> getAllInvoice()
+    public List<InvoiceDTO> getAllInvoices()
     {
         return this.invoiceRepository.findAll()
                 .stream()
