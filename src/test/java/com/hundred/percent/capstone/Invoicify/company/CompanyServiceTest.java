@@ -29,31 +29,32 @@ public class CompanyServiceTest {
 
     @Test
     public void createTest() throws CompanyExistsException {
-        AddressEntity addr1 = new AddressEntity("456 St","Tampa","FL","33333");
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant",addr1,"Iqbal","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant","Iqbal","Accounts Payable","1-123-456-7890");
 
         companyService.createCompany(companyDTO);
 
         verify(mockCompanyRepository).save(
-                new CompanyEntity("CTS-123","Cognizant",addr1,"Iqbal","Accounts Payable","1-123-456-7890")
+                new CompanyEntity("CTS-123","Cognizant","Iqbal","Accounts Payable","1-123-456-7890")
         );
     }
 
     @Test
     public void findAllTest() {
 
-        AddressEntity addr1 = new AddressEntity("123 Dr","Houston","TX","10000");
-        AddressEntity addr2 = new AddressEntity("456 St","Tampa","FL","33333");
-        CompanyEntity entity1 = new CompanyEntity("FDM-123","Freddie Mac",addr1,"Zxander","Accounts Payable","1-123-456-7890");
-        CompanyEntity entity2 = new CompanyEntity("CTS-123","Cognizant",addr2,"Iqbal","Accounts Payable","1-222-333-0000");
+        CompanyEntity entity1 = new CompanyEntity("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyEntity entity2 = new CompanyEntity("CTS-123","Cognizant","Iqbal","Accounts Payable","1-222-333-0000");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1,entity2));
 
-        List<CompanyDTO> actual = companyService.getAllCompanies();
+        //List<CompanyDTO> actual = companyService.getAllCompanies();
+        List<CompanyEntity> actual = companyService.getAllCompanies();
 
+        /*AssertionsForClassTypes.assertThat(actual).isEqualTo(
+                List.of(new CompanyDTO("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890"),
+                        new CompanyDTO("CTS-123","Cognizant","Iqbal","Accounts Payable","1-222-333-0000"))
+        );*/
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
-                List.of(new CompanyDTO("FDM-123","Freddie Mac",addr1,"Zxander","Accounts Payable","1-123-456-7890"),
-                        new CompanyDTO("CTS-123","Cognizant",addr2,"Iqbal","Accounts Payable","1-222-333-0000"))
+                List.of(entity1,entity2)
         );
 
     }
@@ -61,9 +62,8 @@ public class CompanyServiceTest {
     @Test
     public void duplicateCompanyNameTest() {
 
-        AddressEntity addr1 = new AddressEntity("123 Dr","Houston","TX","10000");
-        CompanyEntity entity1 = new CompanyEntity("FDM-123","Freddie Mac",addr1,"Zxander","Accounts Payable","1-123-456-7890");
-        CompanyDTO companyDTO = new CompanyDTO("FDM-123","Freddie Mac",addr1,"Zxander","Accounts Payable","1-123-456-7890");
+        CompanyEntity entity1 = new CompanyEntity("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
 

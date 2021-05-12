@@ -1,12 +1,13 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
-import com.hundred.percent.capstone.Invoicify.company.AddressEntity;
+import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -27,14 +28,13 @@ public class CompanyEntity {
     String contact_title;
     String contact_phone_number;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
-    private AddressEntity address;
+    @OneToMany(mappedBy = "companyEntity")
+    Set<AddressEntity> addresses;
 
-    public CompanyEntity(String invoice_number, String name, AddressEntity address, String contact_name, String contact_title, String contact_phone_number) {
+    public CompanyEntity(String invoice_number, String name, String contact_name, String contact_title, String contact_phone_number) {
+        super();
         this.invoice_number = invoice_number;
         this.name = name;
-        this.address = address;
         this.contact_name = contact_name;
         this.contact_title = contact_title;
         this.contact_phone_number = contact_phone_number;

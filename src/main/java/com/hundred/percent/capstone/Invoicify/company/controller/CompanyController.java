@@ -23,7 +23,7 @@ public class CompanyController {
     }*/
 
     @GetMapping
-    public List<CompanyDTO> getCompanies(){
+    public List<CompanyEntity> getCompanies(){
 
         return companyService.getAllCompanies();
     }

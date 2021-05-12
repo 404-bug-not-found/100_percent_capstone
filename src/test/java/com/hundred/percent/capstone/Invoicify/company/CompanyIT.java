@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.company;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -44,8 +45,7 @@ public class CompanyIT {
 
     @Test
     public void postCompanyTest() throws Exception {
-        AddressEntity addr = new AddressEntity("123 Dr","Houston","TX","1000");
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant",addr,"David","Accounts Payable","1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant","David","Accounts Payable","1-123-456-7890");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(companyDTO))
@@ -59,10 +59,8 @@ public class CompanyIT {
     @Test
     public void getMultipleCompanyTest() throws Exception {
 
-        AddressEntity addr1 = new AddressEntity("123 Dr","Houston","TX","10000");
-        AddressEntity addr2 = new AddressEntity("456 St","Tampa","FL","33333");
-        CompanyDTO input1 = new CompanyDTO("FDM-123","Freddie Mac",addr1,"Zxander","Accounts Payable","1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123","Cognizant",addr2,"Iqbal","Accounts Payable","1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("CTS-123","Cognizant","Iqbal","Accounts Payable","1-222-333-0000");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(input1))
@@ -81,27 +79,27 @@ public class CompanyIT {
                 .andExpect(jsonPath("length()").value(2))
                 .andExpect(jsonPath("[1].invoice_number").value("CTS-123"))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
-                //.andExpect(jsonPath("[1].address").value("{\"addr_line1\":\"456 St\",\"city\":\"Tampa\",\"state\":\"FL\",\"zip\":\"33333\"}"))
-                //.andExpect(jsonPath("[1].address").value(null))
-
                 .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
                 .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
                 .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
+                //.andExpect(jsonPath("[1].addresses").isArray())
+                .andExpect(jsonPath("[1].addresses").value(IsNull.nullValue()))
+                //.andExpect(jsonPath("[1].addresses").exists())
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
+                        fieldWithPath("[1].id").description("Company ID"),
                         fieldWithPath("[1].invoice_number").description("CTS-123"),
                         fieldWithPath("[1].name").description("Cognizant"),
-                        //fieldWithPath("[1].address").description("{\"addr_line1\":\"456 St\",\"city\":\"Tampa\",\"state\":\"FL\",\"zip\":\"33333\"}"),
                         fieldWithPath("[1].contact_name").description("Iqbal"),
                         fieldWithPath("[1].contact_title").description("Accounts Payable"),
-                        fieldWithPath("[1].contact_phone_number").description("1-222-333-0000")
+                        fieldWithPath("[1].contact_phone_number").description("1-222-333-0000"),
+                        fieldWithPath("[1].addresses").description("Addresses of company")
                 )));
     }
 
     @Test
     public void createDuplicateCompanyTest() throws Exception {
-        AddressEntity addr1 = new AddressEntity("456 St","Tampa","FL","33333");
-        CompanyDTO input1 = new CompanyDTO("CTS-123","Cognizant",addr1,"Iqbal","Accounts Payable","1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("CTS-123","Cognizant","Iqbal","Accounts Payable","1-222-333-0000");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(input1))
