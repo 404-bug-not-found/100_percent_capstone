@@ -6,6 +6,7 @@ import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
+import com.hundred.percent.capstone.Invoicify.invoice.repository.ItemRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,8 @@ public class InvoiceServiceTest {
 
     @Mock
     InvoiceRepository repository;
+    @Mock
+    ItemRepository itemRepository;
 
     @InjectMocks
     InvoiceService service;
@@ -69,7 +72,6 @@ public class InvoiceServiceTest {
         itemsDTO1.add(new ItemDTO("Item1",20));
         InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
         this.service.createInvoice(d1);
-        List<InvoiceDTO> actual=this.service.getAllInvoices();
 
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));

@@ -80,6 +80,10 @@ public class InvoiceIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
                 .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
-                .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"));
+                .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
+                .andExpect(jsonPath("$.[0].items.[0].price").value("20"))
+                .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
+                .andExpect(jsonPath("$.[0].items.[0].quantity").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].totalPrice").value("20"));
     }
 }
