@@ -15,9 +15,23 @@ include::{snippets}/postCompany/http-request.adoc[]
 include::{snippets}/postCompany/http-response.adoc[]
 
 duplicateCompanyName
+getInvoice
+
+.request
+include::{snippets}/getInvoice/http-request.adoc[]
+
+.response
+include::{snippets}/getInvoice/http-response.adoc[]
+
+postInvoice
 
 .request
 include::{snippets}/duplicateCompanyName/http-request.adoc[]
 
 .response
 include::{snippets}/duplicateCompanyName/http-response.adoc[]
+.request
+include::{snippets}/postInvoice/http-request.adoc[]
+
+.response
+include::{snippets}/postInvoice/http-response.adoc[]
