@@ -63,8 +63,8 @@ public class InvoiceIT {
         InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item2",20));
-        InvoiceDTO d2=new InvoiceDTO(1, itemsDTO2);
+        itemsDTO2.add(new ItemDTO("Item2",20,3));
+        InvoiceDTO d2=new InvoiceDTO(2, itemsDTO2);
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
@@ -84,6 +84,12 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.[0].items.[0].quantity").value("1"))
-                .andExpect(jsonPath("$.[0].items.[0].totalPrice").value("20"));
+                .andExpect(jsonPath("$.[0].items.[0].totalPrice").value("20"))
+                .andExpect(jsonPath("$.[1].invoiceNumber").value("2"))
+                .andExpect(jsonPath("$.[1].items.[0].description").value("Item2"))
+                .andExpect(jsonPath("$.[1].items.[0].price").value("20"))
+                .andExpect(jsonPath("$.[1].items.[0].feeType").value("RateBased"))
+                .andExpect(jsonPath("$.[1].items.[0].quantity").value("3"))
+                .andExpect(jsonPath("$.[1].items.[0].totalPrice").value("60"));
     }
 }
