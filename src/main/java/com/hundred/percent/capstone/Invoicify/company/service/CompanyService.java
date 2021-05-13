@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.company.service;
 
+import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +54,20 @@ public class CompanyService {
 
 
     public List<CompanySimpleViewDTO> getSimpleCompanyView() {
-        return null;
+        AtomicReference<AddressEntity> temp = new AtomicReference<AddressEntity>();
+        return companyRepository.findAll()
+                .stream()
+                .map(companyEntity -> {
+                    for (AddressEntity aEnt : companyEntity.getAddresses()) {
+                        temp.set(aEnt);
+                        break;
+                    }
+                    return new CompanySimpleViewDTO(
+                            companyEntity.getName(),
+                            temp.getAcquire().getCity(),
+                            temp.getAcquire().getState()
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }

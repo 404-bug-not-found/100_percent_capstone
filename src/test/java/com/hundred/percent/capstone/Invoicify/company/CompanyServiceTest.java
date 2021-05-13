@@ -87,10 +87,12 @@ public class CompanyServiceTest {
         CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
         Set<AddressEntity> addressEntities2 = new HashSet<>();
         addressEntities2.add(new AddressEntity("456 St","Tampa","FL","33333",entity2));
-        entity2.setAddresses(addressEntities);
+        entity2.setAddresses(addressEntities2);
 
         CompanySimpleViewDTO dto1 = new CompanySimpleViewDTO("Freddie Mac","Dallas","TX");
         CompanySimpleViewDTO dto2 = new CompanySimpleViewDTO("Cognizant","Tampa","FL");
+
+
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1, entity2));
 
         List<CompanySimpleViewDTO> actual = companyService.getSimpleCompanyView();
