@@ -54,12 +54,14 @@ jacocoTestReport {
 		dependsOn test // tests are required to run before generating the report
 		html.destination layout.buildDirectory.dir('reports/jacocoHtml').get().asFile
 	}
+
 }
 jacocoTestCoverageVerification {
 	violationRules {
 		rule {
+			enabled = true
 			limit {
-				minimum = 0.20
+				minimum = 1.0
 			}
 		}
 	}
