@@ -26,6 +26,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -54,7 +55,8 @@ public class InvoiceIT {
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(0))
-                .andDo(print());
+                .andDo(print())
+        .andDo(document("getInvoice"));
     }
     @Test
     public void createAndGetInvoiceTest() throws Exception{
@@ -69,12 +71,14 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated());
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d2))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated());
+        ).andExpect(status().isCreated())
+        .andDo(document("postInvoice"));
 
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
@@ -84,12 +88,55 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.[0].items.[0].quantity").value("1"))
-                .andExpect(jsonPath("$.[0].items.[0].totalPrice").value("20"))
+                .andExpect(jsonPath("$.[0].items.[0].fee").value("20"))
                 .andExpect(jsonPath("$.[1].invoiceNumber").value("2"))
                 .andExpect(jsonPath("$.[1].items.[0].description").value("Item2"))
                 .andExpect(jsonPath("$.[1].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[1].items.[0].feeType").value("RateBased"))
                 .andExpect(jsonPath("$.[1].items.[0].quantity").value("3"))
-                .andExpect(jsonPath("$.[1].items.[0].totalPrice").value("60"));
+                .andExpect(jsonPath("$.[1].items.[0].fee").value("60"))
+                .andDo(document("getInvoice"));
+
+    }
+    @Test
+    public void createAndGetInvoicesWithSameDescItems() throws Exception{
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
+        itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
+        itemsDTO1.add(new ItemDTO("Product Pages",20,3));
+
+        InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d1))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        mockMvc.perform(get("/invoices"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].description").value("Brand Website Customization"))
+                .andExpect(jsonPath("$.[0].items.[0].price").value("1000"))
+                .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
+                .andExpect(jsonPath("$.[0].items.[0].quantity").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].fee").value("1000"))
+
+                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[1].description").value("Brand Website Customization"))
+                .andExpect(jsonPath("$.[0].items.[1].price").value("20"))
+                .andExpect(jsonPath("$.[0].items.[1].feeType").value("FlatFee"))
+                .andExpect(jsonPath("$.[0].items.[1].quantity").value("1"))
+                .andExpect(jsonPath("$.[0].items.[1].fee").value("20"))
+
+                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[2].description").value("Product Pages"))
+                .andExpect(jsonPath("$.[0].items.[2].price").value("20"))
+                .andExpect(jsonPath("$.[0].items.[2].feeType").value("RateBased"))
+                .andExpect(jsonPath("$.[0].items.[2].quantity").value("3"))
+                .andExpect(jsonPath("$.[0].items.[2].fee").value("60"))
+                .andDo(document("getInvoice"));
+
     }
 }

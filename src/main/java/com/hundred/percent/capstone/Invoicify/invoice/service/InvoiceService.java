@@ -45,7 +45,7 @@ public class InvoiceService {
                             .map(itemEntity -> {
                                 ItemDTO e =new ItemDTO(itemEntity.getDescription(),
                                         itemEntity.getPrice(), itemEntity.getQuantity()
-                                        ,itemEntity.getFeeType(),itemEntity.getTotalPrice());
+                                        ,itemEntity.getFeeType(),itemEntity.getFee());
                                 return e;
                             }).collect(Collectors.toList()));
 

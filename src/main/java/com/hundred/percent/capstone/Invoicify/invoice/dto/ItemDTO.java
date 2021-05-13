@@ -15,14 +15,14 @@ public class ItemDTO {
     private FeeType feeType;
     private int price;
     private int quantity;
-    private int totalPrice;
+    private int fee;
 
     public ItemDTO(String description, int price) {
         this.description = description;
         this.price = price;
         this.quantity =1;
         this.feeType = FeeType.FlatFee;
-        this.totalPrice = price;
+        this.fee = price;
 
     }
     public ItemDTO(String description, int price,int quantity) {
@@ -33,7 +33,7 @@ public class ItemDTO {
         else
             this.feeType = FeeType.RateBased;
         this.quantity = quantity;
-        this.totalPrice = this.price * this.quantity;
+        this.fee = this.price * this.quantity;
     }
     public ItemDTO(String description, int price,int quantity,FeeType feeType,int totalPrice) {
         this.description = description;
@@ -43,6 +43,6 @@ public class ItemDTO {
         else
             this.feeType = FeeType.RateBased;
         this.quantity = quantity;
-        this.totalPrice = totalPrice;
+        this.fee = totalPrice;
     }
 }

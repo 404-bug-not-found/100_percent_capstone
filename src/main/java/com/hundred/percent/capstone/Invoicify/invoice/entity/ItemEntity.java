@@ -20,14 +20,14 @@ public class ItemEntity {
     private FeeType feeType;
     private int price;
     private int quantity;
-    private int totalPrice;
+    private int fee;
 
     public ItemEntity(String description, int price) {
         this.description = description;
         this.price = price;
         this.feeType = FeeType.FlatFee;
         this.quantity =1;
-        this.totalPrice = price;
+        this.fee = price;
 
     }
     public ItemEntity(String description, int price,int quantity) {
@@ -38,7 +38,7 @@ public class ItemEntity {
         else
             this.feeType = FeeType.RateBased;
         this.quantity = quantity;
-        this.totalPrice = this.price * this.quantity;
+        this.fee = this.price * this.quantity;
     }
 
 }
