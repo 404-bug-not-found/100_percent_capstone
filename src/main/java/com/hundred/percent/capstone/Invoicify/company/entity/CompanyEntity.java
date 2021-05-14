@@ -28,7 +28,9 @@ public class CompanyEntity {
     String contact_title;
     String contact_phone_number;
 
-    @OneToMany(mappedBy = "companyEntity")
+    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     Set<AddressEntity> addresses;
 
     public CompanyEntity(String invoice_number, String name, String contact_name, String contact_title, String contact_phone_number) {

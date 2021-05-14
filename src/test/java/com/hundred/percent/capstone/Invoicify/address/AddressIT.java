@@ -59,8 +59,7 @@ public class AddressIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print())
-                .andDo(document("postAddress"))
-        ;
+                .andDo(document("postAddress"));
     }
 
     @Test
