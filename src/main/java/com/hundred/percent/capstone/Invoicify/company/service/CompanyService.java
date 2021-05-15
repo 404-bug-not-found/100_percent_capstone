@@ -53,4 +53,8 @@ public class CompanyService {
                 .collect(Collectors.toList());
 
     }
+
+    public List<CompanySimpleViewDTO> getListCompanyView() {
+        return null;
+    }
 }

@@ -210,9 +210,7 @@ public class CompanyIT {
                 .andExpect(jsonPath("length()").value(2))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
                 .andExpect(jsonPath("[1].city").value("Tampa"))
-                //.andExpect(jsonPath("[0].city").exists())
                 .andExpect(jsonPath("[1].state").value("FL"))
-                //.andExpect(jsonPath("[0].state").exists())
                 .andDo(print())
                 .andDo(document("simpleView", responseFields(
                         fieldWithPath("[1].name").description("Cognizant"),
