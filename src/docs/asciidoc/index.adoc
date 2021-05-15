@@ -51,6 +51,10 @@ simpleView
 .response
 include::{snippets}/simpleView/http-response.adoc[]
 
+listView
+
+.response
+include::{snippets}/listView/http-response.adoc[]
 
 getInvoice
 
