@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.invoice.entity;
 
+import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +20,17 @@ public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @JoinColumn(name="book_id")
+
     int companyInvoiceNumber;
+
+    @JoinColumn(name="company_invoice_number")
+    CompanyEntity companyEntity;
+
     @OneToMany
     @JoinColumn(name="item_id")
     private List<ItemEntity> items;
     private int totalPrice;
+
     public InvoiceEntity(int invoiceNumber, List<ItemEntity> items) {
         this.companyInvoiceNumber = invoiceNumber;
         this.items = items;
