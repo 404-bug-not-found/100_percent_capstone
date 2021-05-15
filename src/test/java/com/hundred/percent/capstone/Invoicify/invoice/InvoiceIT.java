@@ -52,6 +52,7 @@ public class InvoiceIT {
     @InjectMocks
     InvoiceService service;
     @Test
+    @DirtiesContext
     public void getEmptyInvoiceTest() throws Exception {
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
@@ -60,6 +61,7 @@ public class InvoiceIT {
         .andDo(document("getInvoice"));
     }
     @Test
+    @DirtiesContext
     public void createAndGetInvoiceTest() throws Exception{
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
@@ -84,13 +86,13 @@ public class InvoiceIT {
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
-                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
                 .andExpect(jsonPath("$.[0].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.[0].items.[0].quantity").value("1"))
                 .andExpect(jsonPath("$.[0].items.[0].fee").value("20"))
-                .andExpect(jsonPath("$.[1].invoiceNumber").value("2"))
+                .andExpect(jsonPath("$.[1].companyInvoiceNumber").value("2"))
                 .andExpect(jsonPath("$.[1].items.[0].description").value("Item2"))
                 .andExpect(jsonPath("$.[1].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[1].items.[0].feeType").value("RateBased"))
@@ -100,6 +102,7 @@ public class InvoiceIT {
 
     }
     @Test
+    @DirtiesContext
     public void createAndGetInvoicesWithSameDescItems() throws Exception{
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
@@ -117,21 +120,21 @@ public class InvoiceIT {
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(1))
-                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.[0].items.[0].description").value("Brand Website Customization"))
                 .andExpect(jsonPath("$.[0].items.[0].price").value("1000"))
                 .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.[0].items.[0].quantity").value("1"))
                 .andExpect(jsonPath("$.[0].items.[0].fee").value("1000"))
 
-                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.[0].items.[1].description").value("Brand Website Customization"))
                 .andExpect(jsonPath("$.[0].items.[1].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[1].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.[0].items.[1].quantity").value("1"))
                 .andExpect(jsonPath("$.[0].items.[1].fee").value("20"))
 
-                .andExpect(jsonPath("$.[0].invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.[0].items.[2].description").value("Product Pages"))
                 .andExpect(jsonPath("$.[0].items.[2].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[2].feeType").value("RateBased"))
@@ -173,21 +176,77 @@ public class InvoiceIT {
         mockMvc.perform(get("/invoices/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()").value(3))
-                .andExpect(jsonPath("$.invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.items.[0].description").value("Brand Website Customization"))
                 .andExpect(jsonPath("$.items.[0].price").value("1000"))
                 .andExpect(jsonPath("$.items.[0].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.items.[0].quantity").value("1"))
                 .andExpect(jsonPath("$.items.[0].fee").value("1000"))
 
-                .andExpect(jsonPath("$.invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.items.[1].description").value("Brand Website Customization"))
                 .andExpect(jsonPath("$.items.[1].price").value("20"))
                 .andExpect(jsonPath("$.items.[1].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.items.[1].quantity").value("1"))
                 .andExpect(jsonPath("$.items.[1].fee").value("20"))
 
-                .andExpect(jsonPath("$.invoiceNumber").value("1"))
+                .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.items.[2].description").value("Product Pages"))
+                .andExpect(jsonPath("$.items.[2].price").value("20"))
+                .andExpect(jsonPath("$.items.[2].feeType").value("RateBased"))
+                .andExpect(jsonPath("$.items.[2].quantity").value("3"))
+                .andExpect(jsonPath("$.items.[2].fee").value("60"))
+                .andDo(document("getInvoice"));
+
+    }
+
+    @Test
+    @DirtiesContext
+    public void getInvoicesByCompanyName() throws Exception{
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
+        itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
+        itemsDTO1.add(new ItemDTO("Product Pages",20,3));
+
+        InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
+
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item1",40));
+        itemsDTO2.add(new ItemDTO("Item2",40,3));
+
+        InvoiceDTO d2=new InvoiceDTO(2, itemsDTO1);
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d1))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d2))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        mockMvc.perform(get("/invoices/{companyname}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items.length()").value(3))
+                .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.items.[0].description").value("Brand Website Customization"))
+                .andExpect(jsonPath("$.items.[0].price").value("1000"))
+                .andExpect(jsonPath("$.items.[0].feeType").value("FlatFee"))
+                .andExpect(jsonPath("$.items.[0].quantity").value("1"))
+                .andExpect(jsonPath("$.items.[0].fee").value("1000"))
+
+                .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.items.[1].description").value("Brand Website Customization"))
+                .andExpect(jsonPath("$.items.[1].price").value("20"))
+                .andExpect(jsonPath("$.items.[1].feeType").value("FlatFee"))
+                .andExpect(jsonPath("$.items.[1].quantity").value("1"))
+                .andExpect(jsonPath("$.items.[1].fee").value("20"))
+
+                .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.items.[2].description").value("Product Pages"))
                 .andExpect(jsonPath("$.items.[2].price").value("20"))
                 .andExpect(jsonPath("$.items.[2].feeType").value("RateBased"))

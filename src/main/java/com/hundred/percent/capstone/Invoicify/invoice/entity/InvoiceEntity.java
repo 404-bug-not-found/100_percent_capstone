@@ -19,13 +19,14 @@ public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    int invoiceNumber;
+    @JoinColumn(name="book_id")
+    int companyInvoiceNumber;
     @OneToMany
     @JoinColumn(name="item_id")
     private List<ItemEntity> items;
     private int totalPrice;
     public InvoiceEntity(int invoiceNumber, List<ItemEntity> items) {
-        this.invoiceNumber = invoiceNumber;
+        this.companyInvoiceNumber = invoiceNumber;
         this.items = items;
     }
 }
