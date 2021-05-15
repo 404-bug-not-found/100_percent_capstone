@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyListViewDTO {
-    String invoice_number;
     String name;
     String contact_name;
     String contact_title;
