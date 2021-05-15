@@ -12,8 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.transaction.Transactional;
-
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -27,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-//@Transactional
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class AddressIT {
 
@@ -48,8 +45,8 @@ public class AddressIT {
 
     @Test
     public void postAddressTest() throws Exception {
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant","David","Accounts Payable","1-123-456-7890");
-        AddressDTO addrDTO = new AddressDTO("123 Dr","Houston","TX","1000","Cognizant");
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
+        AddressDTO addrDTO = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Cognizant");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(companyDTO))
@@ -68,11 +65,11 @@ public class AddressIT {
     @Test
     public void getMultipleAddressTest() throws Exception {
 
-        CompanyDTO companyDTO1 = new CompanyDTO("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
-        CompanyDTO companyDTO2 = new CompanyDTO("CTS-123","Cognizant","Iqbal","Accounts Payable","1-777-777-7777");
+        CompanyDTO companyDTO1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO companyDTO2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
 
-        AddressDTO input1 = new AddressDTO("123 Dr","Houston","TX","10000","Freddie Mac");
-        AddressDTO input2 = new AddressDTO("456 St","Tampa","FL","33333","Cognizant");
+        AddressDTO input1 = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
+        AddressDTO input2 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(companyDTO1))
@@ -117,8 +114,8 @@ public class AddressIT {
 
     @Test
     public void createDuplicateAddressTest() throws Exception {
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123","Cognizant","Iqbal","Accounts Payable","1-777-777-7777");
-        AddressDTO input1 = new AddressDTO("456 St","Tampa","FL","33333","Cognizant");
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+        AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
         mockMvc.perform(post("/companies/addCompany")
                 .content(objectMapper.writeValueAsString(companyDTO))
@@ -142,7 +139,6 @@ public class AddressIT {
                         fieldWithPath("message").description("Address already exist.")
                 )));
     }
-
 
 
 }

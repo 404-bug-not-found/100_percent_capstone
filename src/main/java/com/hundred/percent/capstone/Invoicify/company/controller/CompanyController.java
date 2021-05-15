@@ -18,11 +18,6 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
 
-    /*@GetMapping
-    public String getCompanies(){
-        return "[]";
-    }*/
-
     @GetMapping
     public List<CompanyEntity> getCompanies() {
 
@@ -39,7 +34,8 @@ public class CompanyController {
     }
 
     @GetMapping("/simpleView")
-    public List<CompanySimpleViewDTO> getSimpleCompanyView(){
+    public List<CompanySimpleViewDTO> getSimpleCompanyView() {
+
         return companyService.getSimpleCompanyView();
     }
 }

@@ -1,14 +1,13 @@
 package com.hundred.percent.capstone.Invoicify.address.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,17 +17,11 @@ import java.util.UUID;
 public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    /*@Column(name = "address_id")
-    private UUID id;*/
     Long id;
     String addr_line1;
     String city;
     String state;
     String zip;
-
-    /*@ManyToOne
-    @JoinColumn(name="company_id")
-    CompanyEntity companyEntity;*/
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "company_id")
@@ -43,8 +36,4 @@ public class AddressEntity {
         this.companyEntity = companyEntity;
     }
 
-    /*@JsonBackReference
-    public CompanyEntity getCompanyEntity(){
-        return companyEntity;
-    }*/
 }

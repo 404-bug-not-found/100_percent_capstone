@@ -34,8 +34,8 @@ public class AddressServiceTest {
 
     @Test
     public void createTest() throws AddressExistsException {
-        CompanyEntity companyEntity = new CompanyEntity("CTS-123","Cognizant","Iqbal","Accounts Payable","1-222-333-0000");
-        AddressDTO addressDTO = new AddressDTO("456 St","Tampa","FL","33333","Cognizant");
+        CompanyEntity companyEntity = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        AddressDTO addressDTO = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
         when(mockCompanyRepository.findByName("Cognizant")).thenReturn(
                 companyEntity
@@ -44,27 +44,27 @@ public class AddressServiceTest {
         addressService.createAddress(addressDTO);
 
         verify(mockAddressRepository).save(
-                new AddressEntity("456 St","Tampa","FL","33333",companyEntity)
+                new AddressEntity("456 St", "Tampa", "FL", "33333", companyEntity)
         );
     }
 
     @Test
     public void findAllTest() {
 
-        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
-        CompanyEntity companyEntity2 = new CompanyEntity("CTS-123","Cognizant","Iqbal","Accounts Payable","1-222-333-0000");
-        AddressEntity addrEntity1 = new AddressEntity("123 Dr","Houston","TX","10000",companyEntity1);
-        AddressDTO addrDTO1 = new AddressDTO("123 Dr","Houston","TX","10000","Freddie Mac");
-        AddressEntity addrEntity2 = new AddressEntity("456 St","Tampa","FL","33333",companyEntity2);
-        AddressDTO addrDTO2 = new AddressDTO("456 St","Tampa","FL","33333","Cognizant");
+        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity companyEntity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        AddressEntity addrEntity1 = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity1);
+        AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
+        AddressEntity addrEntity2 = new AddressEntity("456 St", "Tampa", "FL", "33333", companyEntity2);
+        AddressDTO addrDTO2 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
-        when(mockAddressRepository.findAll()).thenReturn(List.of(addrEntity1,addrEntity2));
+        when(mockAddressRepository.findAll()).thenReturn(List.of(addrEntity1, addrEntity2));
 
 
         List<AddressDTO> actual = addressService.getAllAddresses();
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
-                List.of(addrDTO1,addrDTO2)
+                List.of(addrDTO1, addrDTO2)
         );
 
     }
@@ -72,9 +72,9 @@ public class AddressServiceTest {
     @Test
     public void duplicateCompanyNameTest() {
 
-        CompanyEntity companyEntity = new CompanyEntity("FDM-123","Freddie Mac","Zxander","Accounts Payable","1-123-456-7890");
-        AddressEntity addrEntity = new AddressEntity("123 Dr","Houston","TX","10000",companyEntity);
-        AddressDTO addressDTO = new AddressDTO("123 Dr","Houston","TX","10000","Freddie Mac");
+        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        AddressEntity addrEntity = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity);
+        AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
 
         when(mockAddressRepository.findAll()).thenReturn(List.of(addrEntity));
 
@@ -82,7 +82,6 @@ public class AddressServiceTest {
             addressService.createAddress(addressDTO);
         });
     }
-
 
 
 }
