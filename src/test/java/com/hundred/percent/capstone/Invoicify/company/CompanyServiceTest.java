@@ -1,6 +1,9 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
+import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
+import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,8 +32,12 @@ public class CompanyServiceTest {
     @Mock
     CompanyRepository mockCompanyRepository;
 
+
     @InjectMocks
     CompanyService companyService;
+
+    @InjectMocks
+    AddressService addressService;
 
     @Test
     public void createTest() throws CompanyExistsException {
@@ -120,21 +127,22 @@ public class CompanyServiceTest {
         );
     }
 
+    //TODO
     @Test
-    public void updateCompanyDetailsTest() {
+    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
         CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
 //        List<AddressEntity> addressEntities = new ArrayList<>();
 //        addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", companyEntity));
 //        companyEntity.setAddresses(addressEntities);
 
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyListViewDTO companyDTO = new CompanyListViewDTO("Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000", "456 St", "Tampa", "FL", "33333");
 
-        when(mockCompanyRepository.findByName(any())).thenReturn(companyEntity);
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
 
-        CompanyEntity updatedEntity = companyService.updateCompany(companyDTO, companyEntity.getName());
+        companyService.updateCompany(companyDTO, companyEntity.getName());
 
         verify(mockCompanyRepository).save(
-                new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
+                new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
         );
     }
 }

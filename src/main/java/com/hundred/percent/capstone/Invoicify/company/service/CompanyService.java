@@ -1,5 +1,10 @@
 package com.hundred.percent.capstone.Invoicify.company.service;
 
+import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
+import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
+import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
+import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -18,6 +23,9 @@ public class CompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
+
+    @Autowired
+    AddressService addressService;
 
 
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
@@ -73,9 +81,11 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyDTO companyDTO, String name) {
+    public CompanyEntity updateCompany(CompanyListViewDTO companyDTO, String name) throws Exception, AddressExistsException {
         CompanyEntity companyEntity = companyRepository.findByName(name);
-        companyEntity.setInvoice_number(companyDTO.getInvoice_number());
+        if(companyEntity.getAddresses()==null||companyEntity.getAddresses().size()<=0){
+            addressService.createAddress(new AddressDTO(companyDTO.getAddr_line1(),companyDTO.getCity(),companyDTO.getState(),companyDTO.getZip(),companyEntity.getName()));
+        }
         companyEntity.setName(companyDTO.getName());
         companyEntity.setContact_name(companyDTO.getContact_name());
         companyEntity.setContact_title(companyDTO.getContact_title());
