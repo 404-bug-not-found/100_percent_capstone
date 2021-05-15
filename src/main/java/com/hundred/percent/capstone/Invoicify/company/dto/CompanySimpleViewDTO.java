@@ -1,3 +1,4 @@
+
 package com.hundred.percent.capstone.Invoicify.company.dto;
 
 import lombok.AllArgsConstructor;
@@ -8,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyDTO {
-    String invoice_number;
+public class CompanySimpleViewDTO {
     String name;
-    String contact_name;
-    String contact_title;
-    String contact_phone_number;
+    String city;
+    String state;
 }

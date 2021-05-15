@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.service;
 
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
@@ -27,27 +28,29 @@ public class CompanyService {
         if (companyExistingEntities.isPresent()) {
             throw new CompanyExistsException();
         } else {
-            companyRepository.save(new CompanyEntity(companyDTO.getInvoice_number(), companyDTO.getName(), companyDTO.getAddress(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
+            companyRepository.save(new CompanyEntity(companyDTO.getInvoice_number(), companyDTO.getName(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
         }
     }
 
-    public List<CompanyDTO> getAllCompanies() {
+    public List<CompanyEntity> getAllCompanies() {
 
-        //return companyRepository.findAll();
+        return companyRepository.findAll();
+
+    }
+
+
+    public List<CompanySimpleViewDTO> getSimpleCompanyView() {
 
         return companyRepository.findAll()
                 .stream()
                 .map(companyEntity -> {
-                    return new CompanyDTO(companyEntity.getInvoice_number(),
+                    return new CompanySimpleViewDTO(
                             companyEntity.getName(),
-                            companyEntity.getAddress(),
-                            companyEntity.getContact_name(),
-                            companyEntity.getContact_title(),
-                            companyEntity.getContact_phone_number()
+                            companyEntity.getAddresses().get(0).getCity(),
+                            companyEntity.getAddresses().get(0).getState()
                     );
                 })
                 .collect(Collectors.toList());
 
     }
-
 }
