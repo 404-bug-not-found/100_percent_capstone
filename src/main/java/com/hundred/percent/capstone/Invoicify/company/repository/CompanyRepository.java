@@ -1,13 +1,10 @@
 package com.hundred.percent.capstone.Invoicify.company.repository;
 
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
-import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface CompanyRepository extends JpaRepository<CompanyEntity, UUID> {
-    CompanyEntity findByName(String companyName);
+public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
+    CompanyEntity findByName(String name);
 }

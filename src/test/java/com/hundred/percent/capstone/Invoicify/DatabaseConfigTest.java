@@ -9,7 +9,7 @@ public class DatabaseConfigTest {
 
 
     @Test
-    void dummyDatabaseConfigTest(){
+    void dummyDatabaseConfigTest() {
         DatabaseConfig databaseConfig = new DatabaseConfig();
     }
 }

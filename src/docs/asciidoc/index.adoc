@@ -15,6 +15,43 @@ include::{snippets}/postCompany/http-request.adoc[]
 include::{snippets}/postCompany/http-response.adoc[]
 
 duplicateCompanyName
+
+.request
+include::{snippets}/duplicateCompanyName/http-request.adoc[]
+
+.response
+include::{snippets}/duplicateCompanyName/http-response.adoc[]
+
+getAddresses
+
+.request
+include::{snippets}/getAddresses/http-request.adoc[]
+
+.response
+include::{snippets}/getAddresses/http-response.adoc[]
+
+postAddress
+
+.request
+include::{snippets}/postAddress/http-request.adoc[]
+
+.response
+include::{snippets}/postAddress/http-response.adoc[]
+
+duplicateAddress
+
+.request
+include::{snippets}/duplicateAddress/http-request.adoc[]
+
+.response
+include::{snippets}/duplicateAddress/http-response.adoc[]
+
+simpleView
+
+.response
+include::{snippets}/simpleView/http-response.adoc[]
+
+
 getInvoice
 
 .request
@@ -25,11 +62,6 @@ include::{snippets}/getInvoice/http-response.adoc[]
 
 postInvoice
 
-.request
-include::{snippets}/duplicateCompanyName/http-request.adoc[]
-
-.response
-include::{snippets}/duplicateCompanyName/http-response.adoc[]
 .request
 include::{snippets}/postInvoice/http-request.adoc[]
 
