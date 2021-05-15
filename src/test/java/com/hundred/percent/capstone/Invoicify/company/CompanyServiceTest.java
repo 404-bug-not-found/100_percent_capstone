@@ -107,8 +107,8 @@ public class CompanyServiceTest {
         addressEntities2.add(new AddressEntity("456 St", "Tampa", "FL", "33333", entity2));
         entity2.setAddresses(addressEntities2);
 
-        CompanyListViewDTO dto1 = new CompanyListViewDTO( "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890","123 St", "Dallas", "TX", "33333");
-        CompanyListViewDTO dto2 = new CompanyListViewDTO( "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000","456 St", "Tampa", "FL", "33333");
+        CompanyListViewDTO dto1 = new CompanyListViewDTO("Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890", "123 St", "Dallas", "TX", "33333");
+        CompanyListViewDTO dto2 = new CompanyListViewDTO("Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000", "456 St", "Tampa", "FL", "33333");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1, entity2));
 
