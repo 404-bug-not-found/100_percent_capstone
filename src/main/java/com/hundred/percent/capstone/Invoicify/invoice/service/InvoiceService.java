@@ -32,7 +32,7 @@ public class InvoiceService {
                     return e;
                 }).collect(Collectors.toList()));
 
-        this.invoiceRepository.save(new InvoiceEntity(invoiceDTO.getInvoiceNumber(),items));
+        this.invoiceRepository.save(new InvoiceEntity(invoiceDTO.getCompanyInvoiceNumber(),items));
     }
 
     public List<InvoiceDTO> getAllInvoices()
@@ -49,14 +49,14 @@ public class InvoiceService {
                                 return e;
                             }).collect(Collectors.toList()));
 
-                    return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),items);
+                    return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
                 })
                 .collect(Collectors.toList());
     }
 
-    public InvoiceDTO getInvoiceByInvoiceNumber(int invoiceNumber) {
+    public InvoiceDTO getInvoiceByInvoiceNumber(int companyInvoiceNumber) {
 
-        InvoiceEntity invoiceEntity = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+        InvoiceEntity invoiceEntity = invoiceRepository.findByCompanyInvoiceNumber(companyInvoiceNumber);
         ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
                 .stream()
                 .map(itemEntity -> {
@@ -66,7 +66,7 @@ public class InvoiceService {
                     return e;
                 }).collect(Collectors.toList()));
 
-        return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),items);
+        return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
 
 
     }
