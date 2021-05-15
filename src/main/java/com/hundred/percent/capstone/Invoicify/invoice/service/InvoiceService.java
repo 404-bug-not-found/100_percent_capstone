@@ -53,4 +53,21 @@ public class InvoiceService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public InvoiceDTO getInvoiceByInvoiceNumber(int invoiceNumber) {
+
+        InvoiceEntity invoiceEntity = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+        ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                .stream()
+                .map(itemEntity -> {
+                    ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                            itemEntity.getPrice(), itemEntity.getQuantity()
+                            ,itemEntity.getFeeType(),itemEntity.getFee());
+                    return e;
+                }).collect(Collectors.toList()));
+
+        return new InvoiceDTO(invoiceEntity.getInvoiceNumber(),items);
+
+
+    }
 }
