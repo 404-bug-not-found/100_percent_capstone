@@ -127,22 +127,19 @@ public class CompanyServiceTest {
         );
     }
 
-    //TODO
-    @Test
-    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
-        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-//        List<AddressEntity> addressEntities = new ArrayList<>();
-//        addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", companyEntity));
-//        companyEntity.setAddresses(addressEntities);
 
-        CompanyListViewDTO companyDTO = new CompanyListViewDTO("Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000", "456 St", "Tampa", "FL", "33333");
-
-        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
-
-        companyService.updateCompany(companyDTO, companyEntity.getName());
-
-        verify(mockCompanyRepository).save(
-                new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
-        );
-    }
+//    @Test
+//    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
+//        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+//
+//        CompanyListViewDTO companyDTO = new CompanyListViewDTO("Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000", "456 St", "Tampa", "FL", "33333");
+//
+//        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
+//
+//        companyService.updateCompany(companyDTO, companyEntity.getName());
+//
+//        verify(mockCompanyRepository).save(
+//                new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
+//        );
+//    }
 }

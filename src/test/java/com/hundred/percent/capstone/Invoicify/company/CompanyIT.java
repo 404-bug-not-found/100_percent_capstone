@@ -1,8 +1,10 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -16,8 +18,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -274,6 +275,42 @@ public class CompanyIT {
                         fieldWithPath("[1].state").description("FL"),
                         fieldWithPath("[1].zip").description("5555")
                 )));
+    }
+
+    @Test
+    public void updateCompanytest() throws Exception {
+        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Freddie Mac");
+
+
+        mockMvc.perform(post("/addresses/addAddress")
+                .content(objectMapper.writeValueAsString(addrDTO1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        CompanyEntity input2 = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-555-0011");
+
+        mockMvc.perform(patch("/companies/update/Freddie Mac")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("[1].name").value("Cognizant"))
+                .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
+                .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
+                .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
+                .andExpect(jsonPath("[1].addr_line1").value("456 str"))
+                .andExpect(jsonPath("[1].city").value("Tampa"))
+                .andExpect(jsonPath("[1].state").value("FL"))
+                .andExpect(jsonPath("[1].zip").value("5555"))
+                .andDo(print());
     }
 
 }

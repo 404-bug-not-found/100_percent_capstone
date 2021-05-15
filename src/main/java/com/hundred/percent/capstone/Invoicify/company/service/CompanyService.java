@@ -81,15 +81,14 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyListViewDTO companyDTO, String name) throws Exception, AddressExistsException {
+    public CompanyEntity updateCompany(CompanyEntity companyDTO, String name)  {
         CompanyEntity companyEntity = companyRepository.findByName(name);
-        if(companyEntity.getAddresses()==null||companyEntity.getAddresses().size()<=0){
-            addressService.createAddress(new AddressDTO(companyDTO.getAddr_line1(),companyDTO.getCity(),companyDTO.getState(),companyDTO.getZip(),companyEntity.getName()));
-        }
-        companyEntity.setName(companyDTO.getName());
-        companyEntity.setContact_name(companyDTO.getContact_name());
-        companyEntity.setContact_title(companyDTO.getContact_title());
-        companyEntity.setContact_phone_number(companyDTO.getContact_phone_number());
+
+        companyEntity = companyDTO;
+//        companyEntity.setName(companyDTO.getName());
+//        companyEntity.setContact_name(companyDTO.getContact_name());
+//        companyEntity.setContact_title(companyDTO.getContact_title());
+//        companyEntity.setContact_phone_number(companyDTO.getContact_phone_number());
 
         return companyRepository.save(companyEntity);
     }
