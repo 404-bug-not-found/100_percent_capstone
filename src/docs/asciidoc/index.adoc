@@ -22,7 +22,6 @@ include::{snippets}/duplicateCompanyName/http-request.adoc[]
 .response
 include::{snippets}/duplicateCompanyName/http-response.adoc[]
 
-========
 getAddresses
 
 .request
@@ -51,3 +50,20 @@ simpleView
 
 .response
 include::{snippets}/simpleView/http-response.adoc[]
+
+
+getInvoice
+
+.request
+include::{snippets}/getInvoice/http-request.adoc[]
+
+.response
+include::{snippets}/getInvoice/http-response.adoc[]
+
+postInvoice
+
+.request
+include::{snippets}/postInvoice/http-request.adoc[]
+
+.response
+include::{snippets}/postInvoice/http-response.adoc[]
