@@ -46,3 +46,8 @@ include::{snippets}/duplicateAddress/http-request.adoc[]
 
 .response
 include::{snippets}/duplicateAddress/http-response.adoc[]
+
+simpleView
+
+.response
+include::{snippets}/simpleView/http-response.adoc[]
