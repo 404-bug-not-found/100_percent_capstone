@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.company;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
+import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -296,20 +300,22 @@ public class CompanyIT {
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        CompanyEntity input2 = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-555-0011");
+        CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-555-0011");
+        AddressEntity addrEntity = new AddressEntity("456 St", "Tampa", "FL", "33637", newCompanyEntity);
+        newCompanyEntity.setAddresses(List.of(addrEntity));
 
         mockMvc.perform(patch("/companies/update/Freddie Mac")
-                .content(objectMapper.writeValueAsString(input2))
+                .content(objectMapper.writeValueAsString(newCompanyEntity))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("[1].name").value("Cognizant"))
-                .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
-                .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
-                .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
-                .andExpect(jsonPath("[1].addr_line1").value("456 str"))
-                .andExpect(jsonPath("[1].city").value("Tampa"))
-                .andExpect(jsonPath("[1].state").value("FL"))
-                .andExpect(jsonPath("[1].zip").value("5555"))
+                .andExpect(jsonPath("name").value("Cognizant"))
+                .andExpect(jsonPath("contact_name").value("Iqbal"))
+                .andExpect(jsonPath("contact_title").value("Accounts Payable"))
+                .andExpect(jsonPath("contact_phone_number").value("1-123-555-0011"))
+                .andExpect(jsonPath("addresses[0].addr_line1").value("456 str"))
+                .andExpect(jsonPath("city").value("Tampa"))
+                .andExpect(jsonPath("state").value("FL"))
+                .andExpect(jsonPath("zip").value("5555"))
                 .andDo(print());
     }
 

@@ -81,15 +81,32 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyEntity companyDTO, String name)  {
+    public CompanyEntity updateCompany(CompanyEntity companyEnt, String name) throws AddressExistsException {
         CompanyEntity companyEntity = companyRepository.findByName(name);
 
-        companyEntity = companyDTO;
-//        companyEntity.setName(companyDTO.getName());
-//        companyEntity.setContact_name(companyDTO.getContact_name());
-//        companyEntity.setContact_title(companyDTO.getContact_title());
-//        companyEntity.setContact_phone_number(companyDTO.getContact_phone_number());
+        companyEntity.setName(companyEnt.getName());
+        companyEntity.setContact_name(companyEnt.getContact_name());
+        companyEntity.setContact_title(companyEnt.getContact_title());
+        companyEntity.setContact_phone_number(companyEnt.getContact_phone_number());
+        //companyEntity.setAddresses(companyEnt.getAddresses());
+        CompanyEntity updatedCompanyEntity = companyRepository.save(companyEntity);
 
-        return companyRepository.save(companyEntity);
+
+        addressService.createAddress(new AddressDTO(companyEnt.getAddresses().get(0).getAddr_line1(),
+                companyEnt.getAddresses().get(0).getCity(),
+                companyEnt.getAddresses().get(0).getState(),
+                companyEnt.getAddresses().get(0).getZip(),
+                updatedCompanyEntity.getName()
+                ));
+
+
+        //return companyRepository.findById(updatedCompanyEntity.getId());
+        //return updatedCompanyEntity;
+
+        Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(updatedCompanyEntity.getId());
+
+        return optionalCompanyEntity.get();
+
+
     }
 }
