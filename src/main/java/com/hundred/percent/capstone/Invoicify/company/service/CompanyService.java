@@ -73,7 +73,14 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyDTO companyDTO) {
-        return null;
+    public CompanyEntity updateCompany(CompanyDTO companyDTO, String name) {
+        CompanyEntity companyEntity = companyRepository.findByName(name);
+        companyEntity.setInvoice_number(companyDTO.getInvoice_number());
+        companyEntity.setName(companyDTO.getName());
+        companyEntity.setContact_name(companyDTO.getContact_name());
+        companyEntity.setContact_title(companyDTO.getContact_title());
+        companyEntity.setContact_phone_number(companyDTO.getContact_phone_number());
+
+        return companyRepository.save(companyEntity);
     }
 }

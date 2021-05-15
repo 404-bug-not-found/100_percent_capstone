@@ -122,16 +122,16 @@ public class CompanyServiceTest {
 
     @Test
     public void updateCompanyDetailsTest() {
-        CompanyEntity companyentity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        List<AddressEntity> addressEntities = new ArrayList<>();
-        addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", companyentity));
-        companyentity.setAddresses(addressEntities);
+        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+//        List<AddressEntity> addressEntities = new ArrayList<>();
+//        addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", companyEntity));
+//        companyEntity.setAddresses(addressEntities);
 
         CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
-        when(mockCompanyRepository.findByName(any())).thenReturn(companyentity);
+        when(mockCompanyRepository.findByName(any())).thenReturn(companyEntity);
 
-        CompanyEntity updatedEntity = companyService.updateCompany(companyDTO);
+        CompanyEntity updatedEntity = companyService.updateCompany(companyDTO, companyEntity.getName());
 
         verify(mockCompanyRepository).save(
                 new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
