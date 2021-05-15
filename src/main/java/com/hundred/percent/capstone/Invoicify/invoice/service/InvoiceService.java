@@ -1,6 +1,8 @@
 package com.hundred.percent.capstone.Invoicify.invoice.service;
 
 
+import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
@@ -19,6 +21,8 @@ public class InvoiceService {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+    @Autowired
+    CompanyRepository companyRepository;
     @Autowired
     ItemRepository itemRepository;
 
@@ -67,7 +71,21 @@ public class InvoiceService {
                 }).collect(Collectors.toList()));
 
         return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
+    }
 
+    public InvoiceDTO getInvoicesByCompanyName(String CompanyName) {
 
+        CompanyEntity companyEntity = companyRepository.findByName(CompanyName);
+        InvoiceEntity invoiceEntity = invoiceRepository.findByCompanyInvoiceNumber(Integer.parseInt(companyEntity.getInvoice_number()));
+        ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                .stream()
+                .map(itemEntity -> {
+                    ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                            itemEntity.getPrice(), itemEntity.getQuantity()
+                            ,itemEntity.getFeeType(),itemEntity.getFee());
+                    return e;
+                }).collect(Collectors.toList()));
+
+        return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
     }
 }

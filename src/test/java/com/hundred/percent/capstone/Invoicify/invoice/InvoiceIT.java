@@ -229,7 +229,7 @@ public class InvoiceIT {
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
-        mockMvc.perform(get("/invoices/{companyname}"))
+        mockMvc.perform(get("/companies/company1/invoices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()").value(3))
                 .andExpect(jsonPath("$.companyInvoiceNumber").value("1"))
