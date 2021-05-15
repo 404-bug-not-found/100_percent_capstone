@@ -21,9 +21,12 @@ public class InvoiceEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    int companyInvoiceNumber;
+    public CompanyEntity getCompanyEntity() {
+        return companyEntity;
+    }
 
-    @JoinColumn(name="company_invoice_number")
+    @ManyToOne
+    @JoinColumn(name="company_invoicenumber")
     CompanyEntity companyEntity;
 
     @OneToMany
@@ -31,8 +34,8 @@ public class InvoiceEntity {
     private List<ItemEntity> items;
     private int totalPrice;
 
-    public InvoiceEntity(int invoiceNumber, List<ItemEntity> items) {
-        this.companyInvoiceNumber = invoiceNumber;
+    public InvoiceEntity(CompanyEntity companyEntity, List<ItemEntity> items) {
+        this.companyEntity = companyEntity;
         this.items = items;
     }
 }

@@ -9,12 +9,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class InvoiceDTO {
-    int companyInvoiceNumber;
+    String companyInvoiceNumber;
     @ElementCollection
     private List<ItemDTO> items;
-    public InvoiceDTO(int invoiceNumber,List<ItemDTO> items)
+    public InvoiceDTO(String invoiceNumber,List<ItemDTO> items)
     {
-        this.companyInvoiceNumber=invoiceNumber;
+        this.companyInvoiceNumber = invoiceNumber;
         this.items = items;
     }
 

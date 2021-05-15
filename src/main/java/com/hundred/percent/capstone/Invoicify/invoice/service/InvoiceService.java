@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.invoice.service;
 
 
+import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
@@ -25,6 +26,8 @@ public class InvoiceService {
     CompanyRepository companyRepository;
     @Autowired
     ItemRepository itemRepository;
+    @Autowired
+    AddressRepository addressRepository;
 
     public void createInvoice(InvoiceDTO invoiceDTO) {
         ArrayList<ItemEntity> items = new ArrayList<ItemEntity>(invoiceDTO.getItems()
@@ -36,7 +39,8 @@ public class InvoiceService {
                     return e;
                 }).collect(Collectors.toList()));
 
-        this.invoiceRepository.save(new InvoiceEntity(invoiceDTO.getCompanyInvoiceNumber(),items));
+        CompanyEntity companyEntity =  this.companyRepository.findByInvoiceNumber(invoiceDTO.getCompanyInvoiceNumber());
+        this.invoiceRepository.save(new InvoiceEntity(companyEntity,items));
     }
 
     public List<InvoiceDTO> getAllInvoices()
@@ -53,39 +57,55 @@ public class InvoiceService {
                                 return e;
                             }).collect(Collectors.toList()));
 
-                    return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
+                    return new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items);
                 })
                 .collect(Collectors.toList());
     }
 
-    public InvoiceDTO getInvoiceByInvoiceNumber(int companyInvoiceNumber) {
+    public List<InvoiceDTO> getInvoiceByInvoiceNumber(String companyInvoiceNumber) {
 
-        InvoiceEntity invoiceEntity = invoiceRepository.findByCompanyInvoiceNumber(companyInvoiceNumber);
-        ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
-                .stream()
-                .map(itemEntity -> {
-                    ItemDTO e =new ItemDTO(itemEntity.getDescription(),
-                            itemEntity.getPrice(), itemEntity.getQuantity()
-                            ,itemEntity.getFeeType(),itemEntity.getFee());
-                    return e;
-                }).collect(Collectors.toList()));
+        List<InvoiceEntity> invoicesForCompany = invoiceRepository.findAll()
+                .stream().filter(invEnt -> invEnt.getCompanyEntity().getInvoice_number().equals(companyInvoiceNumber))
+                .collect(Collectors.toList());
+        List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
+        for(InvoiceEntity invoiceEntity:invoicesForCompany)
+        {
+            ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                    .stream()
+                    .map(itemEntity -> {
+                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                                itemEntity.getPrice(), itemEntity.getQuantity()
+                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                        return e;
+                    }).collect(Collectors.toList()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items));
 
-        return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
+        }
+
+        return invoiceDTOS;
     }
 
-    public InvoiceDTO getInvoicesByCompanyName(String CompanyName) {
+    public List<InvoiceDTO> getInvoicesByCompanyName(String companyName) {
 
-        CompanyEntity companyEntity = companyRepository.findByName(CompanyName);
-        InvoiceEntity invoiceEntity = invoiceRepository.findByCompanyInvoiceNumber(Integer.parseInt(companyEntity.getInvoice_number()));
-        ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
-                .stream()
-                .map(itemEntity -> {
-                    ItemDTO e =new ItemDTO(itemEntity.getDescription(),
-                            itemEntity.getPrice(), itemEntity.getQuantity()
-                            ,itemEntity.getFeeType(),itemEntity.getFee());
-                    return e;
-                }).collect(Collectors.toList()));
+        List<InvoiceEntity> invoicesForCompany1 = invoiceRepository.findAll();
+        List<InvoiceEntity> invoicesForCompany = invoicesForCompany1
+                .stream().filter(invEnt -> invEnt.getCompanyEntity().getName().equals(companyName))
+                .collect(Collectors.toList());
+        List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
+        for(InvoiceEntity invoiceEntity:invoicesForCompany)
+        {
+            ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                    .stream()
+                    .map(itemEntity -> {
+                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                                itemEntity.getPrice(), itemEntity.getQuantity()
+                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                        return e;
+                    }).collect(Collectors.toList()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items));
 
-        return new InvoiceDTO(invoiceEntity.getCompanyInvoiceNumber(),items);
+        }
+
+        return invoiceDTOS;
     }
 }

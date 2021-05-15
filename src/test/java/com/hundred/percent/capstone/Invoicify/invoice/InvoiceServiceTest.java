@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.invoice;
 
 
+import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
@@ -51,8 +52,13 @@ public class InvoiceServiceTest {
         itemsDTO2.add(new ItemDTO("Item3",20));
         itemsDTO2.add(new ItemDTO("Item4",30,5));
 
-        InvoiceEntity d1=new InvoiceEntity(1, items1);
-        InvoiceEntity d2=new InvoiceEntity(2, items2);
+        CompanyEntity entity1 = new CompanyEntity("CTS-123", "Cognizant",
+                "Sunita", "Accounts Payable", "1-222-333-0000");
+        CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Rohit",
+                "Accounts Payable", "1-222-333-0000");
+
+        InvoiceEntity d1=new InvoiceEntity(entity1, items1);
+        InvoiceEntity d2=new InvoiceEntity(entity2, items2);
         when(this.repository.findAll())
                 .thenReturn(
                         Arrays.asList(
@@ -62,20 +68,23 @@ public class InvoiceServiceTest {
         List<InvoiceDTO> actual=this.service.getAllInvoices();
         assertThat(actual).isEqualTo(
                 Arrays.asList(
-                        new InvoiceDTO(1, itemsDTO1),
-                        new InvoiceDTO(2, itemsDTO2)
+                        new InvoiceDTO("1", itemsDTO1),
+                        new InvoiceDTO("2", itemsDTO2)
                 ));
     }
     @Test
     public void createInvoiceTest() throws Exception {
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO(1, itemsDTO1);
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1);
         this.service.createInvoice(d1);
 
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
-        InvoiceEntity ent = new InvoiceEntity(1, items1);
+        CompanyEntity entity1 = new CompanyEntity("CTS-123", "Cognizant",
+                "Sunita", "Accounts Payable", "1-222-333-0000");
+
+        InvoiceEntity ent = new InvoiceEntity(entity1, items1);
         verify(repository).save(ent);
     }
 }
