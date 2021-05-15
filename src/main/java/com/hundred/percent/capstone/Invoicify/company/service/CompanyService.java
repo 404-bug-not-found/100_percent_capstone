@@ -6,10 +6,13 @@ import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
+import org.apache.tomcat.jni.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -54,12 +57,12 @@ public class CompanyService {
 
 
     public List<CompanySimpleViewDTO> getSimpleCompanyView() {
-        AtomicReference<AddressEntity> temp = new AtomicReference<AddressEntity>();
+        /*AtomicReference<AddressEntity> temp = new AtomicReference<AddressEntity>();
         return companyRepository.findAll()
                 .stream()
                 .map(companyEntity -> {
-                    for (AddressEntity aEnt : companyEntity.getAddresses()) {
-                        temp.set(aEnt);
+                    for (AddressEntity aEntity : companyEntity.getAddresses()) {
+                        temp.set(aEntity);
                         break;
                     }
                     return new CompanySimpleViewDTO(
@@ -68,6 +71,45 @@ public class CompanyService {
                             temp.getAcquire().getState()
                     );
                 })
+                .collect(Collectors.toList());*/
+
+        /*List<CompanyEntity> companyList = companyRepository.findAll();
+        System.out.println("City = "+companyList.get(0).getAddresses().get(0).getCity());
+        System.out.println("State = "+companyList.get(0).getAddresses().get(0).getState());
+
+        ListIterator<CompanyEntity> companyListIterator = null;
+        companyListIterator = companyList.listIterator();
+
+        List<AddressEntity> addressList = null;
+        ListIterator<AddressEntity> addressListIterator = null;
+        AddressEntity companyAddressEntity = null;
+        CompanyEntity companyEntity;
+        List<CompanySimpleViewDTO> simpleViewSTO = new ArrayList<CompanySimpleViewDTO>();
+
+        while(companyListIterator.hasNext()){
+            companyEntity = companyListIterator.next();
+            addressList = companyEntity.getAddresses();
+            addressListIterator = addressList.listIterator();
+            while(addressListIterator.hasNext()){
+                companyAddressEntity = addressListIterator.next();
+                break;
+            }
+
+            simpleViewSTO.add(new CompanySimpleViewDTO(companyEntity.getName(),companyAddressEntity.getCity(),companyAddressEntity.getState()));
+        }
+
+        return simpleViewSTO;*/
+
+        return companyRepository.findAll()
+                .stream()
+                .map(companyEntity -> {
+                    return new CompanySimpleViewDTO(
+                            companyEntity.getName(),
+                            companyEntity.getAddresses().get(0).getCity(),
+                            companyEntity.getAddresses().get(0).getState()
+                    );
+                })
                 .collect(Collectors.toList());
+
     }
 }

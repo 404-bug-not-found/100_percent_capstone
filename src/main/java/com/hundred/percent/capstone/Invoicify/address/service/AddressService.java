@@ -9,10 +9,7 @@ import com.hundred.percent.capstone.Invoicify.company.repository.CompanyReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +24,7 @@ public class AddressService {
 
     public void createAddress(AddressDTO addressDTO) throws AddressExistsException {
         CompanyEntity companyEntity = this.companyRepository.findByName(addressDTO.getCompanyName());
+        AddressEntity tempAddressEntity = new AddressEntity();
 
         Optional<AddressEntity> addressExistEntity = addressRepository.findAll()
                 .stream()
@@ -36,8 +34,19 @@ public class AddressService {
         if (addressExistEntity.isPresent()) {
             throw new AddressExistsException();
         } else {
+            /*tempAddressEntity.setAddr_line1(addressDTO.getAddr_line1());
+            tempAddressEntity.setCity(addressDTO.getCity());
+            tempAddressEntity.setState(addressDTO.getState());
+            tempAddressEntity.setZip(addressDTO.getZip());*/
+
             AddressEntity addressEntity =addressRepository.save(new AddressEntity(addressDTO.getAddr_line1(),addressDTO.getCity(),addressDTO.getState(),addressDTO.getZip(),companyEntity));
-//            Set<AddressEntity> entSet =new HashSet<>();
+           /* AddressEntity addressEntity =addressRepository.save(tempAddressEntity);*/
+
+            /*companyEntity.setAddresses(new HashSet<>(Arrays.asList(tempAddressEntity)));
+            companyRepository.save(companyEntity);*/
+
+
+            //            Set<AddressEntity> entSet =new HashSet<>();
 //            entSet.add(addressEntity);
 //            companyEntity.setAddresses(entSet);
 //            companyRepository.save(companyEntity);

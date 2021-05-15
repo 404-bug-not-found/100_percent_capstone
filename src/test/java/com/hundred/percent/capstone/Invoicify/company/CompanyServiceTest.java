@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,12 +81,14 @@ public class CompanyServiceTest {
     public void getSimpleCompanyDTOList() {
 
         CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        Set<AddressEntity> addressEntities = new HashSet<>();
+        //Set<AddressEntity> addressEntities = new HashSet<>();
+        List<AddressEntity> addressEntities = new ArrayList<>();
         addressEntities.add(new AddressEntity("123 St","Dallas","TX","33333",entity1));
         entity1.setAddresses(addressEntities);
 
         CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
-        Set<AddressEntity> addressEntities2 = new HashSet<>();
+        //Set<AddressEntity> addressEntities2 = new HashSet<>();
+        List<AddressEntity> addressEntities2 = new ArrayList<>();
         addressEntities2.add(new AddressEntity("456 St","Tampa","FL","33333",entity2));
         entity2.setAddresses(addressEntities2);
 
@@ -101,5 +104,6 @@ public class CompanyServiceTest {
                 List.of(dto1, dto2)
         );
     }
+
 
 }
