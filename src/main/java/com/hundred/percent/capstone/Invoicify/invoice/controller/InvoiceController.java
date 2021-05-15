@@ -28,8 +28,8 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public InvoiceDTO getAnInvoicebyInvoiceNumber(@PathVariable String id){
-            return this.invoiceService.getInvoiceByInvoiceNumber(Integer.parseInt(id));
+    public List<InvoiceDTO> getAnInvoicebyInvoiceNumber(@PathVariable String id){
+            return this.invoiceService.getInvoiceByInvoiceNumber(id);
     }
 
 }

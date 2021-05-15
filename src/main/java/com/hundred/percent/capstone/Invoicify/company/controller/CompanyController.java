@@ -1,9 +1,12 @@
 package com.hundred.percent.capstone.Invoicify.company.controller;
 
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.service.CompanyService;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyname}/invoices")
-    public InvoiceDTO getInvoicesByCompanyName(@PathVariable String companyname){
+    public List<InvoiceDTO> getInvoicesByCompanyName(@PathVariable String companyname){
         return this.invoiceService.getInvoicesByCompanyName(companyname);
     }
 
