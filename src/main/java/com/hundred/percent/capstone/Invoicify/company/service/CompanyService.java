@@ -72,4 +72,8 @@ public class CompanyService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public CompanyEntity updateCompany(CompanyDTO companyDTO) {
+        return null;
+    }
 }

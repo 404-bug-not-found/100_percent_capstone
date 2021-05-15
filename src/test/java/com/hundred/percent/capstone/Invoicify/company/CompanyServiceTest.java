@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -116,6 +117,24 @@ public class CompanyServiceTest {
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
                 List.of(dto1, dto2)
+        );
+    }
+
+    @Test
+    public void updateCompanyDetailsTest() {
+        CompanyEntity companyentity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        List<AddressEntity> addressEntities = new ArrayList<>();
+        addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", companyentity));
+        companyentity.setAddresses(addressEntities);
+
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+
+        when(mockCompanyRepository.findByName(any())).thenReturn(companyentity);
+
+        CompanyEntity updatedEntity = companyService.updateCompany(companyDTO);
+
+        verify(mockCompanyRepository).save(
+                new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
         );
     }
 }
