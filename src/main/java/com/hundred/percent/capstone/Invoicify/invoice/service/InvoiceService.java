@@ -45,21 +45,24 @@ public class InvoiceService {
 
     public List<InvoiceDTO> getAllInvoices()
     {
-        return this.invoiceRepository.findAll()
+        List<InvoiceEntity> invoicesEnts = invoiceRepository.findAll()
                 .stream()
-                .map(invoiceEntity -> {
-                    ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
-                            .stream()
-                            .map(itemEntity -> {
-                                ItemDTO e =new ItemDTO(itemEntity.getDescription(),
-                                        itemEntity.getPrice(), itemEntity.getQuantity()
-                                        ,itemEntity.getFeeType(),itemEntity.getFee());
-                                return e;
-                            }).collect(Collectors.toList()));
-
-                    return new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items);
-                })
                 .collect(Collectors.toList());
+        List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
+        for(InvoiceEntity invoiceEntity:invoicesEnts)
+        {
+            ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                    .stream()
+                    .map(itemEntity -> {
+                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                                itemEntity.getPrice(), itemEntity.getQuantity()
+                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                        return e;
+                    }).collect(Collectors.toList()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items));
+
+        }
+        return invoiceDTOS;
     }
 
     public List<InvoiceDTO> getInvoiceByInvoiceNumber(String companyInvoiceNumber) {
