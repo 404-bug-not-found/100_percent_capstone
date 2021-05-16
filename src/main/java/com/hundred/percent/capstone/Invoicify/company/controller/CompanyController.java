@@ -22,13 +22,8 @@ public class CompanyController {
     @Autowired
     InvoiceService invoiceService;
 
-    /*@GetMapping
-    public String getCompanies(){
-        return "[]";
-    }*/
-
     @GetMapping
-    public List<CompanyEntity> getCompanies(){
+    public List<CompanyEntity> getCompanies() {
 
         return companyService.getAllCompanies();
     }
