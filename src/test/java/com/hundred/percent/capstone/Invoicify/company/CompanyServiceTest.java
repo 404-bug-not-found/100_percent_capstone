@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
@@ -32,6 +33,8 @@ public class CompanyServiceTest {
     @Mock
     CompanyRepository mockCompanyRepository;
 
+    @Mock
+    AddressRepository mockAddressRepository;
 
     @InjectMocks
     CompanyService companyService;
@@ -132,8 +135,11 @@ public class CompanyServiceTest {
     public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
         CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
         List<AddressEntity> oldAddressEntities = new ArrayList<>();
-        oldAddressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", oldCompanyEntity));
+        oldAddressEntities.add(new AddressEntity("123 St", "Houston", "TX", "33333", oldCompanyEntity));
         oldCompanyEntity.setAddresses(oldAddressEntities);
+
+        CompanyEntity intermediateCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
+        intermediateCompanyEntity.setAddresses(oldAddressEntities);
 
         CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
         List<AddressEntity> newAddressEntities = new ArrayList<>();
@@ -143,10 +149,18 @@ public class CompanyServiceTest {
 
         //when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
         //when(mockCompanyRepository.findAll()).thenReturn(List.of(oldCompanyEntity, newCompanyEntity));
-        when(mockCompanyRepository.findByName(anyString())).thenReturn(newCompanyEntity);
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(oldCompanyEntity);
+        when(mockCompanyRepository.save(any())).thenReturn(intermediateCompanyEntity);
+
+        when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(oldAddressEntities.get(0));
+        when(mockAddressRepository.save(any())).thenReturn(any());
+
 
         CompanyEntity actual = companyService.updateCompany(newCompanyEntity, oldCompanyEntity.getName());
-        //companyService.updateCompany(newCompanyEntity, oldCompanyEntity.getName());
+
+        when(mockCompanyRepository.findById(any())).thenReturn(Optional.of(newCompanyEntity));
+
+
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(newCompanyEntity);
     }
