@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.service;
 
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
@@ -52,5 +53,23 @@ public class CompanyService {
                 })
                 .collect(Collectors.toList());
 
+    }
+
+    public List<CompanyListViewDTO> getListCompanyView() {
+        return companyRepository.findAll()
+                .stream()
+                .map(companyEntity -> {
+                    return new CompanyListViewDTO(
+                            companyEntity.getName(),
+                            companyEntity.getContact_name(),
+                            companyEntity.getContact_title(),
+                            companyEntity.getContact_phone_number(),
+                            companyEntity.getAddresses().get(0).getAddr_line1(),
+                            companyEntity.getAddresses().get(0).getCity(),
+                            companyEntity.getAddresses().get(0).getState(),
+                            companyEntity.getAddresses().get(0).getZip()
+                    );
+                })
+                .collect(Collectors.toList());
     }
 }

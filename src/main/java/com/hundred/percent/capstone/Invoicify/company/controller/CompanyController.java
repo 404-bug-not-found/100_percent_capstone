@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.controller;
 
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
@@ -37,5 +38,11 @@ public class CompanyController {
     public List<CompanySimpleViewDTO> getSimpleCompanyView() {
 
         return companyService.getSimpleCompanyView();
+    }
+
+    @GetMapping("/listView")
+    public List<CompanyListViewDTO> getListCompanyView() {
+
+        return companyService.getListCompanyView();
     }
 }
