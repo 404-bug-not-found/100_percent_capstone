@@ -89,7 +89,7 @@ public class CompanyService {
         oldCompanyEntity.setContact_title(newCompanyEntity.getContact_title());
         oldCompanyEntity.setContact_phone_number(newCompanyEntity.getContact_phone_number());
         //companyEntity.setAddresses(companyEnt.getAddresses());
-        CompanyEntity updatedCompanyEntity = companyRepository.save(oldCompanyEntity);
+        CompanyEntity updatedCompanyEntityOldAddress = companyRepository.save(oldCompanyEntity);
 
 
         /*addressService.createAddress(new AddressDTO(companyEnt.getAddresses().get(0).getAddr_line1(),
@@ -107,12 +107,12 @@ public class CompanyService {
                 newCompanyEntity.getAddresses().get(0).getCity(),
                 newCompanyEntity.getAddresses().get(0).getState(),
                 newCompanyEntity.getAddresses().get(0).getZip(),
-                updatedCompanyEntity.getName()
+                updatedCompanyEntityOldAddress.getName()
                 );
-        addressService.updateAddress(aDTO,newCompanyEntity,updatedCompanyEntity);
-        //addressService.updateAddress(aDTO,updatedCompanyEntity,newCompanyEntity);
+        //addressService.updateAddress(aDTO,newCompanyEntity,updatedCompanyEntity);
+        addressService.updateAddress(aDTO,updatedCompanyEntityOldAddress,newCompanyEntity);
 
-        Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(updatedCompanyEntity.getId());
+        Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(updatedCompanyEntityOldAddress.getId());
 
         return optionalCompanyEntity.get();
 

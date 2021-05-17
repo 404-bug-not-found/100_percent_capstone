@@ -65,7 +65,7 @@ public class AddressService {
         aEntity.setCity(addressDTO.getCity());
         aEntity.setState(addressDTO.getState());
         aEntity.setZip(addressDTO.getZip());
-        aEntity.setCompanyEntity(newCEntity);
+        //aEntity.setCompanyEntity(newCEntity);
 
         addressRepository.save(aEntity);
 
