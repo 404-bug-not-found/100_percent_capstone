@@ -128,18 +128,26 @@ public class CompanyServiceTest {
     }
 
 
-//    @Test
-//    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
-//        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-//
-//        CompanyListViewDTO companyDTO = new CompanyListViewDTO("Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000", "456 St", "Tampa", "FL", "33333");
-//
-//        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
-//
-//        companyService.updateCompany(companyDTO, companyEntity.getName());
-//
-//        verify(mockCompanyRepository).save(
-//                new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000")
-//        );
-//    }
+    @Test
+    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
+        CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
+        List<AddressEntity> oldAddressEntities = new ArrayList<>();
+        oldAddressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", oldCompanyEntity));
+        oldCompanyEntity.setAddresses(oldAddressEntities);
+
+        CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
+        List<AddressEntity> newAddressEntities = new ArrayList<>();
+        newAddressEntities.add(new AddressEntity("456 Dr", "Tampa", "FL", "55555", newCompanyEntity));
+        newCompanyEntity.setAddresses(newAddressEntities);
+
+
+        //when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
+        //when(mockCompanyRepository.findAll()).thenReturn(List.of(oldCompanyEntity, newCompanyEntity));
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(newCompanyEntity);
+
+        CompanyEntity actual = companyService.updateCompany(newCompanyEntity, oldCompanyEntity.getName());
+        //companyService.updateCompany(newCompanyEntity, oldCompanyEntity.getName());
+
+        AssertionsForClassTypes.assertThat(actual).isEqualTo(newCompanyEntity);
+    }
 }

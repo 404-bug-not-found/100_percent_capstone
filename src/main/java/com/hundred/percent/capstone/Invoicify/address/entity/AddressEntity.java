@@ -23,7 +23,7 @@ public class AddressEntity {
     String state;
     String zip;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false,cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CompanyEntity companyEntity;

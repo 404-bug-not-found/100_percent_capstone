@@ -282,7 +282,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void updateCompanytest() throws Exception {
+    public void updateCompanyTest() throws Exception {
         CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies/addCompany")
@@ -301,8 +301,8 @@ public class CompanyIT {
                 .andDo(print());
 
         CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-555-0011");
-        AddressEntity addrEntity = new AddressEntity("456 St", "Tampa", "FL", "33637", newCompanyEntity);
-        newCompanyEntity.setAddresses(List.of(addrEntity));
+        AddressEntity newAddrEntity = new AddressEntity("456 St", "Tampa", "FL", "33637", newCompanyEntity);
+        newCompanyEntity.setAddresses(List.of(newAddrEntity));
 
         mockMvc.perform(patch("/companies/update/Freddie Mac")
                 .content(objectMapper.writeValueAsString(newCompanyEntity))
@@ -312,10 +312,10 @@ public class CompanyIT {
                 .andExpect(jsonPath("contact_name").value("Iqbal"))
                 .andExpect(jsonPath("contact_title").value("Accounts Payable"))
                 .andExpect(jsonPath("contact_phone_number").value("1-123-555-0011"))
-                .andExpect(jsonPath("addresses[0].addr_line1").value("456 str"))
-                .andExpect(jsonPath("city").value("Tampa"))
-                .andExpect(jsonPath("state").value("FL"))
-                .andExpect(jsonPath("zip").value("5555"))
+                .andExpect(jsonPath("addresses[0].addr_line1").value("456 St"))
+                .andExpect(jsonPath("addresses[0].city").value("Tampa"))
+                .andExpect(jsonPath("addresses[0].state").value("FL"))
+                .andExpect(jsonPath("addresses[0].zip").value("33637"))
                 .andDo(print());
     }
 
