@@ -30,6 +30,7 @@ public class CompanyService {
         } else {
             companyRepository.save(new CompanyEntity(companyDTO.getInvoice_number(), companyDTO.getName(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
         }
+
     }
 
     public List<CompanyEntity> getAllCompanies() {

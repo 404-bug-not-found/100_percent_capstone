@@ -48,14 +48,6 @@ public class InvoiceIT {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Mock
-    InvoiceRepository repository;
-
-    @InjectMocks
-    InvoiceService service;
-
-
-
     @Test
     @DirtiesContext
     public void getEmptyInvoiceTest() throws Exception {
