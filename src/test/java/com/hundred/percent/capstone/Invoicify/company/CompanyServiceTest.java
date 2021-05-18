@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.company;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
+import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
@@ -88,6 +89,30 @@ public class CompanyServiceTest {
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1, entity2));
 
         List<CompanySimpleViewDTO> actual = companyService.getSimpleCompanyView();
+
+        AssertionsForClassTypes.assertThat(actual).isEqualTo(
+                List.of(dto1, dto2)
+        );
+    }
+
+    @Test
+    public void companyViewDTO_ListView_test() {
+        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        List<AddressEntity> addressEntities = new ArrayList<>();
+        addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", entity1));
+        entity1.setAddresses(addressEntities);
+
+        CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        List<AddressEntity> addressEntities2 = new ArrayList<>();
+        addressEntities2.add(new AddressEntity("456 St", "Tampa", "FL", "33333", entity2));
+        entity2.setAddresses(addressEntities2);
+
+        CompanyListViewDTO dto1 = new CompanyListViewDTO("Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890", "123 St", "Dallas", "TX", "33333");
+        CompanyListViewDTO dto2 = new CompanyListViewDTO("Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000", "456 St", "Tampa", "FL", "33333");
+
+        when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1, entity2));
+
+        List<CompanyListViewDTO> actual = companyService.getListCompanyView();
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
                 List.of(dto1, dto2)

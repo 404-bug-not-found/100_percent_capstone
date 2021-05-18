@@ -210,14 +210,69 @@ public class CompanyIT {
                 .andExpect(jsonPath("length()").value(2))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
                 .andExpect(jsonPath("[1].city").value("Tampa"))
-                //.andExpect(jsonPath("[0].city").exists())
                 .andExpect(jsonPath("[1].state").value("FL"))
-                //.andExpect(jsonPath("[0].state").exists())
                 .andDo(print())
                 .andDo(document("simpleView", responseFields(
                         fieldWithPath("[1].name").description("Cognizant"),
                         fieldWithPath("[1].city").description("Tampa"),
                         fieldWithPath("[1].state").description("FL")
+                )));
+    }
+
+    @Test
+    public void companyListView_test() throws Exception {
+        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(post("/companies/addCompany")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Freddie Mac");
+        AddressDTO addrDTO2 = new AddressDTO("456 str", "Tampa", "FL", "5555", "Cognizant");
+
+        mockMvc.perform(post("/addresses/addAddress")
+                .content(objectMapper.writeValueAsString(addrDTO1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+        mockMvc.perform(post("/addresses/addAddress")
+                .content(objectMapper.writeValueAsString(addrDTO2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+
+        mockMvc.perform(get("/companies/listView"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(2))
+                .andExpect(jsonPath("[1].name").value("Cognizant"))
+                .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
+                .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
+                .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
+                .andExpect(jsonPath("[1].addr_line1").value("456 str"))
+                .andExpect(jsonPath("[1].city").value("Tampa"))
+                .andExpect(jsonPath("[1].state").value("FL"))
+                .andExpect(jsonPath("[1].zip").value("5555"))
+
+                .andDo(print())
+                .andDo(document("listView", responseFields(
+                        fieldWithPath("[1].name").description("Cognizant"),
+                        fieldWithPath("[1].contact_name").description("Iqbal"),
+                        fieldWithPath("[1].contact_title").description("Accounts Payable"),
+                        fieldWithPath("[1].contact_phone_number").description("1-222-333-0000"),
+                        fieldWithPath("[1].addr_line1").description("456 str"),
+                        fieldWithPath("[1].city").description("Tampa"),
+                        fieldWithPath("[1].state").description("FL"),
+                        fieldWithPath("[1].zip").description("5555")
                 )));
     }
 
