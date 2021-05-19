@@ -71,6 +71,8 @@ public class InvoiceIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(4))
                 .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].paidStatus").value("UnPaid"))
+                .andExpect(jsonPath("$.[0].paidDate").value(""))
                 .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
                 .andExpect(jsonPath("$.[0].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
@@ -79,6 +81,8 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].dateCreated").value(expected))
                 .andExpect(jsonPath("$.[0].dateModified").value(expected))
                 .andExpect(jsonPath("$.[1].companyInvoiceNumber").value("2"))
+                .andExpect(jsonPath("$.[1].paidStatus").value("UnPaid"))
+                .andExpect(jsonPath("$.[1].paidDate").value(""))
                 .andExpect(jsonPath("$.[1].items.[0].description").value("Item2"))
                 .andExpect(jsonPath("$.[1].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[1].items.[0].feeType").value("RateBased"))
@@ -150,6 +154,8 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[3].fee").value("60"))
                 .andDo(document("getInvoice"));
     }
+
+
 
 
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
