@@ -86,10 +86,6 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[1].items.[0].fee").value("60"))
                 .andDo(document("getInvoice"));
 
-
-
-
-
     }
 
     @Test
