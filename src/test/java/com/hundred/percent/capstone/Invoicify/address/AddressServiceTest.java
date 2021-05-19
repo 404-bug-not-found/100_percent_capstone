@@ -6,6 +6,7 @@ import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsExc
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ public class AddressServiceTest {
     AddressService addressService;
 
     @Test
-    public void createTest() throws AddressExistsException {
+    public void createTest() throws AddressExistsException, CompanyDoesNotExistsException {
         CompanyEntity companyEntity = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
         AddressDTO addressDTO = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 

@@ -5,6 +5,7 @@ import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,11 @@ public class AddressService {
     CompanyRepository companyRepository;
 
 
-    public void createAddress(AddressDTO addressDTO) throws AddressExistsException {
+    public void createAddress(AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
         CompanyEntity companyEntity = this.companyRepository.findByName(addressDTO.getCompanyName());
+        if (companyEntity == null) {
+            throw new CompanyDoesNotExistsException();
+        }
 
         Optional<AddressEntity> addressExistEntity = addressRepository.findAll()
                 .stream()
@@ -70,7 +74,6 @@ public class AddressService {
         addressRepository.save(aEntity);
 
     }*/
-
 
 
 }
