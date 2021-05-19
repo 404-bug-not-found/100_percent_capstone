@@ -1,10 +1,5 @@
 package com.hundred.percent.capstone.Invoicify.company.service;
 
-import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
-import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
-import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
-import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
-import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -23,10 +18,6 @@ public class CompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
-
-    /*@Autowired
-    AddressService addressService;*/
-
 
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
         Optional<CompanyEntity> companyExistingEntities = companyRepository.findAll()
@@ -81,8 +72,7 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) throws AddressExistsException {
-        //AddressService addressService = new AddressService();
+    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) {
         CompanyEntity oldCompanyEntity = companyRepository.findByName(name);
 
         oldCompanyEntity.setName(newCompanyEntity.getName());
@@ -90,21 +80,6 @@ public class CompanyService {
         oldCompanyEntity.setContact_title(newCompanyEntity.getContact_title());
         oldCompanyEntity.setContact_phone_number(newCompanyEntity.getContact_phone_number());
         //companyEntity.setAddresses(companyEnt.getAddresses());
-        ///////CompanyEntity updatedCompanyEntityOldAddress = companyRepository.save(oldCompanyEntity);
         return companyRepository.save(oldCompanyEntity);
-
-        /*AddressDTO aDTO = new AddressDTO(newCompanyEntity.getAddresses().get(0).getAddr_line1(),
-                newCompanyEntity.getAddresses().get(0).getCity(),
-                newCompanyEntity.getAddresses().get(0).getState(),
-                newCompanyEntity.getAddresses().get(0).getZip(),
-                updatedCompanyEntityOldAddress.getName()
-                );
-        addressService.updateAddress(aDTO,updatedCompanyEntityOldAddress,newCompanyEntity);*/
-
-        /*Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(updatedCompanyEntityOldAddress.getId());
-
-        return optionalCompanyEntity.get();*/
-
-
     }
 }
