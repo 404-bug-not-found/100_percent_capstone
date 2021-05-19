@@ -89,7 +89,6 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[1].items.[0].quantity").value("3"))
                 .andExpect(jsonPath("$.[1].items.[0].fee").value("60"))
                 .andDo(document("getInvoice"));
-
     }
 
     @Test
@@ -154,10 +153,19 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[3].fee").value("60"))
                 .andDo(document("getInvoice"));
     }
+    @Test@DirtiesContext
+    public void updateAnExistingInvoiceByInvoiceNumberWithItems() throws Exception {
+        initialCompanyInvoiceSetUp();
 
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
 
-
-
+        mockMvc.perform(post("/invoices/1")
+                .content(objectMapper.writeValueAsString(itemsDTO1))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("putInvoice"));
+    }
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",
                 "Accounts Payable", "1-123-456-7890");
@@ -169,8 +177,6 @@ public class InvoiceIT {
                 .andDo(print())
                 .andDo(document("postCompany"));
     }
-
-
     private void initialCompanyInvoiceSetUp() throws Exception {
 
        createCompany("1","Cognizant");
@@ -178,25 +184,25 @@ public class InvoiceIT {
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item2",20,3));
-        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date());
+        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"");
 
         List<ItemDTO> itemsDTO3 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
         itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
         itemsDTO1.add(new ItemDTO("Product Pages",20,3));
 
-        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date(),"");
 
         List<ItemDTO> itemsDTO4 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item1",2000));
         itemsDTO2.add(new ItemDTO("Item1",40));
         itemsDTO2.add(new ItemDTO("Item2",40,3));
 
-        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date());
+        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date(),"");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
@@ -223,5 +229,4 @@ public class InvoiceIT {
                 .andDo(document("postInvoice"));
 
     }
-
 }
