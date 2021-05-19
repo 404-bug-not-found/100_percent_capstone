@@ -15,6 +15,11 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
+
+    /*public String getInvoice_number() {
+        return invoiceNumber;
+    }*/
+
     String invoiceNumber;
     String name;
     String contactName;

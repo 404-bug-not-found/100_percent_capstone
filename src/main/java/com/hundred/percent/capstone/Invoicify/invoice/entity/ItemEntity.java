@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.invoice.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +22,6 @@ public class ItemEntity {
     private int price;
     private int quantity;
     private int fee;
-
     public ItemEntity(String description, int price) {
         this.description = description;
         this.price = price;
