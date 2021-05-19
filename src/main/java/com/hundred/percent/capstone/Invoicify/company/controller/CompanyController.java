@@ -27,7 +27,6 @@ public class CompanyController {
     }
 
 
-    /*@PostMapping("/addCompany")*/
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addCompany(@RequestBody CompanyDTO companyDto) throws CompanyExistsException {
