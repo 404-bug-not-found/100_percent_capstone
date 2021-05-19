@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompanyListViewDTO {
     String name;
-    String contact_name;
-    String contact_title;
-    String contact_phone_number;
+    String contactName;
+    String contactTitle;
+    String contactPhoneNumber;
 
-    String addr_line1;
+    String addressLine1;
     String city;
     String state;
     String zip;

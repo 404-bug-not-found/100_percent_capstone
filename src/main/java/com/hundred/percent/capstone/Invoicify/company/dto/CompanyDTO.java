@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyDTO {
-    String invoice_number;
+    String invoiceNumber;
     String name;
-    String contact_name;
-    String contact_title;
-    String contact_phone_number;
+    String contactName;
+    String contactTitle;
+    String contactPhoneNumber;
 }

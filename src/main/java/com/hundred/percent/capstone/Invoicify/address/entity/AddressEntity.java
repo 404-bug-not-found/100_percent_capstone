@@ -18,7 +18,7 @@ public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    String addr_line1;
+    String addressLine1;
     String city;
     String state;
     String zip;
@@ -28,8 +28,8 @@ public class AddressEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CompanyEntity companyEntity;
 
-    public AddressEntity(String addr_line1, String city, String state, String zip, CompanyEntity companyEntity) {
-        this.addr_line1 = addr_line1;
+    public AddressEntity(String addressLine1, String city, String state, String zip, CompanyEntity companyEntity) {
+        this.addressLine1 = addressLine1;
         this.city = city;
         this.state = state;
         this.zip = zip;

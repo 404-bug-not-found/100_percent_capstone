@@ -98,13 +98,13 @@ public class AddressIT {
         mockMvc.perform(get("/addresses"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
-                .andExpect(jsonPath("[1].addr_line1").value("456 St"))
+                .andExpect(jsonPath("[1].addressLine1").value("456 St"))
                 .andExpect(jsonPath("[1].city").value("Tampa"))
                 .andExpect(jsonPath("[1].state").value("FL"))
                 .andExpect(jsonPath("[1].zip").value("33333"))
                 .andDo(print())
                 .andDo(document("getAddresses", responseFields(
-                        fieldWithPath("[1].addr_line1").description("456 St"),
+                        fieldWithPath("[1].addressLine1").description("456 St"),
                         fieldWithPath("[1].city").description("Tampa"),
                         fieldWithPath("[1].state").description("FL"),
                         fieldWithPath("[1].zip").description("33333"),

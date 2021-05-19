@@ -77,20 +77,20 @@ public class CompanyIT {
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
-                .andExpect(jsonPath("[1].invoice_number").value("CTS-123"))
+                .andExpect(jsonPath("[1].invoiceNumber").value("CTS-123"))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
-                .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
-                .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
-                .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
+                .andExpect(jsonPath("[1].contactName").value("Iqbal"))
+                .andExpect(jsonPath("[1].contactTitle").value("Accounts Payable"))
+                .andExpect(jsonPath("[1].contactPhoneNumber").value("1-222-333-0000"))
                 .andExpect(jsonPath("[1].addresses").isArray())
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
                         fieldWithPath("[1].id").description("Company ID"),
-                        fieldWithPath("[1].invoice_number").description("CTS-123"),
+                        fieldWithPath("[1].invoiceNumber").description("CTS-123"),
                         fieldWithPath("[1].name").description("Cognizant"),
-                        fieldWithPath("[1].contact_name").description("Iqbal"),
-                        fieldWithPath("[1].contact_title").description("Accounts Payable"),
-                        fieldWithPath("[1].contact_phone_number").description("1-222-333-0000"),
+                        fieldWithPath("[1].contactName").description("Iqbal"),
+                        fieldWithPath("[1].contactTitle").description("Accounts Payable"),
+                        fieldWithPath("[1].contactPhoneNumber").description("1-222-333-0000"),
                         fieldWithPath("[1].addresses").description("Addresses of company")
                 )));
     }
@@ -151,22 +151,22 @@ public class CompanyIT {
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
-                .andExpect(jsonPath("[1].invoice_number").value("CTS-123"))
+                .andExpect(jsonPath("[1].invoiceNumber").value("CTS-123"))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
-                .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
-                .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
-                .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
+                .andExpect(jsonPath("[1].contactName").value("Iqbal"))
+                .andExpect(jsonPath("[1].contactTitle").value("Accounts Payable"))
+                .andExpect(jsonPath("[1].contactPhoneNumber").value("1-222-333-0000"))
                 .andExpect(jsonPath("[1].addresses").isNotEmpty())
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
                         fieldWithPath("[1].id").description("Company ID"),
-                        fieldWithPath("[1].invoice_number").description("CTS-123"),
+                        fieldWithPath("[1].invoiceNumber").description("CTS-123"),
                         fieldWithPath("[1].name").description("Cognizant"),
-                        fieldWithPath("[1].contact_name").description("Iqbal"),
-                        fieldWithPath("[1].contact_title").description("Accounts Payable"),
-                        fieldWithPath("[1].contact_phone_number").description("1-222-333-0000"),
+                        fieldWithPath("[1].contactName").description("Iqbal"),
+                        fieldWithPath("[1].contactTitle").description("Accounts Payable"),
+                        fieldWithPath("[1].contactPhoneNumber").description("1-222-333-0000"),
                         fieldWithPath("[1].addresses[1].id").description("Address ID"),
-                        fieldWithPath("[1].addresses[1].addr_line1").description("Addresses line1"),
+                        fieldWithPath("[1].addresses[1].addressLine1").description("Addresses line1"),
                         fieldWithPath("[1].addresses[1].city").description("City"),
                         fieldWithPath("[1].addresses[1].state").description("State"),
                         fieldWithPath("[1].addresses[1].zip").description("Zip")
@@ -255,10 +255,10 @@ public class CompanyIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
-                .andExpect(jsonPath("[1].contact_name").value("Iqbal"))
-                .andExpect(jsonPath("[1].contact_title").value("Accounts Payable"))
-                .andExpect(jsonPath("[1].contact_phone_number").value("1-222-333-0000"))
-                .andExpect(jsonPath("[1].addr_line1").value("456 str"))
+                .andExpect(jsonPath("[1].contactName").value("Iqbal"))
+                .andExpect(jsonPath("[1].contactTitle").value("Accounts Payable"))
+                .andExpect(jsonPath("[1].contactPhoneNumber").value("1-222-333-0000"))
+                .andExpect(jsonPath("[1].addressLine1").value("456 str"))
                 .andExpect(jsonPath("[1].city").value("Tampa"))
                 .andExpect(jsonPath("[1].state").value("FL"))
                 .andExpect(jsonPath("[1].zip").value("5555"))
@@ -266,10 +266,10 @@ public class CompanyIT {
                 .andDo(print())
                 .andDo(document("listView", responseFields(
                         fieldWithPath("[1].name").description("Cognizant"),
-                        fieldWithPath("[1].contact_name").description("Iqbal"),
-                        fieldWithPath("[1].contact_title").description("Accounts Payable"),
-                        fieldWithPath("[1].contact_phone_number").description("1-222-333-0000"),
-                        fieldWithPath("[1].addr_line1").description("456 str"),
+                        fieldWithPath("[1].contactName").description("Iqbal"),
+                        fieldWithPath("[1].contactTitle").description("Accounts Payable"),
+                        fieldWithPath("[1].contactPhoneNumber").description("1-222-333-0000"),
+                        fieldWithPath("[1].addressLine1").description("456 str"),
                         fieldWithPath("[1].city").description("Tampa"),
                         fieldWithPath("[1].state").description("FL"),
                         fieldWithPath("[1].zip").description("5555")
@@ -304,10 +304,10 @@ public class CompanyIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Cognizant"))
-                .andExpect(jsonPath("contact_name").value("Iqbal"))
-                .andExpect(jsonPath("contact_title").value("Accounts Payable"))
-                .andExpect(jsonPath("contact_phone_number").value("1-123-555-0011"))
-                .andExpect(jsonPath("addresses[0].addr_line1").value("123 Dr"))
+                .andExpect(jsonPath("contactName").value("Iqbal"))
+                .andExpect(jsonPath("contactTitle").value("Accounts Payable"))
+                .andExpect(jsonPath("contactPhoneNumber").value("1-123-555-0011"))
+                .andExpect(jsonPath("addresses[0].addressLine1").value("123 Dr"))
                 .andExpect(jsonPath("addresses[0].city").value("Houston"))
                 .andExpect(jsonPath("addresses[0].state").value("TX"))
                 .andExpect(jsonPath("addresses[0].zip").value("1000"))
