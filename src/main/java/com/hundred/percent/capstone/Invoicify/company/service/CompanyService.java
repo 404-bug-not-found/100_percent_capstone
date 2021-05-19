@@ -24,8 +24,8 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    @Autowired
-    AddressService addressService;
+    /*@Autowired
+    AddressService addressService;*/
 
 
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
@@ -82,6 +82,7 @@ public class CompanyService {
     }
 
     public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) throws AddressExistsException {
+        //AddressService addressService = new AddressService();
         CompanyEntity oldCompanyEntity = companyRepository.findByName(name);
 
         oldCompanyEntity.setName(newCompanyEntity.getName());
@@ -89,32 +90,20 @@ public class CompanyService {
         oldCompanyEntity.setContact_title(newCompanyEntity.getContact_title());
         oldCompanyEntity.setContact_phone_number(newCompanyEntity.getContact_phone_number());
         //companyEntity.setAddresses(companyEnt.getAddresses());
-        CompanyEntity updatedCompanyEntityOldAddress = companyRepository.save(oldCompanyEntity);
+        ///////CompanyEntity updatedCompanyEntityOldAddress = companyRepository.save(oldCompanyEntity);
+        return companyRepository.save(oldCompanyEntity);
 
-
-        /*addressService.createAddress(new AddressDTO(companyEnt.getAddresses().get(0).getAddr_line1(),
-                companyEnt.getAddresses().get(0).getCity(),
-                companyEnt.getAddresses().get(0).getState(),
-                companyEnt.getAddresses().get(0).getZip(),
-                updatedCompanyEntity.getName()
-                ));*/
-
-
-        //return companyRepository.findById(updatedCompanyEntity.getId());
-        //return updatedCompanyEntity;
-
-        AddressDTO aDTO = new AddressDTO(newCompanyEntity.getAddresses().get(0).getAddr_line1(),
+        /*AddressDTO aDTO = new AddressDTO(newCompanyEntity.getAddresses().get(0).getAddr_line1(),
                 newCompanyEntity.getAddresses().get(0).getCity(),
                 newCompanyEntity.getAddresses().get(0).getState(),
                 newCompanyEntity.getAddresses().get(0).getZip(),
                 updatedCompanyEntityOldAddress.getName()
                 );
-        //addressService.updateAddress(aDTO,newCompanyEntity,updatedCompanyEntity);
-        addressService.updateAddress(aDTO,updatedCompanyEntityOldAddress,newCompanyEntity);
+        addressService.updateAddress(aDTO,updatedCompanyEntityOldAddress,newCompanyEntity);*/
 
-        Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(updatedCompanyEntityOldAddress.getId());
+        /*Optional<CompanyEntity> optionalCompanyEntity = companyRepository.findById(updatedCompanyEntityOldAddress.getId());
 
-        return optionalCompanyEntity.get();
+        return optionalCompanyEntity.get();*/
 
 
     }

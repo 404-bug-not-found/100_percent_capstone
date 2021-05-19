@@ -24,7 +24,8 @@ public class AddressController {
     }
 
 
-    @PostMapping("/addAddress")
+    /*@PostMapping("/addAddress")*/
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addAddress(@RequestBody AddressDTO addressDTO) throws AddressExistsException {
 

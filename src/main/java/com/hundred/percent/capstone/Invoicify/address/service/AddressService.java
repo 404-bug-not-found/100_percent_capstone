@@ -56,7 +56,7 @@ public class AddressService {
 
     }
 
-    public void updateAddress(AddressDTO addressDTO, CompanyEntity oldCEntity, CompanyEntity newCEntity){
+    /*public void updateAddress(AddressDTO addressDTO, CompanyEntity oldCEntity, CompanyEntity newCEntity){
 
         AddressEntity aEntity = addressRepository.findByCompanyEntity(oldCEntity);
         //AddressEntity aEntity = addressRepository.findById(oldCEntity.getAddresses().get(0).getId()).get();
@@ -69,7 +69,7 @@ public class AddressService {
 
         addressRepository.save(aEntity);
 
-    }
+    }*/
 
 
 

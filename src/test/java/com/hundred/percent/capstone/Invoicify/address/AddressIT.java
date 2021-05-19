@@ -48,13 +48,15 @@ public class AddressIT {
         CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
         AddressDTO addrDTO = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Cognizant");
 
-        mockMvc.perform(post("/companies/addCompany")
+        /*mockMvc.perform(post("/companies/addCompany")*/
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(post("/addresses/addAddress")
+        /*mockMvc.perform(post("/addresses/addAddress")*/
+        mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(addrDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -71,25 +73,29 @@ public class AddressIT {
         AddressDTO input1 = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
         AddressDTO input2 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
-        mockMvc.perform(post("/companies/addCompany")
+        /*mockMvc.perform(post("/companies/addCompany")*/
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(post("/companies/addCompany")
+        /*mockMvc.perform(post("/companies/addCompany")*/
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO2))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(post("/addresses/addAddress")
+        /*mockMvc.perform(post("/addresses/addAddress")*/
+        mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(post("/addresses/addAddress")
+        /*mockMvc.perform(post("/addresses/addAddress")*/
+        mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input2))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -117,19 +123,22 @@ public class AddressIT {
         CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
         AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
-        mockMvc.perform(post("/companies/addCompany")
+        /*mockMvc.perform(post("/companies/addCompany")*/
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(post("/addresses/addAddress")
+        /*mockMvc.perform(post("/addresses/addAddress")*/
+        mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(post("/addresses/addAddress")
+        /*mockMvc.perform(post("/addresses/addAddress")*/
+        mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())

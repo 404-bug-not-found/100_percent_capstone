@@ -1,10 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
