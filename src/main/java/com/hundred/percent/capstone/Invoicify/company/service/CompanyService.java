@@ -29,8 +29,9 @@ public class CompanyService {
         if (companyExistingEntities.isPresent()) {
             throw new CompanyExistsException();
         } else {
-            companyRepository.save(new CompanyEntity(companyDTO.getInvoice_number(), companyDTO.getName(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
+            companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
         }
+
     }
 
     public List<CompanyEntity> getAllCompanies() {

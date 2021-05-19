@@ -26,4 +26,10 @@ public class InvoiceController {
     public void createAnInvoice(@RequestBody InvoiceDTO invoiceDTO){
         this.invoiceService.createInvoice(invoiceDTO);
     }
+
+    @GetMapping("/{id}")
+    public List<InvoiceDTO> getAnInvoicebyInvoiceNumber(@PathVariable String id){
+            return this.invoiceService.getInvoiceByInvoiceNumber(id);
+    }
+
 }
