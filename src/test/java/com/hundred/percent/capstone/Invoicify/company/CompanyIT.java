@@ -86,12 +86,13 @@ public class CompanyIT {
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
                         fieldWithPath("[1].id").description("Company ID"),
-                        fieldWithPath("[1].invoice_number").description("CTS-123"),
+                        fieldWithPath("[1].invoiceNumber").description("CTS-123"),
                         fieldWithPath("[1].name").description("Cognizant"),
                         fieldWithPath("[1].contact_name").description("Iqbal"),
                         fieldWithPath("[1].contact_title").description("Accounts Payable"),
                         fieldWithPath("[1].contact_phone_number").description("1-222-333-0000"),
-                        fieldWithPath("[1].addresses").description("Addresses of company")
+                        fieldWithPath("[1].addresses").description("Addresses of company"),
+                        fieldWithPath("[1].invoice_number").description("CTS-123")
                 )));
     }
 
@@ -160,7 +161,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
                         fieldWithPath("[1].id").description("Company ID"),
-                        fieldWithPath("[1].invoice_number").description("CTS-123"),
+                        fieldWithPath("[1].invoiceNumber").description("CTS-123"),
                         fieldWithPath("[1].name").description("Cognizant"),
                         fieldWithPath("[1].contact_name").description("Iqbal"),
                         fieldWithPath("[1].contact_title").description("Accounts Payable"),
@@ -169,7 +170,8 @@ public class CompanyIT {
                         fieldWithPath("[1].addresses[1].addr_line1").description("Addresses line1"),
                         fieldWithPath("[1].addresses[1].city").description("City"),
                         fieldWithPath("[1].addresses[1].state").description("State"),
-                        fieldWithPath("[1].addresses[1].zip").description("Zip")
+                        fieldWithPath("[1].addresses[1].zip").description("Zip"),
+                        fieldWithPath("[1].invoice_number").description("CTS-123")
                 )));
     }
 
