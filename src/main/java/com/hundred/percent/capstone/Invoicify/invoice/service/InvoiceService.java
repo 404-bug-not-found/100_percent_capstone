@@ -59,7 +59,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items,invoiceEntity.getDateCreated()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated()));
 
         }
         return invoiceDTOS;
@@ -68,7 +68,7 @@ public class InvoiceService {
     public List<InvoiceDTO> getInvoiceByInvoiceNumber(String companyInvoiceNumber) {
 
         List<InvoiceEntity> invoicesForCompany = invoiceRepository.findAll()
-                .stream().filter(invEnt -> invEnt.getCompanyEntity().getInvoice_number().equals(companyInvoiceNumber))
+                .stream().filter(invEnt -> invEnt.getCompanyEntity().getInvoiceNumber().equals(companyInvoiceNumber))
                 .collect(Collectors.toList());
         List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
         for(InvoiceEntity invoiceEntity:invoicesForCompany)
@@ -81,7 +81,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items,invoiceEntity.getDateCreated()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated()));
 
         }
 
@@ -105,7 +105,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items,invoiceEntity.getDateCreated()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated()));
 
         }
 

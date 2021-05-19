@@ -28,14 +28,14 @@ public class AddressService {
 
         Optional<AddressEntity> addressExistEntity = addressRepository.findAll()
                 .stream()
-                .filter(addressEntity -> addressEntity.getAddr_line1().equals(addressDTO.getAddr_line1()))
+                .filter(addressEntity -> addressEntity.getAddressLine1().equals(addressDTO.getAddressLine1()))
                 .findAny();
 
         if (addressExistEntity.isPresent()) {
             throw new AddressExistsException();
         } else {
 
-            addressRepository.save(new AddressEntity(addressDTO.getAddr_line1(), addressDTO.getCity(), addressDTO.getState(), addressDTO.getZip(), companyEntity));
+            addressRepository.save(new AddressEntity(addressDTO.getAddressLine1(), addressDTO.getCity(), addressDTO.getState(), addressDTO.getZip(), companyEntity));
 
         }
     }
@@ -45,7 +45,7 @@ public class AddressService {
         return addressRepository.findAll()
                 .stream()
                 .map(addressEntity -> {
-                    return new AddressDTO(addressEntity.getAddr_line1(),
+                    return new AddressDTO(addressEntity.getAddressLine1(),
                             addressEntity.getCity(),
                             addressEntity.getState(),
                             addressEntity.getZip(),
@@ -55,5 +55,22 @@ public class AddressService {
                 .collect(Collectors.toList());
 
     }
+
+    /*public void updateAddress(AddressDTO addressDTO, CompanyEntity oldCEntity, CompanyEntity newCEntity){
+
+        AddressEntity aEntity = addressRepository.findByCompanyEntity(oldCEntity);
+        //AddressEntity aEntity = addressRepository.findById(oldCEntity.getAddresses().get(0).getId()).get();
+
+        aEntity.setAddr_line1(addressDTO.getAddr_line1());
+        aEntity.setCity(addressDTO.getCity());
+        aEntity.setState(addressDTO.getState());
+        aEntity.setZip(addressDTO.getZip());
+        //aEntity.setCompanyEntity(newCEntity);
+
+        addressRepository.save(aEntity);
+
+    }*/
+
+
 
 }

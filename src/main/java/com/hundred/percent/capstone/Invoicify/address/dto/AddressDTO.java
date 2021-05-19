@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class AddressDTO {
 
-    String addr_line1;
+    String addressLine1;
     String city;
     String state;
     String zip;

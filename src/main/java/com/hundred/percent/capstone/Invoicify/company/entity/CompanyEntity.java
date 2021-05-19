@@ -1,10 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,26 +16,26 @@ public class CompanyEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    public String getInvoice_number() {
+    /*public String getInvoice_number() {
         return invoiceNumber;
-    }
+    }*/
 
     String invoiceNumber;
     String name;
-    String contact_name;
-    String contact_title;
-    String contact_phone_number;
+    String contactName;
+    String contactTitle;
+    String contactPhoneNumber;
 
     @OneToMany(mappedBy = "companyEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<AddressEntity> addresses;
 
-    public CompanyEntity(String invoice_number, String name, String contact_name, String contact_title, String contact_phone_number) {
+    public CompanyEntity(String invoiceNumber, String name, String contactName, String contactTitle, String contactPhoneNumber) {
         super();
-        this.invoiceNumber = invoice_number;
+        this.invoiceNumber = invoiceNumber;
         this.name = name;
-        this.contact_name = contact_name;
-        this.contact_title = contact_title;
-        this.contact_phone_number = contact_phone_number;
+        this.contactName = contactName;
+        this.contactTitle = contactTitle;
+        this.contactPhoneNumber = contactPhoneNumber;
     }
 
 }
