@@ -87,11 +87,9 @@ public class AddressServiceTest {
 
     @Test
     public void noCompanyFoundExceptionTest() {
-        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-
         AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
 
-        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
 
         assertThrows(CompanyDoesNotExistsException.class, () -> {
             addressService.createAddress(addressDTO);
