@@ -78,6 +78,8 @@ public class AddressServiceTest {
         AddressEntity addrEntity = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity);
         AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
 
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
+
         when(mockAddressRepository.findAll()).thenReturn(List.of(addrEntity));
 
         assertThrows(AddressExistsException.class, () -> {
