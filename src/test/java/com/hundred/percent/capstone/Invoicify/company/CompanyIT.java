@@ -278,7 +278,7 @@ public class CompanyIT {
 
     @Test
     public void updateCompanyTest() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -286,7 +286,7 @@ public class CompanyIT {
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Freddie Mac");
+        AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Galvanize");
 
 
         mockMvc.perform(post("/addresses")
@@ -295,23 +295,24 @@ public class CompanyIT {
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-555-0011");
+        CompanyEntity newCompanyEntity = new CompanyEntity("GLZ-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
         //AddressEntity newAddrEntity = new AddressEntity("456 St", "Tampa", "FL", "33637", newCompanyEntity);
        // newCompanyEntity.setAddresses(List.of(newAddrEntity));
 
-        mockMvc.perform(patch("/companies/update/Freddie Mac")
+        mockMvc.perform(patch("/companies/update/Galvanize")
                 .content(objectMapper.writeValueAsString(newCompanyEntity))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Cognizant"))
                 .andExpect(jsonPath("contactName").value("Iqbal"))
                 .andExpect(jsonPath("contactTitle").value("Accounts Payable"))
-                .andExpect(jsonPath("contactPhoneNumber").value("1-123-555-0011"))
+                .andExpect(jsonPath("contactPhoneNumber").value("1-222-222-2222"))
                 .andExpect(jsonPath("addresses[0].addressLine1").value("123 Dr"))
                 .andExpect(jsonPath("addresses[0].city").value("Houston"))
                 .andExpect(jsonPath("addresses[0].state").value("TX"))
                 .andExpect(jsonPath("addresses[0].zip").value("1000"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("updateCompany"));
     }
 
 }

@@ -6,7 +6,7 @@ include::{snippets}/getCompanies/http-request.adoc[]
 .response
 include::{snippets}/getCompanies/http-response.adoc[]
 
-postCompany
+postCompany (Consider posting address separately)
 
 .request
 include::{snippets}/postCompany/http-request.adoc[]
@@ -21,6 +21,14 @@ include::{snippets}/duplicateCompanyName/http-request.adoc[]
 
 .response
 include::{snippets}/duplicateCompanyName/http-response.adoc[]
+
+updateCompany
+
+.request
+include::{snippets}/updateCompany/http-request.adoc[]
+
+.response
+include::{snippets}/updateCompany/http-response.adoc[]
 
 getAddresses
 
