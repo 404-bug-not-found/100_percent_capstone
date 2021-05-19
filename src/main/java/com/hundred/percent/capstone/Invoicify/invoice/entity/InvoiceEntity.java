@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.DateTimeException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,10 +34,14 @@ public class InvoiceEntity {
     @OneToMany
     @JoinColumn(name="item_id")
     private List<ItemEntity> items;
+    private Date dateCreated;
+    private Date dateModified;
     private int totalPrice;
 
     public InvoiceEntity(CompanyEntity companyEntity, List<ItemEntity> items) {
         this.companyEntity = companyEntity;
         this.items = items;
+        this.dateCreated = new Date();
+        this.dateModified = new Date();
     }
 }
