@@ -54,6 +54,14 @@ include::{snippets}/duplicateAddress/http-request.adoc[]
 .response
 include::{snippets}/duplicateAddress/http-response.adoc[]
 
+addressWithInvalidCompany
+
+.request
+include::{snippets}/addressWithInvalidCompany/http-request.adoc[]
+
+.response
+include::{snippets}/addressWithInvalidCompany/http-response.adoc[]
+
 simpleView
 
 .response

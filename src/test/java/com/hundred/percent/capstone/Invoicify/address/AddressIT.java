@@ -140,5 +140,20 @@ public class AddressIT {
                 )));
     }
 
+    @Test
+    public void noCompanyFoundExceptionTest() throws Exception {
+        AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Company does not exist."))
+                .andDo(document("addressWithInvalidCompany", responseFields(
+                        fieldWithPath("message").description("Company does not exist.")
+                )));
+    }
+
 
 }

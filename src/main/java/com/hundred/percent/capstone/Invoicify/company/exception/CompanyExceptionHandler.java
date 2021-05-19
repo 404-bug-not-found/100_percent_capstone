@@ -15,4 +15,12 @@ public class CompanyExceptionHandler {
 
         return "{\"message\": \"Company already exist.\"}";
     }
+
+    @ExceptionHandler(CompanyDoesNotExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody
+    String handleCompanyNotFoundException() {
+
+        return "{\"message\": \"Company does not exist.\"}";
+    }
 }

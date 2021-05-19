@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.address.controller;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class AddressController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addAddress(@RequestBody AddressDTO addressDTO) throws AddressExistsException {
+    public void addAddress(@RequestBody AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
 
         addressService.createAddress(addressDTO);
 
