@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -80,6 +81,19 @@ public class AddressServiceTest {
         when(mockAddressRepository.findAll()).thenReturn(List.of(addrEntity));
 
         assertThrows(AddressExistsException.class, () -> {
+            addressService.createAddress(addressDTO);
+        });
+    }
+
+    @Test
+    public void noCompanyFoundExceptionTest() {
+        CompanyEntity companyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+
+        AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
+
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
             addressService.createAddress(addressDTO);
         });
     }
