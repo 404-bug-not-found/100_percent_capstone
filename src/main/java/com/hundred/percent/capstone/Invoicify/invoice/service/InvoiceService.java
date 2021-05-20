@@ -13,7 +13,9 @@ import com.hundred.percent.capstone.Invoicify.invoice.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,16 +61,16 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
 
         }
         return invoiceDTOS;
     }
 
-    public List<InvoiceDTO> getInvoiceByInvoiceNumber(String companyInvoiceNumber) {
+    public List<InvoiceDTO> getInvoiceById(Long input) {
 
         List<InvoiceEntity> invoicesForCompany = invoiceRepository.findAll()
-                .stream().filter(invEnt -> invEnt.getCompanyEntity().getInvoiceNumber().equals(companyInvoiceNumber))
+                .stream().filter(invEnt -> invEnt.getId().equals(input))
                 .collect(Collectors.toList());
         List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
         for(InvoiceEntity invoiceEntity:invoicesForCompany)
@@ -81,7 +83,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
 
         }
 
@@ -105,10 +107,37 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
 
         }
 
         return invoiceDTOS;
+    }
+
+    public void updateInvoice(Long input,InvoiceDTO invoiceDto) {
+        List<InvoiceEntity> invoiceEntList = invoiceRepository.findAll()
+                .stream().filter(invEnt -> invEnt.getId().equals(input))
+                .collect(Collectors.toList());
+        InvoiceEntity invoiceEnt = invoiceEntList.get(0);
+        List<ItemEntity> existingItems = invoiceEnt.getItems();
+
+
+        ArrayList<ItemEntity> itemsUpdate = new ArrayList<ItemEntity>(invoiceDto.getItems()
+                .stream()
+                .map(itemDTO -> {
+                    ItemEntity e =new ItemEntity(itemDTO.getDescription(),
+                            itemDTO.getPrice(),itemDTO.getQuantity());
+                    this.itemRepository.save(e);
+                    return e;
+                }).collect(Collectors.toList()));
+        existingItems.addAll(itemsUpdate);
+        invoiceEnt.setItems(existingItems);
+        invoiceEnt.setPaidDate(invoiceDto.getPaidDate());
+        invoiceEnt.setPaidStatus(invoiceDto.getPaidStatus());
+
+        this.invoiceRepository.save(invoiceEnt);
+
+
+
     }
 }

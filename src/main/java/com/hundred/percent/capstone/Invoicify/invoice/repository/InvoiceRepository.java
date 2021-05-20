@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface InvoiceRepository extends JpaRepository<InvoiceEntity, UUID> {
-
-    //InvoiceEntity findByCompany_InvoiceNumber(String companyInvoiceNumber);
+public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Long> {
 
 }

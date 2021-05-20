@@ -71,6 +71,8 @@ public class InvoiceIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(4))
                 .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].paidStatus").value("UnPaid"))
+                .andExpect(jsonPath("$.[0].paidDate").value(""))
                 .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
                 .andExpect(jsonPath("$.[0].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[0].items.[0].feeType").value("FlatFee"))
@@ -79,20 +81,21 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].dateCreated").value(expected))
                 .andExpect(jsonPath("$.[0].dateModified").value(expected))
                 .andExpect(jsonPath("$.[1].companyInvoiceNumber").value("2"))
+                .andExpect(jsonPath("$.[1].paidStatus").value("UnPaid"))
+                .andExpect(jsonPath("$.[1].paidDate").value(""))
                 .andExpect(jsonPath("$.[1].items.[0].description").value("Item2"))
                 .andExpect(jsonPath("$.[1].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[1].items.[0].feeType").value("RateBased"))
                 .andExpect(jsonPath("$.[1].items.[0].quantity").value("3"))
                 .andExpect(jsonPath("$.[1].items.[0].fee").value("60"))
                 .andDo(document("getInvoice"));
-
     }
 
     @Test
     @DirtiesContext
-    public void getInvoicesByCompanyInvoiceNumber() throws Exception{
+    public void getInvoicesById() throws Exception{
         initialCompanyInvoiceSetUp();
-        mockMvc.perform(get("/invoices/1"))
+        mockMvc.perform(get("/invoices/3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].items.length()").value(4))
                 .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
@@ -150,7 +153,76 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[3].fee").value("60"))
                 .andDo(document("getInvoice"));
     }
+    @Test
+    @DirtiesContext
+    public void updateAnExistingInvoiceByInvoiceNumberWithItems() throws Exception {
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
 
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item4",30));
+        InvoiceDTO d5=new InvoiceDTO(itemsDTO1);
+
+        mockMvc.perform(post("/invoices/2")
+                .content(objectMapper.writeValueAsString(d5))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("putInvoice"));
+
+        mockMvc.perform(get("/invoices/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
+                .andExpect(jsonPath("$.[0].items.[3].description").value("Item4"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void updateAnExistingInvoiceWithPaidStatus() throws Exception {
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item4",30));
+        InvoiceDTO d5=new InvoiceDTO(itemsDTO1);
+
+        mockMvc.perform(post("/invoices/2")
+                .content(objectMapper.writeValueAsString(d5))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("putInvoice"));
+
+        mockMvc.perform(get("/invoices/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
+                .andExpect(jsonPath("$.[0].items.[3].description").value("Item4"));
+    }
 
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",
@@ -163,8 +235,6 @@ public class InvoiceIT {
                 .andDo(print())
                 .andDo(document("postCompany"));
     }
-
-
     private void initialCompanyInvoiceSetUp() throws Exception {
 
        createCompany("1","Cognizant");
@@ -172,25 +242,25 @@ public class InvoiceIT {
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item2",20,3));
-        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date());
+        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"");
 
         List<ItemDTO> itemsDTO3 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
         itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
         itemsDTO1.add(new ItemDTO("Product Pages",20,3));
 
-        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date(),"");
 
         List<ItemDTO> itemsDTO4 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item1",2000));
         itemsDTO2.add(new ItemDTO("Item1",40));
         itemsDTO2.add(new ItemDTO("Item2",40,3));
 
-        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date());
+        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date(),"");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
@@ -217,5 +287,4 @@ public class InvoiceIT {
                 .andDo(document("postInvoice"));
 
     }
-
 }

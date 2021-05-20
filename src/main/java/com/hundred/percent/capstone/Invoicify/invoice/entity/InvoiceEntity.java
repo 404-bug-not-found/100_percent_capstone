@@ -21,7 +21,7 @@ import java.util.UUID;
 public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     public CompanyEntity getCompanyEntity() {
         return companyEntity;
@@ -37,11 +37,15 @@ public class InvoiceEntity {
     private Date dateCreated;
     private Date dateModified;
     private int totalPrice;
+    private PaidStatus paidStatus;
+    private String paidDate;
 
     public InvoiceEntity(CompanyEntity companyEntity, List<ItemEntity> items) {
         this.companyEntity = companyEntity;
         this.items = items;
         this.dateCreated = new Date();
         this.dateModified = new Date();
+        this.paidStatus = PaidStatus.UnPaid;
+        this.paidDate = "";
     }
 }
