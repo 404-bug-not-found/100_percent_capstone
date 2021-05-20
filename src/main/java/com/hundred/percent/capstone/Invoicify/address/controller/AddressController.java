@@ -19,7 +19,7 @@ public class AddressController {
 
 
     @GetMapping
-    public List<AddressDTO> getAddresses(){
+    public List<AddressDTO> getAddresses() {
 
         return addressService.getAllAddresses();
     }
@@ -31,5 +31,10 @@ public class AddressController {
 
         addressService.createAddress(addressDTO);
 
+    }
+
+    @PatchMapping("/{name}")
+    public AddressDTO updateAddress(@PathVariable("name") String name) {
+        return null;
     }
 }
