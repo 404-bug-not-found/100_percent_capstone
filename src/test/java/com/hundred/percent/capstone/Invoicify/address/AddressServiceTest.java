@@ -98,5 +98,16 @@ public class AddressServiceTest {
         });
     }
 
+    @Test
+    public void noCompanyFoundException_whenUpdatingTest() {
+        AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
 
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
+            addressService.updateAddress(addressDTO,"Cigna");
+        });
+    }
+
+    
 }
