@@ -93,9 +93,9 @@ public class InvoiceIT {
 
     @Test
     @DirtiesContext
-    public void getInvoicesByCompanyInvoiceNumber() throws Exception{
+    public void getInvoicesById() throws Exception{
         initialCompanyInvoiceSetUp();
-        mockMvc.perform(get("/invoices/1"))
+        mockMvc.perform(get("/invoices/3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].items.length()").value(4))
                 .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
@@ -153,18 +153,38 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[3].fee").value("60"))
                 .andDo(document("getInvoice"));
     }
-    @Test@DirtiesContext
+    @Test
+    @DirtiesContext
     public void updateAnExistingInvoiceByInvoiceNumberWithItems() throws Exception {
-        initialCompanyInvoiceSetUp();
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
+        itemsDTO1.add(new ItemDTO("Item4",30));
 
-        mockMvc.perform(post("/invoices/1")
+        mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(itemsDTO1))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));
+
+        mockMvc.perform(get("/invoices/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
+                .andExpect(jsonPath("$.[0].items.[3].description").value("Item4"));
     }
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",

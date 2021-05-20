@@ -49,6 +49,7 @@ public class InvoiceServiceTest {
     CompanyService companyService;
 
     @Test
+    @DirtiesContext
     public void getAllInvoicesTest() throws Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
@@ -112,31 +113,9 @@ public class InvoiceServiceTest {
 
         //verify(this.mockInvoiceRepository).save(invEnt);
     }
-    @Test
-    public void getInvoicesByCompanyInvoiceNumber() throws Exception, CompanyExistsException {
-
-        CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",
-                "Accounts Payable", "1-123-456-7890");
-        List<ItemEntity> itemsENT1 = new ArrayList<ItemEntity>();
-        itemsENT1.add(new ItemEntity("Item1",20));
-        InvoiceEntity ent = new InvoiceEntity(company,itemsENT1);
-
-        when(mockInvoiceRepository.findAll()).thenReturn( List.of(ent));
-
-
-        CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
-                "Accounts Payable", "1-123-456-7890");
-        this.companyService.createCompany(companyDTO);
-        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
-        this.invoiceService.createInvoice(d1);
-
-        List<InvoiceDTO> actualinvoices = this.invoiceService.getInvoiceByInvoiceNumber("1");
-        assertThat(actualinvoices.get(0).getCompanyInvoiceNumber()).isEqualTo("1");
-    }
 
     @Test
+    @DirtiesContext
     public void getInvoicesByCompanyName() throws Exception, CompanyExistsException {
 
         CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",

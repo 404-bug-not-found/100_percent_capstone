@@ -21,7 +21,7 @@ import java.util.UUID;
 public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     public CompanyEntity getCompanyEntity() {
         return companyEntity;

@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.invoice.controller;
 
 
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,15 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public List<InvoiceDTO> getAnInvoicebyInvoiceNumber(@PathVariable String id){
-            return this.invoiceService.getInvoiceByInvoiceNumber(id);
+    public List<InvoiceDTO> getAnInvoicebyId(@PathVariable String id){
+            return this.invoiceService.getInvoiceById(Long.parseLong(id));
+    }
+
+
+    @PostMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void  addItemsToInvoice(@RequestBody List<ItemDTO> itemsDto,@PathVariable String id){
+         this.invoiceService.addItemsToInvoice(Long.parseLong(id),itemsDto);
     }
 
 }

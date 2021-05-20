@@ -65,10 +65,10 @@ public class InvoiceService {
         return invoiceDTOS;
     }
 
-    public List<InvoiceDTO> getInvoiceByInvoiceNumber(String companyInvoiceNumber) {
+    public List<InvoiceDTO> getInvoiceById(Long input) {
 
         List<InvoiceEntity> invoicesForCompany = invoiceRepository.findAll()
-                .stream().filter(invEnt -> invEnt.getCompanyEntity().getInvoice_number().equals(companyInvoiceNumber))
+                .stream().filter(invEnt -> invEnt.getId().equals(input))
                 .collect(Collectors.toList());
         List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
         for(InvoiceEntity invoiceEntity:invoicesForCompany)
@@ -110,5 +110,30 @@ public class InvoiceService {
         }
 
         return invoiceDTOS;
+    }
+
+    public void addItemsToInvoice(Long input,List<ItemDTO> items) {
+        List<InvoiceEntity> invoiceEntList = invoiceRepository.findAll()
+                .stream().filter(invEnt -> invEnt.getId().equals(input))
+                .collect(Collectors.toList());
+        InvoiceEntity invoiceEnt = invoiceEntList.get(0);
+        List<ItemEntity> existingItems = invoiceEnt.getItems();
+
+
+        ArrayList<ItemEntity> itemsUpdate = new ArrayList<ItemEntity>(items
+                .stream()
+                .map(itemDTO -> {
+                    ItemEntity e =new ItemEntity(itemDTO.getDescription(),
+                            itemDTO.getPrice(),itemDTO.getQuantity());
+                    this.itemRepository.save(e);
+                    return e;
+                }).collect(Collectors.toList()));
+        existingItems.addAll(itemsUpdate);
+        invoiceEnt.setItems(existingItems);
+
+        this.invoiceRepository.save(invoiceEnt);
+
+
+
     }
 }
