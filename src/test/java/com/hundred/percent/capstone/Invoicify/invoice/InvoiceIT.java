@@ -172,9 +172,10 @@ public class InvoiceIT {
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item4",30));
+        InvoiceDTO d5=new InvoiceDTO(itemsDTO1);
 
         mockMvc.perform(post("/invoices/2")
-                .content(objectMapper.writeValueAsString(itemsDTO1))
+                .content(objectMapper.writeValueAsString(d5))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));
@@ -210,7 +211,7 @@ public class InvoiceIT {
         InvoiceDTO d5=new InvoiceDTO(itemsDTO1);
 
         mockMvc.perform(post("/invoices/2")
-                .content(objectMapper.writeValueAsString(InvoiceDTO))
+                .content(objectMapper.writeValueAsString(d5))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));

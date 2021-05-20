@@ -36,8 +36,8 @@ public class InvoiceController {
 
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void  addItemsToInvoice(@RequestBody List<ItemDTO> itemsDto,@PathVariable String id){
-         this.invoiceService.addItemsToInvoice(Long.parseLong(id),itemsDto);
+    public void  updateInvoice(@RequestBody InvoiceDTO invoiceDTO,@PathVariable String id){
+         this.invoiceService.updateInvoice(Long.parseLong(id),invoiceDTO);
     }
 
 }

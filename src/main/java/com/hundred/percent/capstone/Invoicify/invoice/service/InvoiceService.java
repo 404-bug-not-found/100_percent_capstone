@@ -13,7 +13,9 @@ import com.hundred.percent.capstone.Invoicify.invoice.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,7 +114,7 @@ public class InvoiceService {
         return invoiceDTOS;
     }
 
-    public void addItemsToInvoice(Long input,List<ItemDTO> items) {
+    public void updateInvoice(Long input,InvoiceDTO invoiceDto) {
         List<InvoiceEntity> invoiceEntList = invoiceRepository.findAll()
                 .stream().filter(invEnt -> invEnt.getId().equals(input))
                 .collect(Collectors.toList());
@@ -120,7 +122,7 @@ public class InvoiceService {
         List<ItemEntity> existingItems = invoiceEnt.getItems();
 
 
-        ArrayList<ItemEntity> itemsUpdate = new ArrayList<ItemEntity>(items
+        ArrayList<ItemEntity> itemsUpdate = new ArrayList<ItemEntity>(invoiceDto.getItems()
                 .stream()
                 .map(itemDTO -> {
                     ItemEntity e =new ItemEntity(itemDTO.getDescription(),
@@ -130,6 +132,8 @@ public class InvoiceService {
                 }).collect(Collectors.toList()));
         existingItems.addAll(itemsUpdate);
         invoiceEnt.setItems(existingItems);
+        invoiceEnt.setPaidDate(invoiceDto.getPaidDate());
+        invoiceEnt.setPaidStatus(invoiceDto.getPaidStatus());
 
         this.invoiceRepository.save(invoiceEnt);
 
