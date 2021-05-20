@@ -60,8 +60,11 @@ public class AddressService {
 
     }
 
-    public AddressEntity updateAddress(AddressDTO addressDTO, String name) {
+    public AddressEntity updateAddress(AddressDTO addressDTO, String name) throws CompanyDoesNotExistsException {
         CompanyEntity cEntity = companyRepository.findByName(name);
+        if(cEntity == null){
+            throw new CompanyDoesNotExistsException();
+        }
         AddressEntity aEntity = addressRepository.findByCompanyEntity(cEntity);
 
         aEntity.setAddressLine1(addressDTO.getAddressLine1());
