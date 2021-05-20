@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.address.controller;
 
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
+import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
@@ -34,7 +35,7 @@ public class AddressController {
     }
 
     @PatchMapping("/{name}")
-    public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) {
-        return null;
+    public AddressEntity updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) {
+        return addressService.updateAddress(addressDTO, name);
     }
 }

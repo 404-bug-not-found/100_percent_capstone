@@ -60,20 +60,16 @@ public class AddressService {
 
     }
 
-    /*public void updateAddress(AddressDTO addressDTO, CompanyEntity oldCEntity, CompanyEntity newCEntity){
+    public AddressEntity updateAddress(AddressDTO addressDTO, String name) {
+        CompanyEntity cEntity = companyRepository.findByName(name);
+        AddressEntity aEntity = addressRepository.findByCompanyEntity(cEntity);
 
-        AddressEntity aEntity = addressRepository.findByCompanyEntity(oldCEntity);
-        //AddressEntity aEntity = addressRepository.findById(oldCEntity.getAddresses().get(0).getId()).get();
-
-        aEntity.setAddr_line1(addressDTO.getAddr_line1());
+        aEntity.setAddressLine1(addressDTO.getAddressLine1());
         aEntity.setCity(addressDTO.getCity());
         aEntity.setState(addressDTO.getState());
         aEntity.setZip(addressDTO.getZip());
-        //aEntity.setCompanyEntity(newCEntity);
-
-        addressRepository.save(aEntity);
-
-    }*/
+        return addressRepository.save(aEntity);
+    }
 
 
 }
