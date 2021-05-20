@@ -49,6 +49,7 @@ public class InvoiceServiceTest {
     CompanyService companyService;
 
     @Test
+    @DirtiesContext
     public void getAllInvoicesTest() throws Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
@@ -82,8 +83,8 @@ public class InvoiceServiceTest {
         List<InvoiceDTO> actual=this.invoiceService.getAllInvoices();
         assertThat(actual).isEqualTo(
                 Arrays.asList(
-                        new InvoiceDTO("1", itemsDTO1,new Date()),
-                        new InvoiceDTO("2", itemsDTO2,new Date())
+                        new InvoiceDTO("1", itemsDTO1,new Date(),""),
+                        new InvoiceDTO("2", itemsDTO2,new Date(),"")
                 ));
     }
 
@@ -106,37 +107,15 @@ public class InvoiceServiceTest {
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
         this.invoiceService.createInvoice(d1);
 
 
         //verify(this.mockInvoiceRepository).save(invEnt);
     }
-    @Test
-    public void getInvoicesByCompanyInvoiceNumber() throws Exception, CompanyExistsException {
-
-        CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",
-                "Accounts Payable", "1-123-456-7890");
-        List<ItemEntity> itemsENT1 = new ArrayList<ItemEntity>();
-        itemsENT1.add(new ItemEntity("Item1",20));
-        InvoiceEntity ent = new InvoiceEntity(company,itemsENT1);
-
-        when(mockInvoiceRepository.findAll()).thenReturn( List.of(ent));
-
-
-        CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
-                "Accounts Payable", "1-123-456-7890");
-        this.companyService.createCompany(companyDTO);
-        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date());
-        this.invoiceService.createInvoice(d1);
-
-        List<InvoiceDTO> actualinvoices = this.invoiceService.getInvoiceByInvoiceNumber("1");
-        assertThat(actualinvoices.get(0).getCompanyInvoiceNumber()).isEqualTo("1");
-    }
 
     @Test
+    @DirtiesContext
     public void getInvoicesByCompanyName() throws Exception, CompanyExistsException {
 
         CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",
@@ -153,7 +132,7 @@ public class InvoiceServiceTest {
         this.companyService.createCompany(companyDTO);
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
         this.invoiceService.createInvoice(d1);
 
         List<InvoiceDTO> actualinvoices = this.invoiceService.getInvoicesByCompanyName("Cognizant");
@@ -170,25 +149,25 @@ public class InvoiceServiceTest {
         List<InvoiceDTO> invoices = new ArrayList<>();
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item2",20,3));
-        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date());
+        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"");
 
         List<ItemDTO> itemsDTO3 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
         itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
         itemsDTO1.add(new ItemDTO("Product Pages",20,3));
 
-        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date());
+        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date(),"");
 
         List<ItemDTO> itemsDTO4 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item1",2000));
         itemsDTO2.add(new ItemDTO("Item1",40));
         itemsDTO2.add(new ItemDTO("Item2",40,3));
 
-        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date());
+        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date(),"");
         invoices.add(d1);
         invoices.add(d2);
         invoices.add(d3);
@@ -196,4 +175,5 @@ public class InvoiceServiceTest {
 
         return invoices;
     }
+
 }
