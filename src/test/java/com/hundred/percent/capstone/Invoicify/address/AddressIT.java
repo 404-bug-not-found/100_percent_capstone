@@ -179,7 +179,11 @@ public class AddressIT {
                 .content(objectMapper.writeValueAsString(input2))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("addressLine1").value("123 St"))
+                .andExpect(jsonPath("city").value("Houston"))
+                .andExpect(jsonPath("state").value("TX"))
+                .andExpect(jsonPath("zip").value("11111"));
     }
 
 
