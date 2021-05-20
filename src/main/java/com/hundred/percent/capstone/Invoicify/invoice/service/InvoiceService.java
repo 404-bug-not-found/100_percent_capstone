@@ -59,7 +59,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
 
         }
         return invoiceDTOS;
@@ -81,7 +81,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
 
         }
 
@@ -105,7 +105,7 @@ public class InvoiceService {
                                 ,itemEntity.getFeeType(),itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoice_number(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
 
         }
 

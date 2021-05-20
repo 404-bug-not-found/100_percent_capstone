@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.company.controller;
 
+import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -30,7 +31,7 @@ public class CompanyController {
     }
 
 
-    @PostMapping("/addCompany")
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addCompany(@RequestBody CompanyDTO companyDto) throws CompanyExistsException {
 
@@ -53,5 +54,10 @@ public class CompanyController {
     public List<CompanyListViewDTO> getListCompanyView() {
 
         return companyService.getListCompanyView();
+    }
+
+    @PatchMapping("/update/{name}")
+    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity,@PathVariable String name) throws AddressExistsException {
+        return companyService.updateCompany(companyEntity,name);
     }
 }

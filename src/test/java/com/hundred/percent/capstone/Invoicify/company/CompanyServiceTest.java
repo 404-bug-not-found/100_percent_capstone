@@ -1,6 +1,9 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
+import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
+import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -17,10 +20,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyServiceTest {
@@ -28,8 +32,15 @@ public class CompanyServiceTest {
     @Mock
     CompanyRepository mockCompanyRepository;
 
+    @Mock
+    AddressRepository mockAddressRepository;
+
     @InjectMocks
     CompanyService companyService;
+
+    @InjectMocks
+    AddressService addressService;
+
 
     @Test
     public void createTest() throws CompanyExistsException {
@@ -117,5 +128,23 @@ public class CompanyServiceTest {
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
                 List.of(dto1, dto2)
         );
+    }
+
+
+    @Test
+    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
+        CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
+        List<AddressEntity> oldAddressEntities = new ArrayList<>();
+        oldAddressEntities.add(new AddressEntity("123 St", "Houston", "TX", "33333", oldCompanyEntity));
+        oldCompanyEntity.setAddresses(oldAddressEntities);
+
+        CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(oldCompanyEntity);
+        when(mockCompanyRepository.save(any())).thenReturn(newCompanyEntity);
+
+        CompanyEntity actual = companyService.updateCompany(newCompanyEntity, oldCompanyEntity.getName());
+
+        AssertionsForClassTypes.assertThat(actual).isEqualTo(newCompanyEntity);
     }
 }

@@ -6,7 +6,7 @@ include::{snippets}/getCompanies/http-request.adoc[]
 .response
 include::{snippets}/getCompanies/http-response.adoc[]
 
-postCompany
+postCompany (Consider posting address separately)
 
 .request
 include::{snippets}/postCompany/http-request.adoc[]
@@ -21,6 +21,14 @@ include::{snippets}/duplicateCompanyName/http-request.adoc[]
 
 .response
 include::{snippets}/duplicateCompanyName/http-response.adoc[]
+
+updateCompany
+
+.request
+include::{snippets}/updateCompany/http-request.adoc[]
+
+.response
+include::{snippets}/updateCompany/http-response.adoc[]
 
 getAddresses
 
@@ -45,6 +53,14 @@ include::{snippets}/duplicateAddress/http-request.adoc[]
 
 .response
 include::{snippets}/duplicateAddress/http-response.adoc[]
+
+addressWithInvalidCompany
+
+.request
+include::{snippets}/addressWithInvalidCompany/http-request.adoc[]
+
+.response
+include::{snippets}/addressWithInvalidCompany/http-response.adoc[]
 
 simpleView
 

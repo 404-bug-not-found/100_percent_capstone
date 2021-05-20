@@ -190,7 +190,7 @@ public class InvoiceIT {
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",
                 "Accounts Payable", "1-123-456-7890");
 
-        mockMvc.perform(post("/companies/addCompany")
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())

@@ -19,7 +19,6 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
         Optional<CompanyEntity> companyExistingEntities = companyRepository.findAll()
                 .stream()
@@ -29,9 +28,8 @@ public class CompanyService {
         if (companyExistingEntities.isPresent()) {
             throw new CompanyExistsException();
         } else {
-            companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContact_name(), companyDTO.getContact_title(), companyDTO.getContact_phone_number()));
+            companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContactName(), companyDTO.getContactTitle(), companyDTO.getContactPhoneNumber()));
         }
-
     }
 
     public List<CompanyEntity> getAllCompanies() {
@@ -62,15 +60,26 @@ public class CompanyService {
                 .map(companyEntity -> {
                     return new CompanyListViewDTO(
                             companyEntity.getName(),
-                            companyEntity.getContact_name(),
-                            companyEntity.getContact_title(),
-                            companyEntity.getContact_phone_number(),
-                            companyEntity.getAddresses().get(0).getAddr_line1(),
+                            companyEntity.getContactName(),
+                            companyEntity.getContactTitle(),
+                            companyEntity.getContactPhoneNumber(),
+                            companyEntity.getAddresses().get(0).getAddressLine1(),
                             companyEntity.getAddresses().get(0).getCity(),
                             companyEntity.getAddresses().get(0).getState(),
                             companyEntity.getAddresses().get(0).getZip()
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) {
+        CompanyEntity oldCompanyEntity = companyRepository.findByName(name);
+
+        oldCompanyEntity.setName(newCompanyEntity.getName());
+        oldCompanyEntity.setContactName(newCompanyEntity.getContactName());
+        oldCompanyEntity.setContactTitle(newCompanyEntity.getContactTitle());
+        oldCompanyEntity.setContactPhoneNumber(newCompanyEntity.getContactPhoneNumber());
+        //companyEntity.setAddresses(companyEnt.getAddresses());
+        return companyRepository.save(oldCompanyEntity);
     }
 }

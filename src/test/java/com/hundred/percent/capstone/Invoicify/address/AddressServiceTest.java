@@ -6,6 +6,7 @@ import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsExc
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +35,7 @@ public class AddressServiceTest {
     AddressService addressService;
 
     @Test
-    public void createTest() throws AddressExistsException {
+    public void createTest() throws AddressExistsException, CompanyDoesNotExistsException {
         CompanyEntity companyEntity = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
         AddressDTO addressDTO = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
@@ -76,9 +78,22 @@ public class AddressServiceTest {
         AddressEntity addrEntity = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity);
         AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
 
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity);
+
         when(mockAddressRepository.findAll()).thenReturn(List.of(addrEntity));
 
         assertThrows(AddressExistsException.class, () -> {
+            addressService.createAddress(addressDTO);
+        });
+    }
+
+    @Test
+    public void noCompanyFoundExceptionTest() {
+        AddressDTO addressDTO = new AddressDTO("123 Dr", "Houston", "TX", "10000", "Freddie Mac");
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
             addressService.createAddress(addressDTO);
         });
     }
