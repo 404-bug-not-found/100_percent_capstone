@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -105,9 +106,27 @@ public class AddressServiceTest {
         when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
 
         assertThrows(CompanyDoesNotExistsException.class, () -> {
-            addressService.updateAddress(addressDTO,"Cigna");
+            addressService.updateAddress(addressDTO, "Cigna");
         });
     }
 
-    
+    @Test
+    public void updateAddressTest() throws CompanyDoesNotExistsException {
+
+        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        AddressEntity addrEntity1 = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity1);
+
+        AddressDTO addressDTO = new AddressDTO("456 St", "Tampa", "FL", "33333", "Freddie Mac");
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
+        when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(addrEntity1);
+        when(mockAddressRepository.save(any())).thenReturn(new AddressEntity("456 St", "Tampa", "FL", "33333", companyEntity1));
+        
+        AddressDTO actual = addressService.updateAddress(addressDTO, "Freddie Mac");
+
+        AssertionsForClassTypes.assertThat(actual).isEqualTo(
+                new AddressDTO("456 St", "Tampa", "FL", "33333", "Freddie Mac")
+        );
+
+    }
 }
