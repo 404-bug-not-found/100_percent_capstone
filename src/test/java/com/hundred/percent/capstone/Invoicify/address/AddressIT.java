@@ -183,8 +183,16 @@ public class AddressIT {
                 .andExpect(jsonPath("addressLine1").value("123 St"))
                 .andExpect(jsonPath("city").value("Houston"))
                 .andExpect(jsonPath("state").value("TX"))
-                .andExpect(jsonPath("zip").value("11111"));
+                .andExpect(jsonPath("zip").value("11111"))
+                .andDo(document("updateAddress", responseFields(
+                        fieldWithPath("addressLine1").description("123 St"),
+                        fieldWithPath("city").description("Houston"),
+                        fieldWithPath("state").description("TX"),
+                        fieldWithPath("zip").description("11111"),
+                        fieldWithPath("companyName").description("Cognizant")
+                )));
     }
+
     @Test
     public void updateAddressNoCompanyFoundTest() throws Exception {
 
@@ -211,7 +219,10 @@ public class AddressIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("Company does not exist."));
+                .andExpect(jsonPath("message").value("Company does not exist."))
+                .andDo(document("updateAddressWithInvalidCompany", responseFields(
+                        fieldWithPath("message").description("Company does not exist.")
+                )));
     }
 
 }
