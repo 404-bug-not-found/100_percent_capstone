@@ -1,9 +1,11 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hundred.percent.capstone.Invoicify.Employee.Employee;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -12,7 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_HEADER;
+import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_PREFIX;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -28,12 +36,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class CompanyIT {
 
+    String token;
+
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
 
+
+    @BeforeEach
+    public void beforeEach() throws Exception{
+        Employee employee = new Employee();
+        employee.setEmployeeName("Iqbal");
+        employee.setPassword("galvanize123");
+        Map<String, Object> body = new HashMap<>();
+        body.put("employeeName",employee.getEmployeeName());
+        body.put("password",employee.getPassword());
+
+        mockMvc.perform(post("/employee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isOk());
+
+        MvcResult result = mockMvc.perform(
+                post("/authenticate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").exists())
+                .andReturn();
+
+        Map<String, String> responseBody = objectMapper.readValue(
+                result.getResponse().getContentAsString(),Map.class);
+        token = responseBody.get("token");
+    }
 
     @Test
     public void getEmptyCompanyTest() throws Exception {
@@ -49,7 +86,8 @@ public class CompanyIT {
 
          mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("postCompany"))

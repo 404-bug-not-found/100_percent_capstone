@@ -1,0 +1,31 @@
+== POST
+
+.request
+include::{snippets}/employee - POST/http-request.adoc[]
+
+.response
+include::{snippets}/employee - POST/http-response.adoc[]
+
+== GET - by ID
+
+.request
+include::{snippets}/employee - GET - by ID/http-request.adoc[]
+
+.response
+include::{snippets}/employee - GET - by ID/http-response.adoc[]
+
+== GET - by ID - JWT included
+
+.request
+include::{snippets}/employee - GET - by ID - JWT included/http-request.adoc[]
+
+.response
+include::{snippets}/employee - GET - by ID - JWT included/http-response.adoc[]
+
+== GET - by ID - JWT missing
+
+.request
+include::{snippets}/employee - GET - by ID - JWT missing/http-request.adoc[]
+
+.response
+include::{snippets}/employee - GET - by ID - JWT missing/http-response.adoc[]
