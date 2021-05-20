@@ -156,18 +156,27 @@ public class AddressIT {
 
     @Test
     public void updateAddressTest() throws Exception {
+
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
         AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(print());
 
         AddressDTO input2 = new AddressDTO("123 St", "Houston", "TX", "11111", "Cognizant");
 
         mockMvc.perform(patch("/addresses/Cognizant")
-                .content(objectMapper.writeValueAsString(input1))
+                .content(objectMapper.writeValueAsString(input2))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

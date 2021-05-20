@@ -34,7 +34,7 @@ public class AddressController {
     }
 
     @PatchMapping("/{name}")
-    public AddressDTO updateAddress(@PathVariable("name") String name) {
+    public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) {
         return null;
     }
 }
