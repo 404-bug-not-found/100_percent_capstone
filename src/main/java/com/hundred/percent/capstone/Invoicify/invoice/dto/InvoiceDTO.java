@@ -32,4 +32,9 @@ public class InvoiceDTO {
             else
             this.paidStatus = PaidStatus.Paid;
     }
+    public InvoiceDTO(List<ItemDTO> items)
+    {
+        this.items = items;
+    }
+
 }
