@@ -62,7 +62,7 @@ public class AddressService {
 
     public AddressDTO updateAddress(AddressDTO addressDTO, String name) throws CompanyDoesNotExistsException {
         CompanyEntity cEntity = companyRepository.findByName(name);
-        if(cEntity == null){
+        if (cEntity == null) {
             throw new CompanyDoesNotExistsException();
         }
         AddressEntity aEntity = addressRepository.findByCompanyEntity(cEntity);
@@ -71,7 +71,7 @@ public class AddressService {
         aEntity.setState(addressDTO.getState());
         aEntity.setZip(addressDTO.getZip());
         AddressEntity savedEntity = addressRepository.save(aEntity);
-        return new AddressDTO(savedEntity.getAddressLine1(),savedEntity.getCity(),savedEntity.getState(),savedEntity.getZip(),savedEntity.getCompanyEntity().getName());
+        return new AddressDTO(savedEntity.getAddressLine1(), savedEntity.getCity(), savedEntity.getState(), savedEntity.getZip(), savedEntity.getCompanyEntity().getName());
     }
 
 

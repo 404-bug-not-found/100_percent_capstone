@@ -121,12 +121,11 @@ public class AddressServiceTest {
         when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
         when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(addrEntity1);
         when(mockAddressRepository.save(any())).thenReturn(new AddressEntity("456 St", "Tampa", "FL", "33333", companyEntity1));
-        
+
         AddressDTO actual = addressService.updateAddress(addressDTO, "Freddie Mac");
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
                 new AddressDTO("456 St", "Tampa", "FL", "33333", "Freddie Mac")
         );
-
     }
 }
