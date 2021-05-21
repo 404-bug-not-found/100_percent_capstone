@@ -47,7 +47,7 @@ public class CompanyIT {
     public void postCompanyTest() throws Exception {
         CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
 
-         mockMvc.perform(post("/companies")
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -62,7 +62,7 @@ public class CompanyIT {
         CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
-         mockMvc.perform(post("/companies")
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -220,7 +220,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void companySimpleView_Failed_Test() throws Exception{
+    public void companySimpleView_Failed_Test() throws Exception {
         CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
@@ -304,7 +304,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void companyListView_Failed_Test() throws Exception{
+    public void companyListView_Failed_Test() throws Exception {
         CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
@@ -351,7 +351,7 @@ public class CompanyIT {
 
         CompanyEntity newCompanyEntity = new CompanyEntity("GLZ-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
         //AddressEntity newAddrEntity = new AddressEntity("456 St", "Tampa", "FL", "33637", newCompanyEntity);
-       // newCompanyEntity.setAddresses(List.of(newAddrEntity));
+        // newCompanyEntity.setAddresses(List.of(newAddrEntity));
 
         mockMvc.perform(patch("/companies/update/Galvanize")
                 .content(objectMapper.writeValueAsString(newCompanyEntity))
@@ -370,7 +370,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void delete_Company_Test() throws Exception{
+    public void delete_Company_Test() throws Exception {
         CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
 
         mockMvc.perform(post("/companies")
@@ -382,7 +382,7 @@ public class CompanyIT {
         mockMvc.perform(delete("/companies/Galvanize"))
                 .andExpect(status().isOk())
                 .andDo(print())
-        .andExpect(jsonPath("message").value("Company deleted successfully."));
+                .andExpect(jsonPath("message").value("Company deleted successfully."));
     }
 
     @Test
@@ -391,6 +391,29 @@ public class CompanyIT {
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company does not exist."));
+    }
+
+    @Test
+    public void delete_CompanyWithAddress_Test() throws Exception {
+        CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Galvanize");
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(addrDTO1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(delete("/companies/Galvanize"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Company deleted successfully."));
     }
 
 }
