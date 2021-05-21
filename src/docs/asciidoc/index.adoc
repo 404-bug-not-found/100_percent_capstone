@@ -62,6 +62,22 @@ include::{snippets}/addressWithInvalidCompany/http-request.adoc[]
 .response
 include::{snippets}/addressWithInvalidCompany/http-response.adoc[]
 
+updateAddress
+
+.request
+include::{snippets}/updateAddress/http-request.adoc[]
+
+.response
+include::{snippets}/updateAddress/http-response.adoc[]
+
+updateAddressWithInvalidCompany
+
+.request
+include::{snippets}/updateAddressWithInvalidCompany/http-request.adoc[]
+
+.response
+include::{snippets}/updateAddressWithInvalidCompany/http-response.adoc[]
+
 simpleView
 
 .response

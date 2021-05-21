@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.address.controller;
 
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
+import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
@@ -19,7 +20,7 @@ public class AddressController {
 
 
     @GetMapping
-    public List<AddressDTO> getAddresses(){
+    public List<AddressDTO> getAddresses() {
 
         return addressService.getAllAddresses();
     }
@@ -31,5 +32,10 @@ public class AddressController {
 
         addressService.createAddress(addressDTO);
 
+    }
+
+    @PatchMapping("/{name}")
+    public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
+        return addressService.updateAddress(addressDTO, name);
     }
 }
