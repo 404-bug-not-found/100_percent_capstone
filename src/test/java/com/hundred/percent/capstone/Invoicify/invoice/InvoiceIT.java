@@ -33,6 +33,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -42,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@Transactional
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class InvoiceIT {
 
     @Autowired
@@ -52,7 +53,6 @@ public class InvoiceIT {
     ObjectMapper objectMapper;
 
     @Test
-    @DirtiesContext
     public void getEmptyInvoiceTest() throws Exception {
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
@@ -61,7 +61,6 @@ public class InvoiceIT {
         .andDo(document("getInvoice"));
     }
     @Test
-    @DirtiesContext
     public void createAndGetInvoiceTest() throws Exception{
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String expected = formatter.format(new Date());
@@ -92,7 +91,6 @@ public class InvoiceIT {
     }
 
     @Test
-    @DirtiesContext
     public void getInvoicesById() throws Exception{
         initialCompanyInvoiceSetUp();
         mockMvc.perform(get("/invoices/3"))
@@ -108,7 +106,6 @@ public class InvoiceIT {
     }
 
     @Test
-    @DirtiesContext
     public void getInvoicesByCompanyName() throws Exception{
         initialCompanyInvoiceSetUp();
         mockMvc.perform(get("/companies/Cognizant/invoices"))
@@ -125,7 +122,6 @@ public class InvoiceIT {
     }
 
     @Test
-    @DirtiesContext
     public void createAndGetInvoicesWithSameDescItems() throws Exception{
         initialCompanyInvoiceSetUp();
         mockMvc.perform(get("/invoices"))
@@ -154,7 +150,6 @@ public class InvoiceIT {
                 .andDo(document("getInvoice"));
     }
     @Test
-    @DirtiesContext
     public void updateAnExistingInvoiceByInvoiceNumberWithItems() throws Exception {
         createCompany("1","TCS");
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
@@ -189,7 +184,6 @@ public class InvoiceIT {
     }
 
     @Test
-    @DirtiesContext
     public void updateAnExistingInvoiceWithPaidStatus() throws Exception {
         createCompany("1","TCS");
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();

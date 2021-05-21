@@ -33,7 +33,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@Transactional
 @ExtendWith(MockitoExtension.class)
 public class InvoiceServiceTest {
 
