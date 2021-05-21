@@ -100,4 +100,9 @@ public class CompanyService {
         //companyEntity.setAddresses(companyEnt.getAddresses());
         return companyRepository.save(oldCompanyEntity);
     }
+
+    public void deleteCompany(String name){
+        CompanyEntity companyEntity = companyRepository.findByName(name);
+        companyRepository.delete(companyEntity);
+    }
 }

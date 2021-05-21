@@ -64,7 +64,7 @@ public class CompanyController {
 
     @DeleteMapping("/{name}")
     public String deleteCompany(@PathVariable String name) {
-        return null;
-//        return "{\"message\": \"Company deleted successfully.\"}";
+        companyService.deleteCompany(name);
+        return "{\"message\": \"Company deleted successfully.\"}";
     }
 }

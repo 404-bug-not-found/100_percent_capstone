@@ -371,7 +371,15 @@ public class CompanyIT {
 
     @Test
     public void delete_Company_Test() throws Exception{
-        mockMvc.perform(delete("/companies/Cognizant"))
+        CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(delete("/companies/Galvanize"))
                 .andExpect(status().isOk())
                 .andDo(print())
         .andExpect(jsonPath("message").value("Company deleted successfully."));
