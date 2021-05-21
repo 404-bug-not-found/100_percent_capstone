@@ -47,7 +47,7 @@ public class AddressIT {
     public void beforeEach() throws Exception{
         Employee employee = new Employee();
         employee.setEmployeeName("Iqbal");
-        employee.setPassword("galvanize123");
+        employee.setPassword("capstone");
         Map<String, Object> body = new HashMap<>();
         body.put("employeeName",employee.getEmployeeName());
         body.put("password",employee.getPassword());
