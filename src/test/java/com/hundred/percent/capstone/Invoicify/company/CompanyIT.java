@@ -350,8 +350,6 @@ public class CompanyIT {
                 .andDo(print());
 
         CompanyEntity newCompanyEntity = new CompanyEntity("GLZ-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
-        //AddressEntity newAddrEntity = new AddressEntity("456 St", "Tampa", "FL", "33637", newCompanyEntity);
-        // newCompanyEntity.setAddresses(List.of(newAddrEntity));
 
         mockMvc.perform(patch("/companies/update/Galvanize")
                 .content(objectMapper.writeValueAsString(newCompanyEntity))
@@ -382,7 +380,9 @@ public class CompanyIT {
         mockMvc.perform(delete("/companies/Galvanize"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("Company deleted successfully."));
+                .andExpect(jsonPath("message").value("Company deleted successfully."))
+                .andDo(document("deleteCompany", responseFields(
+                        fieldWithPath("message").description("Company deleted successfully."))));
     }
 
     @Test
@@ -390,7 +390,9 @@ public class CompanyIT {
         mockMvc.perform(delete("/companies/Galvanize"))
                 .andExpect(status().isConflict())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("Company does not exist."));
+                .andExpect(jsonPath("message").value("Company does not exist."))
+                .andDo(document("deleteCompanyError", responseFields(
+                        fieldWithPath("message").description("Company does not exist."))));
     }
 
     @Test
