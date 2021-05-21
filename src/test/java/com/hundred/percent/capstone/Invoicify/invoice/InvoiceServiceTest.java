@@ -18,9 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.annotation.DirtiesContext;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,7 +31,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@Transactional
 @ExtendWith(MockitoExtension.class)
 public class InvoiceServiceTest {
 
@@ -49,7 +46,6 @@ public class InvoiceServiceTest {
     CompanyService companyService;
 
     @Test
-    @DirtiesContext
     public void getAllInvoicesTest() throws Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
@@ -89,7 +85,6 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    @DirtiesContext
     public void createInvoiceTest() throws Exception, CompanyExistsException {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
@@ -110,7 +105,6 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    @DirtiesContext
     public void getInvoicesByCompanyName() throws Exception, CompanyExistsException {
 
         CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",

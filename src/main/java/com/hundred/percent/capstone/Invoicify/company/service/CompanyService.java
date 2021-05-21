@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.company.service;
 
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -39,9 +40,17 @@ public class CompanyService {
     }
 
 
-    public List<CompanySimpleViewDTO> getSimpleCompanyView() {
+    public List<CompanySimpleViewDTO> getSimpleCompanyView() throws CompanyAddressDoesNotExistsException {
 
-        return companyRepository.findAll()
+        List<CompanyEntity> companyEntityList = companyRepository.findAll();
+
+            for (CompanyEntity c : companyEntityList) {
+                if ((c.getAddresses() == null) || c.getAddresses().size()==0)
+                    throw new CompanyAddressDoesNotExistsException();
+            }
+
+        //return companyRepository.findAll()
+        return companyEntityList
                 .stream()
                 .map(companyEntity -> {
                     return new CompanySimpleViewDTO(
@@ -54,8 +63,17 @@ public class CompanyService {
 
     }
 
-    public List<CompanyListViewDTO> getListCompanyView() {
-        return companyRepository.findAll()
+    public List<CompanyListViewDTO> getListCompanyView() throws CompanyAddressDoesNotExistsException {
+
+        List<CompanyEntity> companyEntityList = companyRepository.findAll();
+
+        for (CompanyEntity c : companyEntityList) {
+            if ((c.getAddresses() == null) || c.getAddresses().size()==0)
+                throw new CompanyAddressDoesNotExistsException();
+        }
+
+        //return companyRepository.findAll()
+        return companyEntityList
                 .stream()
                 .map(companyEntity -> {
                     return new CompanyListViewDTO(

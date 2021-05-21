@@ -220,6 +220,33 @@ public class CompanyIT {
     }
 
     @Test
+    public void companySimpleView_Failed_Test() throws Exception{
+        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(get("/companies/simpleView"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("message").value("One or more companies does not have address associated with them."))
+                .andDo(print())
+                .andDo(document("simpleCompanyViewWithNoAddress", responseFields(
+                        fieldWithPath("message").description("One or more companies does not have address associated with them.")
+                )));
+
+    }
+
+    @Test
     public void companyListView_test() throws Exception {
         CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
@@ -274,6 +301,33 @@ public class CompanyIT {
                         fieldWithPath("[1].state").description("FL"),
                         fieldWithPath("[1].zip").description("5555")
                 )));
+    }
+
+    @Test
+    public void companyListView_Failed_Test() throws Exception{
+        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(get("/companies/listView"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("message").value("One or more companies does not have address associated with them."))
+                .andDo(print())
+                .andDo(document("listCompanyViewWithNoAddress", responseFields(
+                        fieldWithPath("message").description("One or more companies does not have address associated with them.")
+                )));
+
     }
 
     @Test
