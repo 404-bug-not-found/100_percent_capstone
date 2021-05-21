@@ -15,4 +15,14 @@ public class AddressExceptionHandler {
 
         return "{\"message\": \"Address already exist.\"}";
     }
+
+
+    @ExceptionHandler(CompanyAddressDoesNotExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody
+    String handleAddressNotFoundException() {
+
+        return "{\"message\": \"One or more companies does not have address associated with them.\"}";
+    }
+
 }
