@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.company.controller;
 
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
@@ -45,13 +46,13 @@ public class CompanyController {
     }
 
     @GetMapping("/simpleView")
-    public List<CompanySimpleViewDTO> getSimpleCompanyView() {
+    public List<CompanySimpleViewDTO> getSimpleCompanyView() throws CompanyAddressDoesNotExistsException {
 
         return companyService.getSimpleCompanyView();
     }
 
     @GetMapping("/listView")
-    public List<CompanyListViewDTO> getListCompanyView() {
+    public List<CompanyListViewDTO> getListCompanyView() throws CompanyAddressDoesNotExistsException {
 
         return companyService.getListCompanyView();
     }
