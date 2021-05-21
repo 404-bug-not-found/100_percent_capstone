@@ -9,6 +9,7 @@ import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import com.hundred.percent.capstone.Invoicify.company.service.CompanyService;
@@ -22,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -169,5 +171,22 @@ public class CompanyServiceTest {
         CompanyEntity actual = companyService.updateCompany(newCompanyEntity, oldCompanyEntity.getName());
 
         AssertionsForClassTypes.assertThat(actual).isEqualTo(newCompanyEntity);
+    }
+
+    @Test
+    public void deleteCompanyTest() throws CompanyDoesNotExistsException {
+        CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(oldCompanyEntity);
+
+        String actual = companyService.deleteCompany("Freddie Mac");
+        assertThat(actual).isEqualTo("{\"message\": \"Company deleted successfully.\"}");
+    }
+
+    @Test
+    public void deleteCompanyThrowsException() {
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
+            companyService.deleteCompany("Freddie Mac");
+        });
     }
 }
