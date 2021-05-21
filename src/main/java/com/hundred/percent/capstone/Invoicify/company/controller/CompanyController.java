@@ -41,7 +41,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyname}/invoices")
-    public List<InvoiceDTO> getInvoicesByCompanyName(@PathVariable String companyname){
+    public List<InvoiceDTO> getInvoicesByCompanyName(@PathVariable String companyname) {
         return this.invoiceService.getInvoicesByCompanyName(companyname);
     }
 
@@ -58,12 +58,13 @@ public class CompanyController {
     }
 
     @PatchMapping("/update/{name}")
-    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity,@PathVariable String name) throws AddressExistsException {
-        return companyService.updateCompany(companyEntity,name);
+    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException {
+        return companyService.updateCompany(companyEntity, name);
     }
 
     @DeleteMapping("/{name}")
-    public void deleteCompany(@PathVariable String name){
-
+    public String deleteCompany(@PathVariable String name) {
+        return null;
+//        return "{\"message\": \"Company deleted successfully.\"}";
     }
 }
