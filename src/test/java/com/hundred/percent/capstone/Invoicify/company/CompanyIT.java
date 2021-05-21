@@ -369,4 +369,12 @@ public class CompanyIT {
                 .andDo(document("updateCompany"));
     }
 
+    @Test
+    public void delete_Company_Test() throws Exception{
+        mockMvc.perform(delete("/companies/Cognizant"))
+                .andExpect(status().isOk())
+                .andDo(print())
+        .andExpect(jsonPath("message").value("Company deleted successfully."));
+    }
+
 }

@@ -61,4 +61,9 @@ public class CompanyController {
     public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity,@PathVariable String name) throws AddressExistsException {
         return companyService.updateCompany(companyEntity,name);
     }
+
+    @DeleteMapping("/{name}")
+    public void deleteCompany(@PathVariable String name){
+
+    }
 }
