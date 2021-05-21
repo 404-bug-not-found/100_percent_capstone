@@ -28,9 +28,9 @@ public class JwtManager {
    */
   public static final long EXPIRATION_MODIFIER = 1000 * 60 * 60 * 10;
 
-  public static final String JWT_HEADER = "InvoicifySecurity";
+  public static final String JWT_HEADER = "Authorization";
 
-  public static final String JWT_PREFIX = "Capstone ";
+  public static final String JWT_PREFIX = "Bearer ";
 
   public static SecretKey KEY;
 
