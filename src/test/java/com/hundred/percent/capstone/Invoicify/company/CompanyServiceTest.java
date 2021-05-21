@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
@@ -20,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
@@ -82,7 +82,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    public void getSimpleCompanyDTOList() {
+    public void getSimpleCompanyDTOList() throws CompanyAddressDoesNotExistsException {
 
         CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         List<AddressEntity> addressEntities = new ArrayList<>();
@@ -107,7 +107,19 @@ public class CompanyServiceTest {
     }
 
     @Test
-    public void companyViewDTO_ListView_test() {
+    public void companySimpleView_Fail_Test() {
+
+        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+
+        when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
+
+        assertThrows(CompanyAddressDoesNotExistsException.class, () -> {
+            companyService.getSimpleCompanyView();
+        });
+    }
+
+    @Test
+    public void companyViewDTO_ListView_test() throws CompanyAddressDoesNotExistsException {
         CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         List<AddressEntity> addressEntities = new ArrayList<>();
         addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", entity1));
@@ -130,6 +142,17 @@ public class CompanyServiceTest {
         );
     }
 
+    @Test
+    public void companyListView_Fail_Test() {
+
+        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+
+        when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
+
+        assertThrows(CompanyAddressDoesNotExistsException.class, () -> {
+            companyService.getSimpleCompanyView();
+        });
+    }
 
     @Test
     public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
