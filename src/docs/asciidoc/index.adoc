@@ -47,6 +47,21 @@ include::{snippets}/listCompanyViewWithNoAddress/http-request.adoc[]
 .response
 include::{snippets}/listCompanyViewWithNoAddress/http-response.adoc[]
 
+deleteCompanyError
+
+.request
+include::{snippets}/deleteCompanyError/http-request.adoc[]
+
+.response
+include::{snippets}/deleteCompanyError/http-response.adoc[]
+
+deleteCompany
+
+.request
+include::{snippets}/deleteCompany/http-request.adoc[]
+
+.response
+include::{snippets}/deleteCompany/http-response.adoc[]
 
 getAddresses
 
