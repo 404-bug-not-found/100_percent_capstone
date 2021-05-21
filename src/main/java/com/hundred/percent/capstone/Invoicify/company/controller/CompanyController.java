@@ -1,10 +1,12 @@
 package com.hundred.percent.capstone.Invoicify.company.controller;
 
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.service.CompanyService;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
@@ -40,24 +42,30 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyname}/invoices")
-    public List<InvoiceDTO> getInvoicesByCompanyName(@PathVariable String companyname){
+    public List<InvoiceDTO> getInvoicesByCompanyName(@PathVariable String companyname) {
         return this.invoiceService.getInvoicesByCompanyName(companyname);
     }
 
     @GetMapping("/simpleView")
-    public List<CompanySimpleViewDTO> getSimpleCompanyView() {
+    public List<CompanySimpleViewDTO> getSimpleCompanyView() throws CompanyAddressDoesNotExistsException {
 
         return companyService.getSimpleCompanyView();
     }
 
     @GetMapping("/listView")
-    public List<CompanyListViewDTO> getListCompanyView() {
+    public List<CompanyListViewDTO> getListCompanyView() throws CompanyAddressDoesNotExistsException {
 
         return companyService.getListCompanyView();
     }
 
     @PatchMapping("/update/{name}")
-    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity,@PathVariable String name) throws AddressExistsException {
-        return companyService.updateCompany(companyEntity,name);
+    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException {
+        return companyService.updateCompany(companyEntity, name);
+    }
+
+    @DeleteMapping("/{name}")
+    public String deleteCompany(@PathVariable String name) throws CompanyDoesNotExistsException {
+        return companyService.deleteCompany(name);
+
     }
 }
