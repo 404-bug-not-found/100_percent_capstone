@@ -227,13 +227,18 @@ public class InvoiceIT {
     @DirtiesContext
     public void deleteInvoiceTest() throws Exception{
         initialCompanyInvoiceSetUp();
-        mockMvc.perform(delete("/invoices/1"))
+        mockMvc.perform(get("/invoices/3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andDo(document("getInvoice"));
+
+        mockMvc.perform(delete("/invoices/3"))
                 .andExpect(status().isNoContent())
                 .andDo(document("deleteInvoice"));
 
-        mockMvc.perform(get("/invoices/1"))
+        mockMvc.perform(get("/invoices/3"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].items.length()").value(0))
+                .andExpect(jsonPath("$.length()").value(0))
                 .andDo(document("getInvoice"));
     }
 

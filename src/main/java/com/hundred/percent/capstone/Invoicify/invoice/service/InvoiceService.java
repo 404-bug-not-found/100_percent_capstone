@@ -136,8 +136,11 @@ public class InvoiceService {
         invoiceEnt.setPaidStatus(invoiceDto.getPaidStatus());
 
         this.invoiceRepository.save(invoiceEnt);
-
-
-
+    }
+    public void deleteInvoice(long Id) {
+         InvoiceEntity ent = invoiceRepository.findAll()
+                .stream().filter(invEnt -> invEnt.getId().equals(Id))
+                .collect(Collectors.toList()).get(0);
+        invoiceRepository.delete(ent);
     }
 }

@@ -38,7 +38,7 @@ public class InvoiceController {
          this.invoiceService.updateInvoice(Long.parseLong(id),invoiceDTO);
     }
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void  deleteInvoice(@PathVariable String id){
         this.invoiceService.deleteInvoice(Long.parseLong(id));
     }
