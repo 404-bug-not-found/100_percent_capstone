@@ -32,12 +32,15 @@ public class InvoiceController {
     public List<InvoiceDTO> getAnInvoicebyId(@PathVariable String id){
             return this.invoiceService.getInvoiceById(Long.parseLong(id));
     }
-
-
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public void  updateInvoice(@RequestBody InvoiceDTO invoiceDTO,@PathVariable String id){
          this.invoiceService.updateInvoice(Long.parseLong(id),invoiceDTO);
+    }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void  deleteInvoice(@PathVariable String id){
+        this.invoiceService.deleteInvoice(Long.parseLong(id));
     }
 
 }

@@ -33,8 +33,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -222,6 +221,20 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
                 .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
                 .andExpect(jsonPath("$.[0].items.[3].description").value("Item4"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void deleteInvoiceTest() throws Exception{
+        initialCompanyInvoiceSetUp();
+        mockMvc.perform(delete("/invoices/1"))
+                .andExpect(status().isNoContent())
+                .andDo(document("deleteInvoice"));
+
+        mockMvc.perform(get("/invoices/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].items.length()").value(0))
+                .andDo(document("getInvoice"));
     }
 
     private void createCompany(String invoiceNumber,String companyName) throws Exception{

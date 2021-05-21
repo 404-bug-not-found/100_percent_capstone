@@ -91,11 +91,6 @@ public class InvoiceServiceTest {
     @Test
     @DirtiesContext
     public void createInvoiceTest() throws Exception, CompanyExistsException {
-
-//        CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
-//                "Accounts Payable", "1-123-456-7890");
-//        this.companyService.createCompany(companyDTO);
-
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
         CompanyEntity compEnt = new CompanyEntity("1", "Cognizant","David",
