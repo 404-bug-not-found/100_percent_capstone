@@ -14,6 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +92,13 @@ public class EmployeeTests {
             fieldWithPath("roles").description("Current Roles"),
             fieldWithPath("active").description("Active state of Employee")
         )));
+  }
+
+  @Test
+  public void codeCoverageTest(){
+    Employee emp = new Employee("test","test");
+
+    assertEquals("test",emp.getEmployeeName());
   }
 
 }
