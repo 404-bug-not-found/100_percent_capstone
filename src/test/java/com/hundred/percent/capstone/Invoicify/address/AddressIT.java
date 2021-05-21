@@ -16,8 +16,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -155,5 +154,75 @@ public class AddressIT {
                 )));
     }
 
+    @Test
+    public void updateAddressTest() throws Exception {
+
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO input2 = new AddressDTO("123 St", "Houston", "TX", "11111", "Cognizant");
+
+        mockMvc.perform(patch("/addresses/Cognizant")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("addressLine1").value("123 St"))
+                .andExpect(jsonPath("city").value("Houston"))
+                .andExpect(jsonPath("state").value("TX"))
+                .andExpect(jsonPath("zip").value("11111"))
+                .andDo(document("updateAddress", responseFields(
+                        fieldWithPath("addressLine1").description("123 St"),
+                        fieldWithPath("city").description("Houston"),
+                        fieldWithPath("state").description("TX"),
+                        fieldWithPath("zip").description("11111"),
+                        fieldWithPath("companyName").description("Cognizant")
+                )));
+    }
+
+    @Test
+    public void updateAddressNoCompanyFoundTest() throws Exception {
+
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO input2 = new AddressDTO("123 St", "Houston", "TX", "11111", "Cognizant");
+
+        mockMvc.perform(patch("/addresses/Cigna")
+                .content(objectMapper.writeValueAsString(input2))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Company does not exist."))
+                .andDo(document("updateAddressWithInvalidCompany", responseFields(
+                        fieldWithPath("message").description("Company does not exist.")
+                )));
+    }
 
 }
