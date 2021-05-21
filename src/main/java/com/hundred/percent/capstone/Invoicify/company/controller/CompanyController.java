@@ -6,6 +6,7 @@ import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.service.CompanyService;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
@@ -63,8 +64,8 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{name}")
-    public String deleteCompany(@PathVariable String name) {
-        companyService.deleteCompany(name);
-        return "{\"message\": \"Company deleted successfully.\"}";
+    public String deleteCompany(@PathVariable String name) throws CompanyDoesNotExistsException {
+        return companyService.deleteCompany(name);
+
     }
 }

@@ -385,4 +385,12 @@ public class CompanyIT {
         .andExpect(jsonPath("message").value("Company deleted successfully."));
     }
 
+    @Test
+    public void delete_company_failed_test() throws Exception {
+        mockMvc.perform(delete("/companies/Galvanize"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Company does not exist."));
+    }
+
 }
