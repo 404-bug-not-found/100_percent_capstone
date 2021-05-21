@@ -193,6 +193,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
@@ -203,6 +204,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(d5))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));
 
@@ -227,6 +229,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
@@ -238,6 +241,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(d5))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));
 
@@ -291,24 +295,28 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d2))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d3))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
@@ -323,6 +331,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated());
     }
 }

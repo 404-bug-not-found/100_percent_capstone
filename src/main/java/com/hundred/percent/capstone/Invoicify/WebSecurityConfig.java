@@ -67,11 +67,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/employee").permitAll()
 				.antMatchers("/employee/**").authenticated()
-				.antMatchers(HttpMethod.POST, "/companies").authenticated()
-//				.antMatchers(HttpMethod.GET, "/companies").permitAll()
-//				.antMatchers(HttpMethod.PUT, "/products/skirts/**").authenticated()
-//				.antMatchers(HttpMethod.PATCH, "/products/skirts/**").authenticated()
-//				.antMatchers(HttpMethod.DELETE, "/products/skirts/**").authenticated()
+
+				.antMatchers(HttpMethod.POST, "/companies/**").authenticated()
+				.antMatchers(HttpMethod.PUT, "/companies/**").authenticated()
+				.antMatchers(HttpMethod.PATCH, "/companies/**").authenticated()
+				.antMatchers(HttpMethod.DELETE, "/companies/**").authenticated()
+
+				.antMatchers(HttpMethod.POST, "/addresses/**").authenticated()
+				.antMatchers(HttpMethod.PUT, "/addresses/**").authenticated()
+				.antMatchers(HttpMethod.PATCH, "/addresses/**").authenticated()
+				.antMatchers(HttpMethod.DELETE, "/addresses/**").authenticated()
+
+				.antMatchers(HttpMethod.POST, "/invoices/**").authenticated()
+				.antMatchers(HttpMethod.PUT, "/invoices/**").authenticated()
+				.antMatchers(HttpMethod.PATCH, "/invoices/**").authenticated()
+				.antMatchers(HttpMethod.DELETE, "/invoices/**").authenticated()
+
 				.antMatchers("/**").permitAll()
 //				.antMatchers("/employeeName").authenticated()
 			.and()

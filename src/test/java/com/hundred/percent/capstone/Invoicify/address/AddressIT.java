@@ -93,7 +93,8 @@ public class AddressIT {
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(addrDTO))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("postAddress"));
@@ -124,13 +125,15 @@ public class AddressIT {
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input2))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -165,13 +168,15 @@ public class AddressIT {
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("message").value("Address already exist."))
                 .andDo(print())
@@ -186,7 +191,8 @@ public class AddressIT {
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company does not exist."))
@@ -211,7 +217,8 @@ public class AddressIT {
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -219,7 +226,8 @@ public class AddressIT {
 
         mockMvc.perform(patch("/addresses/Cognizant")
                 .content(objectMapper.writeValueAsString(input2))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("addressLine1").value("123 St"))
@@ -251,7 +259,8 @@ public class AddressIT {
 
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -259,7 +268,8 @@ public class AddressIT {
 
         mockMvc.perform(patch("/addresses/Cigna")
                 .content(objectMapper.writeValueAsString(input2))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company does not exist."))
