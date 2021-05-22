@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.invoice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hundred.percent.capstone.Invoicify.Employee.Employee;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
@@ -9,6 +10,7 @@ import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,14 +21,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.Assert;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_HEADER;
+import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -43,11 +45,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 public class InvoiceIT {
 
+    String token;
+
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @BeforeEach
+    public void beforeEach() throws Exception{
+        Employee employee = new Employee();
+        employee.setEmployeeName("Iqbal");
+        employee.setPassword("capstone");
+        Map<String, Object> body = new HashMap<>();
+        body.put("employeeName",employee.getEmployeeName());
+        body.put("password",employee.getPassword());
+
+        mockMvc.perform(post("/employee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isOk());
+
+        MvcResult result = mockMvc.perform(
+                post("/authenticate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").exists())
+                .andReturn();
+
+        Map<String, String> responseBody = objectMapper.readValue(
+                result.getResponse().getContentAsString(),Map.class);
+        token = responseBody.get("token");
+    }
 
     @Test
     public void getEmptyInvoiceTest() throws Exception {
@@ -159,6 +190,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
@@ -169,6 +201,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(d5))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));
 
@@ -193,6 +226,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
@@ -204,6 +238,7 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(d5))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("putInvoice"));
 
@@ -221,7 +256,8 @@ public class InvoiceIT {
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andDo(document("postCompany"));
@@ -256,26 +292,43 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d2))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d3))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
+    }
+
+    @Test
+    public void testForItemDTOCodeCoverage() throws Exception{
+        List<ItemDTO> itemsDTO = new ArrayList<ItemDTO>();
+        itemsDTO.add(new ItemDTO("Item1",2000,1));
+        InvoiceDTO d= new InvoiceDTO("2", itemsDTO,new Date(),"");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
+        ).andExpect(status().isCreated());
     }
 }
