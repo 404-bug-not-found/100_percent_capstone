@@ -2,6 +2,7 @@ package com.hundred.percent.capstone.Invoicify.Security.Jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.Security.SecurityUser;
+import com.hundred.percent.capstone.Invoicify.utilities.ExcludeGeneratedFromJaCoCo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +44,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
    * The logic here allows you to send the username and password via JSON instead of the default
    * form data format.
    */
+  @ExcludeGeneratedFromJaCoCo
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
     UsernamePasswordAuthenticationToken authRequest;

@@ -3,6 +3,8 @@ package com.hundred.percent.capstone.Invoicify.securityTests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.Employee.Employee;
 import com.hundred.percent.capstone.Invoicify.Employee.EmployeeService;
+import com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager;
+import com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.util.Map;
 
 import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_HEADER;
 import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_PREFIX;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -189,5 +192,24 @@ public class AuthenticationTests {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(employee.getId().toString()))
         .andDo(document("employee - GET - by ID - JWT included"));
+  }
+
+  @Test
+  public void jwtToken_emptyClaimsBody_Test(){
+    JwtToken JwtToken = new JwtToken();
+
+    assertEquals(null,JwtToken.getSubject());
+    assertEquals(false,JwtToken.isValid());
+
+  }
+
+  @Test
+  public void empty_jwtToken_Test(){
+    JwtManager jwtManager = new JwtManager();
+    //JwtToken JwtToken = new JwtToken();
+
+    assertEquals("", jwtManager.getToken(".").getToken());
+    //assertEquals(false,JwtToken.isValid());
+
   }
 }

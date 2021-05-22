@@ -1,5 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.Security.Jwt;
 
+import com.hundred.percent.capstone.Invoicify.utilities.ExcludeGeneratedFromJaCoCo;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,6 +48,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
    * This is utilizes the token manager to parse the token, then sets up the authentication object if able.
    * Returning null from this method will cause authorization to fail.
    */
+  @ExcludeGeneratedFromJaCoCo
   private UsernamePasswordAuthenticationToken getAuthentication(String token) {
     try {
       JwtToken jwt = jwtManager.getToken(token.replace(JWT_PREFIX, ""));
