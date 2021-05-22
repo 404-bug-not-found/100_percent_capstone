@@ -157,8 +157,8 @@ public class AddressServiceTest {
 
         when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
         when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(null);
-        
-        assertThrows(CompanyDoesNotExistsException.class, () -> {
+
+        assertThrows(CompanyAddressDoesNotExistsException.class, () -> {
             addressService.deleteAddress("Freddie Mac");
         });
     }
