@@ -75,4 +75,7 @@ public class AddressService {
     }
 
 
+    public String deleteAddress(String name) {
+        return "{\"message\": \"Address deleted successfully.\"}";
+    }
 }

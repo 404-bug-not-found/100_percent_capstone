@@ -41,7 +41,6 @@ public class AddressController {
 
     @DeleteMapping("/{name}")
     public String deleteAddress(@PathVariable String name) throws CompanyDoesNotExistsException {
-//        return addressService.deleteAddress(name);
-        return null;
+        return addressService.deleteAddress(name);
     }
 }

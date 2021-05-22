@@ -301,7 +301,11 @@ public class AddressIT {
         mockMvc.perform(delete("/addresses/Cognizant")
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+        .andExpect(jsonPath("message").value("Address deleted successfully."))
+        .andDo(document("deleteAddress",responseFields(
+                fieldWithPath("message").description("Address deleted successfully.")
+        )));
     }
 
 }
