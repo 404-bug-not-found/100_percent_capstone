@@ -75,7 +75,13 @@ public class AddressService {
     }
 
 
-    public String deleteAddress(String name) {
+    public String deleteAddress(String name) throws CompanyDoesNotExistsException {
+        CompanyEntity companyEntity = companyRepository.findByName(name);
+        if (companyEntity == null) {
+            throw new CompanyDoesNotExistsException();
+        }
+        AddressEntity addressEntity = addressRepository.findByCompanyEntity(companyEntity);
+        addressRepository.delete(addressEntity);
         return "{\"message\": \"Address deleted successfully.\"}";
     }
 }
