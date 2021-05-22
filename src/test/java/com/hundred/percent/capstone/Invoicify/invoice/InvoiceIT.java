@@ -24,6 +24,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
+
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -33,8 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,11 +91,32 @@ public class InvoiceIT {
         .andDo(document("getInvoice"));
     }
     @Test
-    public void createAndGetInvoiceTest() throws Exception{
+    public void createSingleInvoiceTest() throws Exception{
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String expected = formatter.format(new Date());
 
+        createCompany("2","TCS");
+
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+
+        MvcResult result = mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Invoice ID created was 2");
+    }
+
+    @Test
+    public void createAndGetInvoiceTest() throws Exception{
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String expected = formatter.format(new Date());
         initialCompanyInvoiceSetUp();
+
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(4))
@@ -249,6 +272,88 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[0].description").value("Item1"))
                 .andExpect(jsonPath("$.[0].items.[3].description").value("Item4"));
     }
+
+    @Test
+    public void deleteUnpaidInvoiceTest() throws Exception{
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        MvcResult result = mockMvc.perform(delete("/invoices/2")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isConflict())
+                .andDo(document("deleteInvoice"))
+                .andReturn();
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}");
+
+    }
+
+    @Test
+    public void deletepaidInvoiceLessThanYearTest() throws Exception{
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"2021-05-21");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        MvcResult result = mockMvc.perform(delete("/invoices/2")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isConflict())
+                .andDo(document("deleteInvoice"))
+                .andReturn();
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}");
+
+
+    }
+    @Test
+    public void deletepaidInvoiceMoreThanYearTest() throws Exception{
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"2019-05-21");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        MvcResult result = mockMvc.perform(delete("/invoices/2")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isNoContent())
+                .andDo(document("deleteInvoice"))
+                .andReturn();
+        mockMvc.perform(get("/invoices/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0))
+                .andDo(document("getInvoice"));
+
+    }
+
 
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",

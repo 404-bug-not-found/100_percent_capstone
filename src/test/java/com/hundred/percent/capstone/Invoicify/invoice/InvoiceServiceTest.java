@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -86,11 +87,6 @@ public class InvoiceServiceTest {
 
     @Test
     public void createInvoiceTest() throws Exception, CompanyExistsException {
-
-//        CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
-//                "Accounts Payable", "1-123-456-7890");
-//        this.companyService.createCompany(companyDTO);
-
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
         items1.add(new ItemEntity("Item1",20));
         CompanyEntity compEnt = new CompanyEntity("1", "Cognizant","David",
@@ -99,7 +95,7 @@ public class InvoiceServiceTest {
 
         when(this.mockCompanyRepository.findByInvoiceNumber("1"))
                 .thenReturn(compEnt);
-
+        when(mockInvoiceRepository.save(any())).thenReturn(invEnt);
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
         InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
@@ -119,7 +115,7 @@ public class InvoiceServiceTest {
         InvoiceEntity ent = new InvoiceEntity(company,itemsENT1);
 
         when(mockInvoiceRepository.findAll()).thenReturn( List.of(ent));
-
+        when(mockInvoiceRepository.save(any())).thenReturn(ent);
 
         CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
                 "Accounts Payable", "1-123-456-7890");
