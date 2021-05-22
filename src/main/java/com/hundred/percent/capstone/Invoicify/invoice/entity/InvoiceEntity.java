@@ -48,4 +48,12 @@ public class InvoiceEntity {
         this.paidStatus = PaidStatus.UnPaid;
         this.paidDate = "";
     }
+    public InvoiceEntity(CompanyEntity companyEntity, List<ItemEntity> items,PaidStatus Status,String paidDate) {
+        this.companyEntity = companyEntity;
+        this.items = items;
+        this.dateCreated = new Date();
+        this.dateModified = new Date();
+        this.paidStatus = Status;
+        this.paidDate = paidDate;
+    }
 }
