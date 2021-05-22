@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -128,4 +129,24 @@ public class AddressServiceTest {
                 new AddressDTO("456 St", "Tampa", "FL", "33333", "Freddie Mac")
         );
     }
+
+    @Test
+    public void deleteAddressTest() throws CompanyDoesNotExistsException {
+        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        AddressEntity addrEntity1 = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity1);
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
+        when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(addrEntity1);
+        String actual = addressService.deleteAddress("Freddie Mac");
+
+        assertThat(actual).isEqualTo("{\"message\": \"Company deleted successfully.\"}");
+    }
+
+//    @Test
+//    public void deleteCompanyThrowsException() {
+//        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+//        assertThrows(CompanyDoesNotExistsException.class, () -> {
+//            companyService.deleteCompany("Freddie Mac");
+//        });
+//    }
 }

@@ -310,7 +310,7 @@ public class AddressIT {
 
     @Test
     public void delete_address_noCompanyFound_test() throws Exception {
-        
+
         mockMvc.perform(delete("/addresses/Test")
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
