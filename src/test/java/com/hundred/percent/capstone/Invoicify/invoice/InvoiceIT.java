@@ -104,7 +104,8 @@ public class InvoiceIT {
         MvcResult result = mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated())
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
                 .andReturn();
 
         assertThat(result.getResponse().getContentAsString()).isEqualTo("Invoice ID created was 2");
@@ -285,10 +286,12 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
-        MvcResult result = mockMvc.perform(delete("/invoices/2"))
+        MvcResult result = mockMvc.perform(delete("/invoices/2")
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
                 .andDo(document("deleteInvoice"))
                 .andReturn();
@@ -309,10 +312,12 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated())
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
-        MvcResult result = mockMvc.perform(delete("/invoices/2"))
+        MvcResult result = mockMvc.perform(delete("/invoices/2")
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
                 .andDo(document("deleteInvoice"))
                 .andReturn();
@@ -333,10 +338,12 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated())
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
                 .andDo(document("postInvoice"));
 
-        MvcResult result = mockMvc.perform(delete("/invoices/2"))
+        MvcResult result = mockMvc.perform(delete("/invoices/2")
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isNoContent())
                 .andDo(document("deleteInvoice"))
                 .andReturn();
