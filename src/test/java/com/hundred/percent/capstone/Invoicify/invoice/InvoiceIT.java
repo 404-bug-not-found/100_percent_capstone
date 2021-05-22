@@ -239,23 +239,80 @@ public class InvoiceIT {
     }
 
     @Test
-    @DirtiesContext
-    public void deleteInvoiceTest() throws Exception{
-        initialCompanyInvoiceSetUp();
-        mockMvc.perform(get("/invoices/3"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andDo(document("getInvoice"));
+    public void deleteUnpaidInvoiceTest() throws Exception{
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
 
-        mockMvc.perform(delete("/invoices/3"))
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        MvcResult result = mockMvc.perform(delete("/invoices/2"))
+                .andExpect(status().isConflict())
+                .andDo(document("deleteInvoice"))
+                .andReturn();
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}");
+
+    }
+
+    @Test
+    public void deletepaidInvoiceLessThanYearTest() throws Exception{
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"2021-05-21");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        MvcResult result = mockMvc.perform(delete("/invoices/2"))
+                .andExpect(status().isConflict())
+                .andDo(document("deleteInvoice"))
+                .andReturn();
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}");
+
+
+    }
+    @Test
+    public void deletepaidInvoiceMoreThanYearTest() throws Exception{
+        createCompany("1","TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1",2000));
+        itemsDTO2.add(new ItemDTO("Item2",40));
+        itemsDTO2.add(new ItemDTO("Item3",40,3));
+
+        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"2019-05-21");
+
+        mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d4))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(document("postInvoice"));
+
+        MvcResult result = mockMvc.perform(delete("/invoices/2"))
                 .andExpect(status().isNoContent())
-                .andDo(document("deleteInvoice"));
-
-        mockMvc.perform(get("/invoices/3"))
+                .andDo(document("deleteInvoice"))
+                .andReturn();
+        mockMvc.perform(get("/invoices/2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0))
                 .andDo(document("getInvoice"));
+
     }
+
 
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",

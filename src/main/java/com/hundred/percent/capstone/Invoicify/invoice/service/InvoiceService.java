@@ -8,6 +8,8 @@ import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
+import com.hundred.percent.capstone.Invoicify.invoice.entity.PaidStatus;
+import com.hundred.percent.capstone.Invoicify.invoice.exception.UnpaidInvoiceDeleteException;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +45,7 @@ public class InvoiceService {
                 }).collect(Collectors.toList()));
 
         CompanyEntity companyEntity =  this.companyRepository.findByInvoiceNumber(invoiceDTO.getCompanyInvoiceNumber());
-        InvoiceEntity entToSave = new InvoiceEntity(companyEntity,items);
+        InvoiceEntity entToSave = new InvoiceEntity(companyEntity,items,invoiceDTO.getPaidStatus(),invoiceDTO.getPaidDate());
         entToSave = this.invoiceRepository.save(entToSave);
         this.invoiceRepository.flush();
         return (entToSave).getId();
@@ -140,10 +143,17 @@ public class InvoiceService {
 
         this.invoiceRepository.save(invoiceEnt);
     }
-    public void deleteInvoice(long Id) {
+    public void deleteInvoice(long Id) throws UnpaidInvoiceDeleteException,Exception{
          InvoiceEntity ent = invoiceRepository.findAll()
                 .stream().filter(invEnt -> invEnt.getId().equals(Id))
                 .collect(Collectors.toList()).get(0);
-        invoiceRepository.delete(ent);
+         Date paidDate = new SimpleDateFormat("yyyy-MM-dd").parse(ent.getPaidDate()==""?"2099-20-02":ent.getPaidDate());
+            long diffInMillies = Math.abs((new Date()).getTime() - paidDate.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+         if(ent.getPaidStatus().equals(PaidStatus.UnPaid) || (diff < 365  && ent.getPaidStatus().equals(PaidStatus.Paid)) )
+             throw new UnpaidInvoiceDeleteException();
+         else
+            invoiceRepository.delete(ent);
     }
 }

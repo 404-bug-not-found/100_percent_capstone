@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.invoice.controller;
 
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
+import com.hundred.percent.capstone.Invoicify.invoice.exception.UnpaidInvoiceDeleteException;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class InvoiceController {
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void  deleteInvoice(@PathVariable String id){
+    public void  deleteInvoice(@PathVariable String id) throws UnpaidInvoiceDeleteException,Exception {
         this.invoiceService.deleteInvoice(Long.parseLong(id));
     }
 
