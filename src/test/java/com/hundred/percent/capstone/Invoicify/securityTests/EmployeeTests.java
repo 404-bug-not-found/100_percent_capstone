@@ -12,12 +12,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -95,10 +97,22 @@ public class EmployeeTests {
   }
 
   @Test
-  public void codeCoverageTest(){
+  public void employeeConstructor_codeCoverageTest(){
     Employee emp = new Employee("test","test");
 
     assertEquals("test",emp.getEmployeeName());
+  }
+
+  @Test
+  @WithMockUser(username = "testemployee")
+  public void employeeRepositoryGetAll_Test() throws Exception{
+    Employee emp = employeeService.save(new Employee("Iqbal", "password", true, "admin"));
+    List<Employee> empList = employeeService.getAll();
+
+    mockMvc.perform(
+                    get("/employee/" + empList.get(0).getId())
+            )
+            .andExpect(status().isOk());
   }
 
 }
