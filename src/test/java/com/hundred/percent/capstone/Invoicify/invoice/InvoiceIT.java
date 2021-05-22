@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
@@ -60,11 +61,31 @@ public class InvoiceIT {
         .andDo(document("getInvoice"));
     }
     @Test
-    public void createAndGetInvoiceTest() throws Exception{
+    public void createSingleInvoiceTest() throws Exception{
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String expected = formatter.format(new Date());
 
+        createCompany("2","TCS");
+
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
+        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+
+        MvcResult result = mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d1))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("Invoice ID created was 2");
+    }
+
+    @Test
+    public void createAndGetInvoiceTest() throws Exception{
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String expected = formatter.format(new Date());
         initialCompanyInvoiceSetUp();
+
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(4))

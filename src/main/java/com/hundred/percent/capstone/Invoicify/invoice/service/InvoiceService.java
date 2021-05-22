@@ -31,7 +31,7 @@ public class InvoiceService {
     @Autowired
     AddressRepository addressRepository;
 
-    public void createInvoice(InvoiceDTO invoiceDTO) {
+    public Long createInvoice(InvoiceDTO invoiceDTO) {
         ArrayList<ItemEntity> items = new ArrayList<ItemEntity>(invoiceDTO.getItems()
                 .stream()
                 .map(itemDTO -> {
@@ -42,7 +42,10 @@ public class InvoiceService {
                 }).collect(Collectors.toList()));
 
         CompanyEntity companyEntity =  this.companyRepository.findByInvoiceNumber(invoiceDTO.getCompanyInvoiceNumber());
-        this.invoiceRepository.save(new InvoiceEntity(companyEntity,items));
+        InvoiceEntity entToSave = new InvoiceEntity(companyEntity,items);
+        entToSave = this.invoiceRepository.save(entToSave);
+        this.invoiceRepository.flush();
+        return (entToSave).getId();
     }
 
     public List<InvoiceDTO> getAllInvoices()
