@@ -487,10 +487,43 @@ public class CompanyIT {
 
     @Test
     public void validate_companyName_notNull_test() throws Exception{
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO nullName = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
-                .content(objectMapper.writeValueAsString(companyDTO))
+                .content(objectMapper.writeValueAsString(nullName))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+
+        CompanyDTO nullInvoice = new CompanyDTO(null, "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(nullInvoice))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+        CompanyDTO nullContactName = new CompanyDTO("CTS-123", "Cognizant", null, "Accounts Payable", "1-123-456-7890");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(nullContactName))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+        CompanyDTO nullContactTitle = new CompanyDTO("CTS-123", "Cognizant", "David", null, "1-123-456-7890");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(nullContactTitle))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+        CompanyDTO nullContactNumber = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", null);
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(nullContactNumber))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
