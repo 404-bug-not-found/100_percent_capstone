@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.securityTests;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.Employee.Employee;
 import com.hundred.percent.capstone.Invoicify.Employee.EmployeeService;
+import com.hundred.percent.capstone.Invoicify.Security.SecurityUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,14 @@ public class EmployeeTests {
                     get("/employee/" + empList.get(0).getId())
             )
             .andExpect(status().isOk());
+  }
+
+  @Test
+  public void SecuritUser_getUsername_Test(){
+    Employee emp = employeeService.save(new Employee("Iqbal", "password", true, "admin"));
+    SecurityUser securityUser = new SecurityUser(emp);
+    assertEquals("Iqbal", securityUser.getUsername());
+
   }
 
 }
