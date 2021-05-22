@@ -308,4 +308,27 @@ public class AddressIT {
         )));
     }
 
+    @Test
+    public void delete_address_noCompanyFound_test() throws Exception {
+
+
+        AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(delete("/addresses/Cognizant")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Address deleted successfully."))
+                .andDo(document("deleteAddress",responseFields(
+                        fieldWithPath("message").description("Address deleted successfully.")
+                )));
+    }
+
 }
