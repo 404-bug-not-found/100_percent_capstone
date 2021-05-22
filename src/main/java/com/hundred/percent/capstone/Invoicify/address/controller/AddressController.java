@@ -38,4 +38,10 @@ public class AddressController {
     public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
         return addressService.updateAddress(addressDTO, name);
     }
+
+    @DeleteMapping("/{name}")
+    public String deleteAddress(@PathVariable String name) throws CompanyDoesNotExistsException {
+//        return addressService.deleteAddress(name);
+        return null;
+    }
 }
