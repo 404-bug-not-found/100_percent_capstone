@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class CompanyEntity {
     }*/
 
     String invoiceNumber;
+    @NotNull
     String name;
     String contactName;
     String contactTitle;

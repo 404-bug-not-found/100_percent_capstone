@@ -485,4 +485,16 @@ public class CompanyIT {
                 .andExpect(jsonPath("message").value("Company deleted successfully."));
     }
 
+    @Test
+    public void validate_companyName_notNull_test() throws Exception{
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print());
+    }
+
 }
