@@ -142,11 +142,11 @@ public class AddressServiceTest {
         assertThat(actual).isEqualTo("{\"message\": \"Address deleted successfully.\"}");
     }
 
-//    @Test
-//    public void deleteCompanyThrowsException() {
-//        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
-//        assertThrows(CompanyDoesNotExistsException.class, () -> {
-//            companyService.deleteCompany("Freddie Mac");
-//        });
-//    }
+    @Test
+    public void deleteAddressThrowsException() {
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
+            addressService.deleteAddress("Freddie Mac");
+        });
+    }
 }
