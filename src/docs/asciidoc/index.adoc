@@ -87,6 +87,14 @@ include::{snippets}/postAddress/http-request.adoc[]
 .response
 include::{snippets}/postAddress/http-response.adoc[]
 
+addressNullValue
+
+.request
+include::{snippets}/addressNullValue/http-request.adoc[]
+
+.response
+include::{snippets}/addressNullValue/http-response.adoc[]
+
 duplicateAddress
 
 .request
