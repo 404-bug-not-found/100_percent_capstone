@@ -14,6 +14,14 @@ include::{snippets}/postCompany/http-request.adoc[]
 .response
 include::{snippets}/postCompany/http-response.adoc[]
 
+companyNullValue
+
+.request
+include::{snippets}/companyNullValue/http-request.adoc[]
+
+.response
+include::{snippets}/companyNullValue/http-response.adoc[]
+
 duplicateCompanyName
 
 .request
