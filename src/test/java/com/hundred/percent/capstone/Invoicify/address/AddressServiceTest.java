@@ -144,8 +144,20 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void deleteAddressThrowsException() {
+    public void deleteAddressThrowsCompanyDoesNotExistsException() {
         when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
+            addressService.deleteAddress("Freddie Mac");
+        });
+    }
+
+    @Test
+    public void deleteAddressThrowsCompanyAddressDoesNotExistsException() {
+        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
+        when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(null);
+        
         assertThrows(CompanyDoesNotExistsException.class, () -> {
             addressService.deleteAddress("Freddie Mac");
         });
