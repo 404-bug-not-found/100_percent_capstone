@@ -44,13 +44,13 @@ public class AddressIT {
     ObjectMapper objectMapper;
 
     @BeforeEach
-    public void beforeEach() throws Exception{
+    public void beforeEach() throws Exception {
         Employee employee = new Employee();
         employee.setEmployeeName("Iqbal");
         employee.setPassword("capstone");
         Map<String, Object> body = new HashMap<>();
-        body.put("employeeName",employee.getEmployeeName());
-        body.put("password",employee.getPassword());
+        body.put("employeeName", employee.getEmployeeName());
+        body.put("password", employee.getPassword());
 
         mockMvc.perform(post("/employee")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class AddressIT {
                 .andReturn();
 
         Map<String, String> responseBody = objectMapper.readValue(
-                result.getResponse().getContentAsString(),Map.class);
+                result.getResponse().getContentAsString(), Map.class);
         token = responseBody.get("token");
     }
 
@@ -275,6 +275,70 @@ public class AddressIT {
                 .andExpect(jsonPath("message").value("Company does not exist."))
                 .andDo(document("updateAddressWithInvalidCompany", responseFields(
                         fieldWithPath("message").description("Company does not exist.")
+                )));
+    }
+
+    @Test
+    public void delete_address_test() throws Exception {
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO input1 = new AddressDTO("456 St", "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(delete("/addresses/Cognizant")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Address deleted successfully."))
+                .andDo(document("deleteAddress", responseFields(
+                        fieldWithPath("message").description("Address deleted successfully.")
+                )));
+    }
+
+    @Test
+    public void delete_address_noCompanyFound_test() throws Exception {
+
+        mockMvc.perform(delete("/addresses/Test")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Company does not exist."))
+                .andDo(document("deleteAddressErrorNoCompany", responseFields(
+                        fieldWithPath("message").description("Company does not exist.")
+                )));
+    }
+
+    @Test
+    public void delete_address_noAddressFound_test() throws Exception {
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(delete("/addresses/Cognizant")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more companies does not have address associated with them."))
+                .andDo(document("deleteAddressErrorNoAddress", responseFields(
+                        fieldWithPath("message").description("One or more companies does not have address associated with them.")
                 )));
     }
 
