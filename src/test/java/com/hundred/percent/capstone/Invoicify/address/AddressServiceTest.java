@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.address;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
@@ -131,7 +132,7 @@ public class AddressServiceTest {
     }
 
     @Test
-    public void deleteAddressTest() throws CompanyDoesNotExistsException {
+    public void deleteAddressTest() throws CompanyDoesNotExistsException, CompanyAddressDoesNotExistsException {
         CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         AddressEntity addrEntity1 = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity1);
 

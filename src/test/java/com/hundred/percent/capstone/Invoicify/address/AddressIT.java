@@ -316,8 +316,29 @@ public class AddressIT {
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company does not exist."))
-                .andDo(document("deleteAddressError",responseFields(
+                .andDo(document("deleteAddressErrorNoCompany",responseFields(
                         fieldWithPath("message").description("Company does not exist.")
+                )));
+    }
+
+    @Test
+    public void delete_address_noAddressFound_test() throws Exception {
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(delete("/addresses/Cognizant")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more companies does not have address associated with them."))
+                .andDo(document("deleteAddressErrorNoAddress",responseFields(
+                        fieldWithPath("message").description("One or more companies does not have address associated with them.")
                 )));
     }
 
