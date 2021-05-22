@@ -1,8 +1,10 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
-import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,13 +18,7 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-
-    /*public String getInvoice_number() {
-        return invoiceNumber;
-    }*/
-
     String invoiceNumber;
-    @NotNull
     String name;
     String contactName;
     String contactTitle;

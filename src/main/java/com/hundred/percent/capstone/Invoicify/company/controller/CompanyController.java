@@ -13,8 +13,10 @@ import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +37,7 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addCompany(@RequestBody CompanyDTO companyDto) throws CompanyExistsException {
+    public void addCompany(@Valid @RequestBody CompanyDTO companyDto) throws CompanyExistsException {
 
         companyService.createCompany(companyDto);
 
