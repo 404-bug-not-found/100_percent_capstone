@@ -29,7 +29,7 @@ public class AddressController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addAddress(@RequestBody AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
+    public void addAddress(@Valid @RequestBody AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
 
         addressService.createAddress(addressDTO);
 
