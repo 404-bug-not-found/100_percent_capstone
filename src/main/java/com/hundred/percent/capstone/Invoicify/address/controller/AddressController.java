@@ -1,8 +1,8 @@
 package com.hundred.percent.capstone.Invoicify.address.controller;
 
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
-import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +37,10 @@ public class AddressController {
     @PatchMapping("/{name}")
     public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
         return addressService.updateAddress(addressDTO, name);
+    }
+
+    @DeleteMapping("/{name}")
+    public String deleteAddress(@PathVariable String name) throws CompanyDoesNotExistsException, CompanyAddressDoesNotExistsException {
+        return addressService.deleteAddress(name);
     }
 }

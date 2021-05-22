@@ -47,6 +47,21 @@ include::{snippets}/listCompanyViewWithNoAddress/http-request.adoc[]
 .response
 include::{snippets}/listCompanyViewWithNoAddress/http-response.adoc[]
 
+deleteCompanyError
+
+.request
+include::{snippets}/deleteCompanyError/http-request.adoc[]
+
+.response
+include::{snippets}/deleteCompanyError/http-response.adoc[]
+
+deleteCompany
+
+.request
+include::{snippets}/deleteCompany/http-request.adoc[]
+
+.response
+include::{snippets}/deleteCompany/http-response.adoc[]
 
 getAddresses
 
@@ -95,6 +110,30 @@ include::{snippets}/updateAddressWithInvalidCompany/http-request.adoc[]
 
 .response
 include::{snippets}/updateAddressWithInvalidCompany/http-response.adoc[]
+
+deleteAddress
+
+.request
+include::{snippets}/deleteAddress/http-request.adoc[]
+
+.response
+include::{snippets}/deleteAddress/http-response.adoc[]
+
+deleteAddressErrorNoCompany
+
+.request
+include::{snippets}/deleteAddressErrorNoCompany/http-request.adoc[]
+
+.response
+include::{snippets}/deleteAddressErrorNoCompany/http-response.adoc[]
+
+deleteAddressErrorNoAddress
+
+.request
+include::{snippets}/deleteAddressErrorNoAddress/http-request.adoc[]
+
+.response
+include::{snippets}/deleteAddressErrorNoAddress/http-response.adoc[]
 
 simpleView
 

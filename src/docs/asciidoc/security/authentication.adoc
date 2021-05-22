@@ -1,0 +1,26 @@
+== POST /authentication (Valid)
+
+.request
+include::{snippets}/authenticate - POST - Valid/http-request.adoc[]
+
+.response
+include::{snippets}/authenticate - POST - Valid/http-response.adoc[]
+include::{snippets}/authenticate - POST - Valid/response-fields.adoc[]
+
+== POST /authentication (Wrong Password)
+
+.request
+include::{snippets}/authenticate - POST - Wrong Password/http-request.adoc[]
+
+.response
+include::{snippets}/authenticate - POST - Wrong Password/http-response.adoc[]
+include::{snippets}/authenticate - POST - Wrong Password/response-fields.adoc[]
+
+== POST /authentication (Non-existent Employee)
+
+.request
+include::{snippets}/authenticate - POST - Non-existent Employee/http-request.adoc[]
+
+.response
+include::{snippets}/authenticate - POST - Non-existent Employee/http-response.adoc[]
+include::{snippets}/authenticate - POST - Non-existent Employee/response-fields.adoc[]
