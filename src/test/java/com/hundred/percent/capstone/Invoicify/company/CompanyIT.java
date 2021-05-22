@@ -411,7 +411,7 @@ public class CompanyIT {
 
         CompanyEntity newCompanyEntity = new CompanyEntity("GLZ-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
 
-        mockMvc.perform(patch("/companies/update/Galvanize")
+        mockMvc.perform(patch("/companies/Galvanize")
                 .content(objectMapper.writeValueAsString(newCompanyEntity))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
