@@ -486,7 +486,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void validate_companyName_notNull_test() throws Exception{
+    public void validate_companyValue_null_test() throws Exception{
         CompanyDTO nullName = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
@@ -494,7 +494,10 @@ public class CompanyIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("companyNullValue", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
 
         CompanyDTO nullInvoice = new CompanyDTO(null, "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
 
@@ -503,7 +506,9 @@ public class CompanyIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
+
         CompanyDTO nullContactName = new CompanyDTO("CTS-123", "Cognizant", null, "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
@@ -511,7 +516,9 @@ public class CompanyIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
+
         CompanyDTO nullContactTitle = new CompanyDTO("CTS-123", "Cognizant", "David", null, "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
@@ -519,7 +526,9 @@ public class CompanyIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
+
         CompanyDTO nullContactNumber = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", null);
 
         mockMvc.perform(post("/companies")
@@ -527,7 +536,8 @@ public class CompanyIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
     }
 
 }
