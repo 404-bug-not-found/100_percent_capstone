@@ -342,4 +342,31 @@ public class AddressIT {
                 )));
     }
 
+    @Test
+    public void validate_company_attributes_null_test() throws Exception{
+
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO input1 = new AddressDTO(null, "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("addressNullValue", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+
+
+    }
+
 }

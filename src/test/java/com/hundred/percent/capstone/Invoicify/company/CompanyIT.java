@@ -486,7 +486,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void validate_companyValue_null_test() throws Exception{
+    public void validate_company_attributes_null_test() throws Exception{
         CompanyDTO nullName = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
