@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.address;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -127,5 +129,37 @@ public class AddressServiceTest {
         AssertionsForClassTypes.assertThat(actual).isEqualTo(
                 new AddressDTO("456 St", "Tampa", "FL", "33333", "Freddie Mac")
         );
+    }
+
+    @Test
+    public void deleteAddressTest() throws CompanyDoesNotExistsException, CompanyAddressDoesNotExistsException {
+        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        AddressEntity addrEntity1 = new AddressEntity("123 Dr", "Houston", "TX", "10000", companyEntity1);
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
+        when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(addrEntity1);
+        String actual = addressService.deleteAddress("Freddie Mac");
+
+        assertThat(actual).isEqualTo("{\"message\": \"Address deleted successfully.\"}");
+    }
+
+    @Test
+    public void deleteAddressThrowsCompanyDoesNotExistsException() {
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
+            addressService.deleteAddress("Freddie Mac");
+        });
+    }
+
+    @Test
+    public void deleteAddressThrowsCompanyAddressDoesNotExistsException() {
+        CompanyEntity companyEntity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(companyEntity1);
+        when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(null);
+
+        assertThrows(CompanyAddressDoesNotExistsException.class, () -> {
+            addressService.deleteAddress("Freddie Mac");
+        });
     }
 }

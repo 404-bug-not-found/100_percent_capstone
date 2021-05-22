@@ -111,6 +111,30 @@ include::{snippets}/updateAddressWithInvalidCompany/http-request.adoc[]
 .response
 include::{snippets}/updateAddressWithInvalidCompany/http-response.adoc[]
 
+deleteAddress
+
+.request
+include::{snippets}/deleteAddress/http-request.adoc[]
+
+.response
+include::{snippets}/deleteAddress/http-response.adoc[]
+
+deleteAddressErrorNoCompany
+
+.request
+include::{snippets}/deleteAddressErrorNoCompany/http-request.adoc[]
+
+.response
+include::{snippets}/deleteAddressErrorNoCompany/http-response.adoc[]
+
+deleteAddressErrorNoAddress
+
+.request
+include::{snippets}/deleteAddressErrorNoAddress/http-request.adoc[]
+
+.response
+include::{snippets}/deleteAddressErrorNoAddress/http-response.adoc[]
+
 simpleView
 
 .request

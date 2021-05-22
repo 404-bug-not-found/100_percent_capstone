@@ -3,6 +3,7 @@ package com.hundred.percent.capstone.Invoicify.address.service;
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
@@ -75,4 +76,16 @@ public class AddressService {
     }
 
 
+    public String deleteAddress(String name) throws CompanyDoesNotExistsException, CompanyAddressDoesNotExistsException {
+        CompanyEntity companyEntity = companyRepository.findByName(name);
+        if (companyEntity == null) {
+            throw new CompanyDoesNotExistsException();
+        }
+        AddressEntity addressEntity = addressRepository.findByCompanyEntity(companyEntity);
+        if (addressEntity == null) {
+            throw new CompanyAddressDoesNotExistsException();
+        }
+        addressRepository.delete(addressEntity);
+        return "{\"message\": \"Address deleted successfully.\"}";
+    }
 }
