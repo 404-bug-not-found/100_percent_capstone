@@ -276,13 +276,15 @@ public class CompanyIT {
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input2))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -364,13 +366,15 @@ public class CompanyIT {
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input2))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -430,11 +434,13 @@ public class CompanyIT {
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(delete("/companies/Galvanize"))
+        mockMvc.perform(delete("/companies/Galvanize")
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company deleted successfully."))
@@ -444,7 +450,8 @@ public class CompanyIT {
 
     @Test
     public void delete_company_failed_test() throws Exception {
-        mockMvc.perform(delete("/companies/Galvanize"))
+        mockMvc.perform(delete("/companies/Galvanize")
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company does not exist."))
@@ -458,18 +465,21 @@ public class CompanyIT {
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
         AddressDTO addrDTO1 = new AddressDTO("123 Dr", "Houston", "TX", "1000", "Galvanize");
         mockMvc.perform(post("/addresses")
                 .content(objectMapper.writeValueAsString(addrDTO1))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        mockMvc.perform(delete("/companies/Galvanize"))
+        mockMvc.perform(delete("/companies/Galvanize")
+                .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company deleted successfully."));
