@@ -1,8 +1,8 @@
 package com.hundred.percent.capstone.Invoicify.company;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
-import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
@@ -25,8 +25,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyServiceTest {

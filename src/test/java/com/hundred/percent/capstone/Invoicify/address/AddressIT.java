@@ -44,13 +44,13 @@ public class AddressIT {
     ObjectMapper objectMapper;
 
     @BeforeEach
-    public void beforeEach() throws Exception{
+    public void beforeEach() throws Exception {
         Employee employee = new Employee();
         employee.setEmployeeName("Iqbal");
         employee.setPassword("capstone");
         Map<String, Object> body = new HashMap<>();
-        body.put("employeeName",employee.getEmployeeName());
-        body.put("password",employee.getPassword());
+        body.put("employeeName", employee.getEmployeeName());
+        body.put("password", employee.getPassword());
 
         mockMvc.perform(post("/employee")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class AddressIT {
                 .andReturn();
 
         Map<String, String> responseBody = objectMapper.readValue(
-                result.getResponse().getContentAsString(),Map.class);
+                result.getResponse().getContentAsString(), Map.class);
         token = responseBody.get("token");
     }
 
@@ -302,10 +302,10 @@ public class AddressIT {
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isOk())
                 .andDo(print())
-        .andExpect(jsonPath("message").value("Address deleted successfully."))
-        .andDo(document("deleteAddress",responseFields(
-                fieldWithPath("message").description("Address deleted successfully.")
-        )));
+                .andExpect(jsonPath("message").value("Address deleted successfully."))
+                .andDo(document("deleteAddress", responseFields(
+                        fieldWithPath("message").description("Address deleted successfully.")
+                )));
     }
 
     @Test
@@ -316,7 +316,7 @@ public class AddressIT {
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("Company does not exist."))
-                .andDo(document("deleteAddressErrorNoCompany",responseFields(
+                .andDo(document("deleteAddressErrorNoCompany", responseFields(
                         fieldWithPath("message").description("Company does not exist.")
                 )));
     }
@@ -337,7 +337,7 @@ public class AddressIT {
                 .andExpect(status().isConflict())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more companies does not have address associated with them."))
-                .andDo(document("deleteAddressErrorNoAddress",responseFields(
+                .andDo(document("deleteAddressErrorNoAddress", responseFields(
                         fieldWithPath("message").description("One or more companies does not have address associated with them.")
                 )));
     }

@@ -1,7 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.address.controller;
 
 import com.hundred.percent.capstone.Invoicify.address.dto.AddressDTO;
-import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
