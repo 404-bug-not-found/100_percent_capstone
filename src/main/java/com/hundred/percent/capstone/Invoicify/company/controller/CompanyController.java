@@ -58,7 +58,7 @@ public class CompanyController {
         return companyService.getListCompanyView();
     }
 
-    @PatchMapping("/update/{name}")
+    @PatchMapping("/{name}")
     public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException {
         return companyService.updateCompany(companyEntity, name);
     }
