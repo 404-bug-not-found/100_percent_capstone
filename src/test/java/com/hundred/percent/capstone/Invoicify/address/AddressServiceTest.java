@@ -139,7 +139,7 @@ public class AddressServiceTest {
         when(mockAddressRepository.findByCompanyEntity(any())).thenReturn(addrEntity1);
         String actual = addressService.deleteAddress("Freddie Mac");
 
-        assertThat(actual).isEqualTo("{\"message\": \"Company deleted successfully.\"}");
+        assertThat(actual).isEqualTo("{\"message\": \"Address deleted successfully.\"}");
     }
 
 //    @Test
