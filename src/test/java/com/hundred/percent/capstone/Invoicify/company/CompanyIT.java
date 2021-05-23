@@ -540,4 +540,15 @@ public class CompanyIT {
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
     }
 
+    @Test
+    public void update_company_failed_test() throws Exception {
+        mockMvc.perform(delete("/companies/Galvanize")
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isConflict())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("Company does not exist."))
+                .andDo(document("updateCompanyError", responseFields(
+                        fieldWithPath("message").description("Company does not exist."))));
+    }
+
 }

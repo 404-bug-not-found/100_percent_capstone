@@ -159,7 +159,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    public void updateCompanyDetailsTest() throws AddressExistsException, Exception {
+    public void updateCompanyDetailsTest() throws AddressExistsException, CompanyDoesNotExistsException {
         CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
         List<AddressEntity> oldAddressEntities = new ArrayList<>();
         oldAddressEntities.add(new AddressEntity("123 St", "Houston", "TX", "33333", oldCompanyEntity));
@@ -189,6 +189,14 @@ public class CompanyServiceTest {
         when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
         assertThrows(CompanyDoesNotExistsException.class, () -> {
             companyService.deleteCompany("Freddie Mac");
+        });
+    }
+
+    @Test
+    public void updateCompanyThrowsException() {
+        when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
+        assertThrows(CompanyDoesNotExistsException.class, () -> {
+            companyService.updateCompany(new CompanyEntity(),null);
         });
     }
 }

@@ -38,6 +38,14 @@ include::{snippets}/updateCompany/http-request.adoc[]
 .response
 include::{snippets}/updateCompany/http-response.adoc[]
 
+updateCompanyError
+
+.request
+include::{snippets}/updateCompanyError/http-request.adoc[]
+
+.response
+include::{snippets}/updateCompanyError/http-response.adoc[]
+
 simpleCompanyViewWithNoAddress
 
 .request
