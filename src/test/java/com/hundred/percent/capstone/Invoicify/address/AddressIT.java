@@ -363,7 +363,7 @@ public class AddressIT {
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("addressNullValue", responseFields(
+                .andDo(document("createAddressNullValue", responseFields(
                         fieldWithPath("message").description("One or more inputs are missing from the request."))));
 
         AddressDTO nullCityName = new AddressDTO("123 Tampa St", null, "FL", "33333", "Cognizant");
@@ -374,9 +374,7 @@ public class AddressIT {
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("addressNullValue", responseFields(
-                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
         AddressDTO nullState = new AddressDTO("123 Tampa St", "Tampa", null, "33333", "Cognizant");
 
@@ -386,9 +384,7 @@ public class AddressIT {
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("addressNullValue", responseFields(
-                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
         AddressDTO nullZipCode = new AddressDTO("123 Tampa St", "Tampa", "FL", null, "Cognizant");
 
@@ -398,9 +394,7 @@ public class AddressIT {
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("addressNullValue", responseFields(
-                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
         AddressDTO nullCompanyName = new AddressDTO("123 Tampa St", "Tampa", "FL", "33333", null);
 
@@ -410,9 +404,7 @@ public class AddressIT {
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
-                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("addressNullValue", responseFields(
-                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
 
     }
@@ -438,7 +430,7 @@ public class AddressIT {
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("addressNullValue", responseFields(
+                .andDo(document("addressNullValueUpdate", responseFields(
                         fieldWithPath("message").description("One or more inputs are missing from the request."))));
 
         AddressDTO nullCityName = new AddressDTO("123 Tampa St", null, "FL", "33333", "Cognizant");

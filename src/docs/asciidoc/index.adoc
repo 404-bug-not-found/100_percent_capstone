@@ -14,13 +14,13 @@ include::{snippets}/postCompany/http-request.adoc[]
 .response
 include::{snippets}/postCompany/http-response.adoc[]
 
-companyNullValue
+createCompanyNullValue (Same validation on all rest of the attributes)
 
 .request
-include::{snippets}/companyNullValue/http-request.adoc[]
+include::{snippets}/createCompanyNullValue/http-request.adoc[]
 
 .response
-include::{snippets}/companyNullValue/http-response.adoc[]
+include::{snippets}/createCompanyNullValue/http-response.adoc[]
 
 duplicateCompanyName
 
@@ -30,7 +30,7 @@ include::{snippets}/duplicateCompanyName/http-request.adoc[]
 .response
 include::{snippets}/duplicateCompanyName/http-response.adoc[]
 
-updateCompany
+updateCompany (Same validation on all rest of the attributes)
 
 .request
 include::{snippets}/updateCompany/http-request.adoc[]
@@ -45,6 +45,14 @@ include::{snippets}/updateCompanyError/http-request.adoc[]
 
 .response
 include::{snippets}/updateCompanyError/http-response.adoc[]
+
+companyNullValueUpdate (Same validation on all rest of the attributes)
+
+.request
+include::{snippets}/companyNullValueUpdate/http-request.adoc[]
+
+.response
+include::{snippets}/companyNullValueUpdate/http-response.adoc[]
 
 simpleCompanyViewWithNoAddress
 
@@ -95,13 +103,13 @@ include::{snippets}/postAddress/http-request.adoc[]
 .response
 include::{snippets}/postAddress/http-response.adoc[]
 
-addressNullValue
+createAddressNullValue (Same validation on all rest of the attributes)
 
 .request
-include::{snippets}/addressNullValue/http-request.adoc[]
+include::{snippets}/createAddressNullValue/http-request.adoc[]
 
 .response
-include::{snippets}/addressNullValue/http-response.adoc[]
+include::{snippets}/createAddressNullValue/http-response.adoc[]
 
 duplicateAddress
 
@@ -134,6 +142,14 @@ include::{snippets}/updateAddressWithInvalidCompany/http-request.adoc[]
 
 .response
 include::{snippets}/updateAddressWithInvalidCompany/http-response.adoc[]
+
+addressNullValueUpdate (Same validation on all rest of the attributes)
+
+.request
+include::{snippets}/addressNullValueUpdate/http-request.adoc[]
+
+.response
+include::{snippets}/addressNullValueUpdate/http-response.adoc[]
 
 deleteAddress
 

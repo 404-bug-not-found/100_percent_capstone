@@ -496,7 +496,7 @@ public class CompanyIT {
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("companyNullValue", responseFields(
+                .andDo(document("createCompanyNullValue", responseFields(
                         fieldWithPath("message").description("One or more inputs are missing from the request."))));
 
         CompanyDTO nullInvoice = new CompanyDTO(null, "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
@@ -562,7 +562,7 @@ public class CompanyIT {
                 .andExpect(status().is4xxClientError())
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
-                .andDo(document("companyNullValue", responseFields(
+                .andDo(document("companyNullValueUpdate", responseFields(
                         fieldWithPath("message").description("One or more inputs are missing from the request."))));
 
         CompanyEntity nullInvoice = new CompanyEntity(null, "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
