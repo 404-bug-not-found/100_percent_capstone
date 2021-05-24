@@ -416,5 +416,78 @@ public class AddressIT {
 
 
     }
+    @Test
+    public void validate_company_attributes_null_while_updating_test() throws Exception{
 
+        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
+
+        mockMvc.perform(patch("/companies")
+                .content(objectMapper.writeValueAsString(companyDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        AddressDTO nullAddressLine1 = new AddressDTO(null, "Tampa", "FL", "33333", "Cognizant");
+
+        mockMvc.perform(patch("/addresses")
+                .content(objectMapper.writeValueAsString(nullAddressLine1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("addressNullValue", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+
+        AddressDTO nullCityName = new AddressDTO("123 Tampa St", null, "FL", "33333", "Cognizant");
+
+        mockMvc.perform(patch("/addresses")
+                .content(objectMapper.writeValueAsString(nullCityName))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("addressNullValueUpdate", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+
+        AddressDTO nullState = new AddressDTO("123 Tampa St", "Tampa", null, "33333", "Cognizant");
+
+        mockMvc.perform(patch("/addresses")
+                .content(objectMapper.writeValueAsString(nullState))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("addressNullValue", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+
+        AddressDTO nullZipCode = new AddressDTO("123 Tampa St", "Tampa", "FL", null, "Cognizant");
+
+        mockMvc.perform(patch("/addresses")
+                .content(objectMapper.writeValueAsString(nullZipCode))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("addressNullValue", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+
+        AddressDTO nullCompanyName = new AddressDTO("123 Tampa St", "Tampa", "FL", "33333", null);
+
+        mockMvc.perform(patch("/addresses")
+                .content(objectMapper.writeValueAsString(nullCompanyName))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().is4xxClientError())
+                .andDo(print())
+                .andExpect(jsonPath("message").value("One or more inputs are missing from the request."))
+                .andDo(document("addressNullValue", responseFields(
+                        fieldWithPath("message").description("One or more inputs are missing from the request."))));
+
+
+    }
 }
