@@ -343,7 +343,7 @@ public class AddressIT {
     }
 
     @Test
-    public void validate_company_attributes_null_test() throws Exception{
+    public void validate_company_attributes_null_test() throws Exception {
 
         CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
 
@@ -416,12 +416,13 @@ public class AddressIT {
 
 
     }
+
     @Test
-    public void validate_company_attributes_null_while_updating_test() throws Exception{
+    public void validate_company_attributes_null_while_updating_test() throws Exception {
 
         CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-777-777-7777");
 
-        mockMvc.perform(patch("/companies")
+        mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
@@ -430,7 +431,7 @@ public class AddressIT {
 
         AddressDTO nullAddressLine1 = new AddressDTO(null, "Tampa", "FL", "33333", "Cognizant");
 
-        mockMvc.perform(patch("/addresses")
+        mockMvc.perform(patch("/addresses/Cognizant")
                 .content(objectMapper.writeValueAsString(nullAddressLine1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
@@ -442,7 +443,7 @@ public class AddressIT {
 
         AddressDTO nullCityName = new AddressDTO("123 Tampa St", null, "FL", "33333", "Cognizant");
 
-        mockMvc.perform(patch("/addresses")
+        mockMvc.perform(patch("/addresses/Cognizant")
                 .content(objectMapper.writeValueAsString(nullCityName))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
@@ -454,7 +455,7 @@ public class AddressIT {
 
         AddressDTO nullState = new AddressDTO("123 Tampa St", "Tampa", null, "33333", "Cognizant");
 
-        mockMvc.perform(patch("/addresses")
+        mockMvc.perform(patch("/addresses/Cognizant")
                 .content(objectMapper.writeValueAsString(nullState))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
@@ -466,7 +467,7 @@ public class AddressIT {
 
         AddressDTO nullZipCode = new AddressDTO("123 Tampa St", "Tampa", "FL", null, "Cognizant");
 
-        mockMvc.perform(patch("/addresses")
+        mockMvc.perform(patch("/addresses/Cognizant")
                 .content(objectMapper.writeValueAsString(nullZipCode))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
@@ -478,7 +479,7 @@ public class AddressIT {
 
         AddressDTO nullCompanyName = new AddressDTO("123 Tampa St", "Tampa", "FL", "33333", null);
 
-        mockMvc.perform(patch("/addresses")
+        mockMvc.perform(patch("/addresses/Cognizant")
                 .content(objectMapper.writeValueAsString(nullCompanyName))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))

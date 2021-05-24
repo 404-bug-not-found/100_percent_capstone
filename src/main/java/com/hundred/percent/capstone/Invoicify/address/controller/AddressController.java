@@ -36,7 +36,7 @@ public class AddressController {
     }
 
     @PatchMapping("/{name}")
-    public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
+    public AddressDTO updateAddress(@PathVariable String name,@Valid @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
         return addressService.updateAddress(addressDTO, name);
     }
 
