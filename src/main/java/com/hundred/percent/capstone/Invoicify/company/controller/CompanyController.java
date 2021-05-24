@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addCompany(@RequestBody CompanyDTO companyDto) throws CompanyExistsException {
+    public void addCompany(@Valid @RequestBody CompanyDTO companyDto) throws CompanyExistsException {
 
         companyService.createCompany(companyDto);
 
@@ -59,7 +60,7 @@ public class CompanyController {
     }
 
     @PatchMapping("/{name}")
-    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException {
+    public CompanyEntity updateCompany(@Valid @RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException, CompanyDoesNotExistsException {
         return companyService.updateCompany(companyEntity, name);
     }
 

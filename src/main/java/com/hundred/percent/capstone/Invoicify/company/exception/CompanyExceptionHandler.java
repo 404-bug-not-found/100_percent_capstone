@@ -1,6 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,5 +23,12 @@ public class CompanyExceptionHandler {
     String handleCompanyNotFoundException() {
 
         return "{\"message\": \"Company does not exist.\"}";
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody
+    String invalidCompanyDTO() {
+        return "{\"message\": \"One or more inputs are missing from the request.\"}";
     }
 }
