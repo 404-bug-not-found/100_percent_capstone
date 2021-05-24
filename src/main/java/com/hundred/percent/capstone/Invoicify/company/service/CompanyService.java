@@ -24,6 +24,7 @@ public class CompanyService {
     CompanyRepository companyRepository;
 
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
+        try{
         Optional<CompanyEntity> companyExistingEntities = companyRepository.findAll()
                 .stream()
                 .filter(companyEntity -> companyEntity.getName().equals(companyDTO.getName()))
@@ -35,6 +36,9 @@ public class CompanyService {
         } else {
             companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContactName(), companyDTO.getContactTitle(), companyDTO.getContactPhoneNumber()));
             Sentry.captureMessage("User added new company - "+companyDTO.getName(), SentryLevel.INFO);
+        }
+        }catch(Exception e){
+            Sentry.captureException(e);
         }
     }
 
@@ -123,7 +127,7 @@ public class CompanyService {
             throw new CompanyDoesNotExistsException();
         }
         companyRepository.delete(companyEntity);
-        Sentry.captureMessage("User deleted company - ",SentryLevel.WARNING);
+        Sentry.captureMessage("User deleted company - "+name,SentryLevel.WARNING);
         return "{\"message\": \"Company deleted successfully.\"}";
     }
 }
