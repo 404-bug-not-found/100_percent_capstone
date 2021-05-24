@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -18,10 +19,15 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
+    @NotNull
     String invoiceNumber;
+    @NotNull
     String name;
+    @NotNull
     String contactName;
+    @NotNull
     String contactTitle;
+    @NotNull
     String contactPhoneNumber;
 
     @OneToMany(mappedBy = "companyEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

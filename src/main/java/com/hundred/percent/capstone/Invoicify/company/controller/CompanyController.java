@@ -13,7 +13,6 @@ import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,7 +60,7 @@ public class CompanyController {
     }
 
     @PatchMapping("/{name}")
-    public CompanyEntity updateCompany(@RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException, CompanyDoesNotExistsException {
+    public CompanyEntity updateCompany(@Valid @RequestBody CompanyEntity companyEntity, @PathVariable String name) throws AddressExistsException, CompanyDoesNotExistsException {
         return companyService.updateCompany(companyEntity, name);
     }
 
