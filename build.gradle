@@ -86,7 +86,6 @@ jacocoTestCoverageVerification {
 	}
 }
 asciidoctor {
-	attributes 'snippets': snippetsDir
 	inputs.dir snippetsDir
 	attributes 'snippets': snippetsDir
 	dependsOn test
