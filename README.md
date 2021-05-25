@@ -7,7 +7,7 @@
 * Rohit Ranjan
 
 
-#Invoicify is tool for contractors to record and bill companies for services.
+#**Invoicify is tool for contractors to record and bill companies for services.**
 
 # **Prerequisites**
 
@@ -60,6 +60,11 @@ Tools: Postman
 
 # **End Point Details (REST Documentation):**
 
-Rest documentation of end point details can be found at this url : https://invoicify100percent.herokuapp.com/docs/index.html
+Security end point Rest documentation: https://invoicify100percent.herokuapp.com/docs/security.html
+
+Service end point Rest documentation:  https://invoicify100percent.herokuapp.com/docs/index.html
 
 # **TODO List for Next Sprint:**
+Issue# 66 - Create separate entity for company contact details
+
+Issue# 70 - SQL Injection and other Security attacks validation implementation

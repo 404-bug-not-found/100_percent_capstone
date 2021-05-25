@@ -82,7 +82,7 @@ public class CompanyIT {
 
     @Test
     public void postCompanyTest() throws Exception {
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("123", "Cognizant", "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(companyDTO))
@@ -97,8 +97,8 @@ public class CompanyIT {
     @Test
     public void getMultipleCompanyTest() throws Exception {
 
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -117,7 +117,7 @@ public class CompanyIT {
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
-                .andExpect(jsonPath("[1].invoiceNumber").value("CTS-123"))
+                .andExpect(jsonPath("[1].invoiceNumber").value("222"))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
                 .andExpect(jsonPath("[1].contactName").value("Iqbal"))
                 .andExpect(jsonPath("[1].contactTitle").value("Accounts Payable"))
@@ -126,7 +126,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
                         fieldWithPath("[1].id").description("Company ID"),
-                        fieldWithPath("[1].invoiceNumber").description("CTS-123"),
+                        fieldWithPath("[1].invoiceNumber").description("222"),
                         fieldWithPath("[1].name").description("Cognizant"),
                         fieldWithPath("[1].contactName").description("Iqbal"),
                         fieldWithPath("[1].contactTitle").description("Accounts Payable"),
@@ -137,7 +137,7 @@ public class CompanyIT {
 
     @Test
     public void createDuplicateCompanyTest() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -161,8 +161,8 @@ public class CompanyIT {
     @Test
     public void getMultipleCompanyTestWithAddress() throws Exception {
 
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -197,7 +197,7 @@ public class CompanyIT {
         mockMvc.perform(get("/companies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(2))
-                .andExpect(jsonPath("[1].invoiceNumber").value("CTS-123"))
+                .andExpect(jsonPath("[1].invoiceNumber").value("222"))
                 .andExpect(jsonPath("[1].name").value("Cognizant"))
                 .andExpect(jsonPath("[1].contactName").value("Iqbal"))
                 .andExpect(jsonPath("[1].contactTitle").value("Accounts Payable"))
@@ -206,7 +206,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andDo(document("getCompanies", responseFields(
                         fieldWithPath("[1].id").description("Company ID"),
-                        fieldWithPath("[1].invoiceNumber").description("CTS-123"),
+                        fieldWithPath("[1].invoiceNumber").description("222"),
                         fieldWithPath("[1].name").description("Cognizant"),
                         fieldWithPath("[1].contactName").description("Iqbal"),
                         fieldWithPath("[1].contactTitle").description("Accounts Payable"),
@@ -221,8 +221,8 @@ public class CompanyIT {
 
     @Test
     public void getSimpleCompanyView() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -271,8 +271,8 @@ public class CompanyIT {
 
     @Test
     public void companySimpleView_Failed_Test() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -300,8 +300,8 @@ public class CompanyIT {
 
     @Test
     public void companyListView_test() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -361,8 +361,8 @@ public class CompanyIT {
 
     @Test
     public void companyListView_Failed_Test() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO input2 = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyDTO input1 = new CompanyDTO("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO input2 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -390,7 +390,7 @@ public class CompanyIT {
 
     @Test
     public void updateCompanyTest() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
+        CompanyDTO input1 = new CompanyDTO("333", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -409,7 +409,7 @@ public class CompanyIT {
                 .andExpect(status().isCreated())
                 .andDo(print());
 
-        CompanyEntity newCompanyEntity = new CompanyEntity("GLZ-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
+        CompanyEntity newCompanyEntity = new CompanyEntity("333", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
 
         mockMvc.perform(patch("/companies/Galvanize")
                 .content(objectMapper.writeValueAsString(newCompanyEntity))
@@ -430,7 +430,7 @@ public class CompanyIT {
 
     @Test
     public void delete_Company_Test() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
+        CompanyDTO input1 = new CompanyDTO("333", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -461,7 +461,7 @@ public class CompanyIT {
 
     @Test
     public void delete_CompanyWithAddress_Test() throws Exception {
-        CompanyDTO input1 = new CompanyDTO("GLZ-123", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
+        CompanyDTO input1 = new CompanyDTO("333", "Galvanize", "David", "Accounts Payable", "1-111-111-1111");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(input1))
@@ -487,7 +487,7 @@ public class CompanyIT {
 
     @Test
     public void validate_company_attributes_null_test() throws Exception {
-        CompanyDTO nullName = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO nullName = new CompanyDTO("111", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(nullName))
@@ -509,7 +509,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
-        CompanyDTO nullContactName = new CompanyDTO("CTS-123", "Cognizant", null, "Accounts Payable", "1-123-456-7890");
+        CompanyDTO nullContactName = new CompanyDTO("111", "Cognizant", null, "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(nullContactName))
@@ -519,7 +519,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
-        CompanyDTO nullContactTitle = new CompanyDTO("CTS-123", "Cognizant", "David", null, "1-123-456-7890");
+        CompanyDTO nullContactTitle = new CompanyDTO("111", "Cognizant", "David", null, "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(nullContactTitle))
@@ -529,7 +529,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
-        CompanyDTO nullContactNumber = new CompanyDTO("CTS-123", "Cognizant", "David", "Accounts Payable", null);
+        CompanyDTO nullContactNumber = new CompanyDTO("111", "Cognizant", "David", "Accounts Payable", null);
 
         mockMvc.perform(post("/companies")
                 .content(objectMapper.writeValueAsString(nullContactNumber))
@@ -553,7 +553,7 @@ public class CompanyIT {
 
     @Test
     public void validate_company_attributes_null_while_updating_test() throws Exception {
-        CompanyEntity nullName = new CompanyEntity("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity nullName = new CompanyEntity("111", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(patch("/companies/Cognizant")
                 .content(objectMapper.writeValueAsString(nullName))
@@ -575,7 +575,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
-        CompanyEntity nullContactName = new CompanyEntity("CTS-123", "Cognizant", null, "Accounts Payable", "1-123-456-7890");
+        CompanyEntity nullContactName = new CompanyEntity("111", "Cognizant", null, "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(patch("/companies/Cognizant")
                 .content(objectMapper.writeValueAsString(nullContactName))
@@ -585,7 +585,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
-        CompanyEntity nullContactTitle = new CompanyEntity("CTS-123", "Cognizant", "David", null, "1-123-456-7890");
+        CompanyEntity nullContactTitle = new CompanyEntity("111", "Cognizant", "David", null, "1-123-456-7890");
 
         mockMvc.perform(patch("/companies/Cognizant")
                 .content(objectMapper.writeValueAsString(nullContactTitle))
@@ -595,7 +595,7 @@ public class CompanyIT {
                 .andDo(print())
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
 
-        CompanyEntity nullContactNumber = new CompanyEntity("CTS-123", "Cognizant", "David", "Accounts Payable", null);
+        CompanyEntity nullContactNumber = new CompanyEntity("111", "Cognizant", "David", "Accounts Payable", null);
 
         mockMvc.perform(patch("/companies/Cognizant")
                 .content(objectMapper.writeValueAsString(nullContactNumber))
