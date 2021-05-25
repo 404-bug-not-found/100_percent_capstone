@@ -15,6 +15,7 @@ import com.hundred.percent.capstone.Invoicify.invoice.exception.InvalidInputExce
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.ItemRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -98,38 +99,25 @@ public class InvoiceServiceTest {
         when(this.mockCompanyRepository.findByInvoiceNumber("1"))
                 .thenReturn(compEnt);
         when(mockInvoiceRepository.save(any())).thenReturn(invEnt);
+
+
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
         InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
         this.invoiceService.createInvoice(d1);
-
-
-        //verify(this.mockInvoiceRepository).save(invEnt);
     }
 
-//    @Test
-//    public void getInvoicesByCompanyName() throws InvalidInputException,CompanyDoesNotExistsException,CompanyExistsException,Exception {
-//
-////        CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",
-////                "Accounts Payable", "1-123-456-7890");
-////        List<ItemEntity> itemsENT1 = new ArrayList<ItemEntity>();
-////        itemsENT1.add(new ItemEntity("Item1",20));
-////        InvoiceEntity ent = new InvoiceEntity(company,itemsENT1);
-////
-////        when(mockInvoiceRepository.findAll()).thenReturn( List.of(ent));
-////        when(mockInvoiceRepository.save(any())).thenReturn(ent);
-////
-////        CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
-////                "Accounts Payable", "1-123-456-7890");
-////        this.companyService.createCompany(companyDTO);
-////        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-////        itemsDTO1.add(new ItemDTO("Item1",20));
-////        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
-////       // this.invoiceService.createInvoice(d1);
-////
-////       // List<InvoiceDTO> actualinvoices = this.invoiceService.getInvoicesByCompanyName("Cognizant");
-////       // assertThat(actualinvoices.get(0).getCompanyInvoiceNumber()).isEqualTo("1");
-//    }
+    @Test
+    public void getInvoicesByCompanyName() throws InvalidInputException,CompanyDoesNotExistsException,CompanyExistsException,Exception {
+        CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",
+                "Accounts Payable", "1-123-456-7890");
+        List<ItemEntity> itemsENT1 = new ArrayList<ItemEntity>();
+        itemsENT1.add(new ItemEntity("Item1",20));
+        InvoiceEntity ent = new InvoiceEntity(company,itemsENT1);
+        when(mockInvoiceRepository.findAll()).thenReturn( List.of(ent));
+        List<InvoiceDTO> actualinvoices = this.invoiceService.getInvoicesByCompanyName("Cognizant");
+        assertThat(actualinvoices.get(0).getCompanyInvoiceNumber()).isEqualTo("1");
+    }
 
     private void createCompany(String invoiceNumber,String companyName) throws Exception{
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",
