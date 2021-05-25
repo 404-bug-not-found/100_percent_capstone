@@ -27,6 +27,9 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.6'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -47,6 +50,9 @@ dependencies {
 	 */
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//Sentry SDK dependency
+	implementation 'io.sentry:sentry:4.3.0'
 }
 
 ext {
@@ -82,6 +88,7 @@ jacocoTestCoverageVerification {
 asciidoctor {
 	attributes 'snippets': snippetsDir
 	inputs.dir snippetsDir
+	attributes 'snippets': snippetsDir
 	dependsOn test
 }
 

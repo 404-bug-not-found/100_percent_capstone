@@ -1,9 +1,13 @@
 package com.hundred.percent.capstone.Invoicify.company.entity;
 
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,15 +19,15 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-
-    /*public String getInvoice_number() {
-        return invoiceNumber;
-    }*/
-
+    @NotNull
     String invoiceNumber;
+    @NotNull
     String name;
+    @NotNull
     String contactName;
+    @NotNull
     String contactTitle;
+    @NotNull
     String contactPhoneNumber;
 
     @OneToMany(mappedBy = "companyEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

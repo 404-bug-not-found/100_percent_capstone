@@ -8,6 +8,8 @@ import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +24,21 @@ public class CompanyService {
     CompanyRepository companyRepository;
 
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
+        try{
         Optional<CompanyEntity> companyExistingEntities = companyRepository.findAll()
                 .stream()
                 .filter(companyEntity -> companyEntity.getName().equals(companyDTO.getName()))
                 .findAny();
 
         if (companyExistingEntities.isPresent()) {
+            Sentry.captureMessage("User tried adding new company - "+companyDTO.getName()+", that already exists.", SentryLevel.INFO);
             throw new CompanyExistsException();
         } else {
             companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContactName(), companyDTO.getContactTitle(), companyDTO.getContactPhoneNumber()));
+            Sentry.captureMessage("User added new company - "+companyDTO.getName(), SentryLevel.INFO);
+        }
+        }catch(Exception e){
+            Sentry.captureException(e);
         }
     }
 
@@ -46,8 +54,10 @@ public class CompanyService {
         List<CompanyEntity> companyEntityList = companyRepository.findAll();
 
         for (CompanyEntity c : companyEntityList) {
-            if ((c.getAddresses() == null) || c.getAddresses().size() == 0)
+            if ((c.getAddresses() == null) || c.getAddresses().size() == 0) {
+                Sentry.captureMessage("User tried accessing Simple Company View, without adding addresses for one more companies.", SentryLevel.INFO);
                 throw new CompanyAddressDoesNotExistsException();
+            }
         }
 
         //return companyRepository.findAll()
@@ -69,8 +79,10 @@ public class CompanyService {
         List<CompanyEntity> companyEntityList = companyRepository.findAll();
 
         for (CompanyEntity c : companyEntityList) {
-            if ((c.getAddresses() == null) || c.getAddresses().size() == 0)
+            if ((c.getAddresses() == null) || c.getAddresses().size() == 0) {
+                Sentry.captureMessage("User tried accessing List Company View, without adding addresses for one more companies.", SentryLevel.INFO);
                 throw new CompanyAddressDoesNotExistsException();
+            }
         }
 
         //return companyRepository.findAll()
@@ -91,23 +103,31 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) {
-        CompanyEntity oldCompanyEntity = companyRepository.findByName(name);
+    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) throws CompanyDoesNotExistsException{
+        try {
 
-        oldCompanyEntity.setName(newCompanyEntity.getName());
-        oldCompanyEntity.setContactName(newCompanyEntity.getContactName());
-        oldCompanyEntity.setContactTitle(newCompanyEntity.getContactTitle());
-        oldCompanyEntity.setContactPhoneNumber(newCompanyEntity.getContactPhoneNumber());
-        //companyEntity.setAddresses(companyEnt.getAddresses());
-        return companyRepository.save(oldCompanyEntity);
+            CompanyEntity oldCompanyEntity = companyRepository.findByName(name);
+
+            oldCompanyEntity.setName(newCompanyEntity.getName());
+            oldCompanyEntity.setContactName(newCompanyEntity.getContactName());
+            oldCompanyEntity.setContactTitle(newCompanyEntity.getContactTitle());
+            oldCompanyEntity.setContactPhoneNumber(newCompanyEntity.getContactPhoneNumber());
+            //companyEntity.setAddresses(companyEnt.getAddresses());
+            return companyRepository.save(oldCompanyEntity);
+        }catch(Exception e){
+            Sentry.captureException(e);
+            throw new CompanyDoesNotExistsException();
+        }
     }
 
     public String deleteCompany(String name) throws CompanyDoesNotExistsException {
         CompanyEntity companyEntity = companyRepository.findByName(name);
         if (companyEntity == null) {
+            Sentry.captureMessage("User tried deleting company - "+name+", that does not exists.",SentryLevel.INFO);
             throw new CompanyDoesNotExistsException();
         }
         companyRepository.delete(companyEntity);
+        Sentry.captureMessage("User deleted company - "+name,SentryLevel.WARNING);
         return "{\"message\": \"Company deleted successfully.\"}";
     }
 }

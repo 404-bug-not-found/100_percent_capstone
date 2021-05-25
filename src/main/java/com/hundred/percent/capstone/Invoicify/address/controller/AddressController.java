@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,14 +29,14 @@ public class AddressController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addAddress(@RequestBody AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
+    public void addAddress(@Valid @RequestBody AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
 
         addressService.createAddress(addressDTO);
 
     }
 
     @PatchMapping("/{name}")
-    public AddressDTO updateAddress(@PathVariable String name, @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
+    public AddressDTO updateAddress(@PathVariable String name,@Valid @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
         return addressService.updateAddress(addressDTO, name);
     }
 
