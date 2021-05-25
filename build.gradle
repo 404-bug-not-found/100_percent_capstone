@@ -85,11 +85,6 @@ jacocoTestCoverageVerification {
 		}
 	}
 }
-
-
-
-
-
 asciidoctor {
 	inputs.dir snippetsDir
 	attributes 'snippets': snippetsDir

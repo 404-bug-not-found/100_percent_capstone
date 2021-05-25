@@ -99,16 +99,40 @@ public class InvoiceIT {
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+        InvoiceDTO d1=new InvoiceDTO("2", itemsDTO1,new Date(),"");
 
         MvcResult result = mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isCreated())
+                .andDo(document("createSingleInvoice"))
                 .andReturn();
 
+
         assertThat(result.getResponse().getContentAsString()).isEqualTo("Invoice ID created was 2");
+    }
+
+    @Test
+    public void createSingleInvoiceInputTest() throws Exception{
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String expected = formatter.format(new Date());
+
+        createCompany("2","TCS");
+
+        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
+        itemsDTO1.add(new ItemDTO("Item1",20));
+        InvoiceDTO d1=new InvoiceDTO("1WE", itemsDTO1,new Date(),"@#$$");
+
+        MvcResult result = mockMvc.perform(post("/invoices")
+                .content(objectMapper.writeValueAsString(d1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isBadRequest())
+                .andDo(document("createInvoiceInputValidation"))
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"The Invoice Object sent was a bad request.\"}");
     }
 
     @Test
@@ -152,7 +176,7 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[1].fee").value("1000"))
                 .andExpect(jsonPath("$.[0].items.[2].description").value("Brand Website Customization"))
                 .andExpect(jsonPath("$.[0].items.[2].fee").value("20"))
-                .andDo(document("getInvoice"));
+                .andDo(document("getInvoicesById"));
 
     }
 
@@ -168,7 +192,7 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[1].feeType").value("FlatFee"))
                 .andExpect(jsonPath("$.[0].items.[1].quantity").value("1"))
                 .andExpect(jsonPath("$.[0].items.[1].fee").value("1000"))
-                .andDo(document("getInvoice"));
+                .andDo(document("getInvoicesByCompanyName"));
 
     }
 
@@ -198,7 +222,7 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[3].feeType").value("RateBased"))
                 .andExpect(jsonPath("$.[0].items.[3].quantity").value("3"))
                 .andExpect(jsonPath("$.[0].items.[3].fee").value("60"))
-                .andDo(document("getInvoice"));
+                .andDo(document("createAndGetInvoicesWithSameDescItems"));
     }
     @Test
     public void updateAnExistingInvoiceByInvoiceNumberWithItems() throws Exception {
@@ -226,7 +250,7 @@ public class InvoiceIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
-                .andDo(document("putInvoice"));
+                .andDo(document("updateAnExistingInvoice"));
 
         mockMvc.perform(get("/invoices/2"))
                 .andExpect(status().isOk())
@@ -263,7 +287,7 @@ public class InvoiceIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(JWT_HEADER, JWT_PREFIX + token)
         ).andExpect(status().isCreated())
-                .andDo(document("putInvoice"));
+                .andDo(document("updateAnExistingInvoiceWithPaidStatus"));
 
         mockMvc.perform(get("/invoices/2"))
                 .andExpect(status().isOk())
@@ -293,7 +317,7 @@ public class InvoiceIT {
         MvcResult result = mockMvc.perform(delete("/invoices/2")
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
-                .andDo(document("deleteInvoice"))
+                .andDo(document("deleteUnpaidInvoice"))
                 .andReturn();
         assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}");
 
@@ -319,7 +343,7 @@ public class InvoiceIT {
         MvcResult result = mockMvc.perform(delete("/invoices/2")
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isConflict())
-                .andDo(document("deleteInvoice"))
+                .andDo(document("deletepaidInvoiceLessThanYear"))
                 .andReturn();
         assertThat(result.getResponse().getContentAsString()).isEqualTo("{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}");
 
@@ -338,19 +362,17 @@ public class InvoiceIT {
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(JWT_HEADER, JWT_PREFIX + token))
-                .andExpect(status().isCreated())
-                .andDo(document("postInvoice"));
+                .header(JWT_HEADER, JWT_PREFIX + token));
 
         MvcResult result = mockMvc.perform(delete("/invoices/2")
                 .header(JWT_HEADER, JWT_PREFIX + token))
                 .andExpect(status().isNoContent())
-                .andDo(document("deleteInvoice"))
+                .andDo(document("deletepaidInvoiceMoreThanYear"))
                 .andReturn();
+
         mockMvc.perform(get("/invoices/2"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0))
-                .andDo(document("getInvoice"));
+                .andExpect(jsonPath("$.length()").value(0));
 
     }
 
@@ -426,6 +448,7 @@ public class InvoiceIT {
 
     @Test
     public void testForItemDTOCodeCoverage() throws Exception{
+        createCompany("2","TCS");
         List<ItemDTO> itemsDTO = new ArrayList<ItemDTO>();
         itemsDTO.add(new ItemDTO("Item1",2000,1));
         InvoiceDTO d= new InvoiceDTO("2", itemsDTO,new Date(),"");

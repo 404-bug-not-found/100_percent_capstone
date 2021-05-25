@@ -2,13 +2,16 @@ package com.hundred.percent.capstone.Invoicify.invoice.dto;
 
 import com.hundred.percent.capstone.Invoicify.invoice.entity.PaidStatus;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
+@Getter
+@Setter
 @Data
 @NoArgsConstructor
 public class InvoiceDTO {
