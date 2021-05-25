@@ -176,4 +176,28 @@ public class InvoiceService {
          else
             invoiceRepository.delete(ent);
     }
+
+    public List<InvoiceDTO> getUnPaidInvoicesByCompanyName(String companyname) {
+        List<InvoiceEntity> invoicesForCompany1 = invoiceRepository.findAll();
+        List<InvoiceEntity> invoicesForCompany = invoicesForCompany1
+                .stream().filter(invEnt -> invEnt.getCompanyEntity().getName().equals(companyname))
+                .collect(Collectors.toList());
+        List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
+        for(InvoiceEntity invoiceEntity:invoicesForCompany)
+        {
+            ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+                    .stream()
+                    .map(itemEntity -> {
+                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                                itemEntity.getPrice(), itemEntity.getQuantity()
+                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                        return e;
+                    }).collect(Collectors.toList()));
+            if(invoiceEntity.getPaidStatus() == PaidStatus.UnPaid)
+                invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+
+        }
+
+        return invoiceDTOS;
+    }
 }

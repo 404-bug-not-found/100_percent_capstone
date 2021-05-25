@@ -155,8 +155,8 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].dateCreated").value(expected))
                 .andExpect(jsonPath("$.[0].dateModified").value(expected))
                 .andExpect(jsonPath("$.[1].companyInvoiceNumber").value("2"))
-                .andExpect(jsonPath("$.[1].paidStatus").value("UnPaid"))
-                .andExpect(jsonPath("$.[1].paidDate").value(""))
+                .andExpect(jsonPath("$.[1].paidStatus").value("Paid"))
+                .andExpect(jsonPath("$.[1].paidDate").value("05-05-2021"))
                 .andExpect(jsonPath("$.[1].items.[0].description").value("Item2"))
                 .andExpect(jsonPath("$.[1].items.[0].price").value("20"))
                 .andExpect(jsonPath("$.[1].items.[0].feeType").value("RateBased"))
@@ -193,6 +193,22 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[1].quantity").value("1"))
                 .andExpect(jsonPath("$.[0].items.[1].fee").value("1000"))
                 .andDo(document("getInvoicesByCompanyName"));
+
+    }
+
+    @Test
+    public void getUnpaidInvoicesByCompanyName() throws Exception{
+        initialCompanyInvoiceSetUp();
+        mockMvc.perform(get("/companies/Cognizant/UnPaidInvoices"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].items.length()").value(4))
+                .andExpect(jsonPath("$.[0].companyInvoiceNumber").value("1"))
+                .andExpect(jsonPath("$.[0].items.[1].description").value("Brand Website Customization"))
+                .andExpect(jsonPath("$.[0].items.[1].price").value("1000"))
+                .andExpect(jsonPath("$.[0].items.[1].feeType").value("FlatFee"))
+                .andExpect(jsonPath("$.[0].items.[1].quantity").value("1"))
+                .andExpect(jsonPath("$.[0].items.[1].fee").value("1000"))
+                .andDo(document("getUnpaidInvoicesByCompanyName"));
 
     }
 
@@ -400,7 +416,7 @@ public class InvoiceIT {
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item2",20,3));
-        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"");
+        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"05-05-2021");
 
         List<ItemDTO> itemsDTO3 = new ArrayList<ItemDTO>();
         itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
