@@ -21,4 +21,10 @@ public class CustomInvoiceException {
     String handleUnpaidInvoiceDeleteException() {
         return "{\"An Unpaid Invoice or Paid Invoice less than a year cannot be deleted.\"}";
     }
+    @ExceptionHandler(InvalidInputException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody
+    String handleBadInvoiceRequestException() {
+        return "{\"The Invoice Object sent was a bad request.\"}";
+    }
 }

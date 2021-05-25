@@ -3,12 +3,14 @@ package com.hundred.percent.capstone.Invoicify.invoice.service;
 
 import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
+import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
 import com.hundred.percent.capstone.Invoicify.invoice.entity.PaidStatus;
+import com.hundred.percent.capstone.Invoicify.invoice.exception.InvalidInputException;
 import com.hundred.percent.capstone.Invoicify.invoice.exception.UnpaidInvoiceDeleteException;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
 import com.hundred.percent.capstone.Invoicify.invoice.repository.ItemRepository;
@@ -34,7 +36,7 @@ public class InvoiceService {
     @Autowired
     AddressRepository addressRepository;
 
-    public Long createInvoice(InvoiceDTO invoiceDTO) {
+    public Long createInvoice(InvoiceDTO invoiceDTO) throws CompanyDoesNotExistsException, Exception, InvalidInputException {
         ArrayList<ItemEntity> items = new ArrayList<ItemEntity>(invoiceDTO.getItems()
                 .stream()
                 .map(itemDTO -> {
@@ -44,11 +46,29 @@ public class InvoiceService {
                     return e;
                 }).collect(Collectors.toList()));
 
+        ValidateInvoiceDTO(invoiceDTO);
         CompanyEntity companyEntity =  this.companyRepository.findByInvoiceNumber(invoiceDTO.getCompanyInvoiceNumber());
+        if(companyEntity == null)
+            throw new CompanyDoesNotExistsException();
         InvoiceEntity entToSave = new InvoiceEntity(companyEntity,items,invoiceDTO.getPaidStatus(),invoiceDTO.getPaidDate());
         entToSave = this.invoiceRepository.save(entToSave);
         this.invoiceRepository.flush();
         return (entToSave).getId();
+    }
+    private  void ValidateInvoiceDTO(InvoiceDTO invoice) throws InvalidInputException
+    {
+        try{
+            Integer invoiceNumber = Integer.parseInt( invoice.getCompanyInvoiceNumber());
+            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+            if( invoice.getPaidDate() != "" )
+                formatter.parse(invoice.getPaidDate());
+            Date createdDate = formatter.parse(invoice.getDateCreated());
+            Date modifiedDate = formatter.parse(invoice.getDateModified());
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidInputException();
+        }
     }
 
     public List<InvoiceDTO> getAllInvoices()
