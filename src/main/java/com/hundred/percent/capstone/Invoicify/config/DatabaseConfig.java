@@ -30,7 +30,6 @@ public class DatabaseConfig {
                 .build();
     }
 
-    public DatabaseConfig(){
-
+    public DatabaseConfig() {
     }
 }

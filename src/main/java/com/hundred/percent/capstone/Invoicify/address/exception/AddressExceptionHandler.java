@@ -12,7 +12,6 @@ public class AddressExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public @ResponseBody
     String handleAddressFoundException() {
-
         return "{\"message\": \"Address already exist.\"}";
     }
 
@@ -21,7 +20,6 @@ public class AddressExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public @ResponseBody
     String handleAddressNotFoundException() {
-
         return "{\"message\": \"One or more companies does not have address associated with them.\"}";
     }
 

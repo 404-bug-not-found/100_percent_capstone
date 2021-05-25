@@ -10,6 +10,7 @@ import javax.persistence.ElementCollection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 @Getter
 @Setter
 @Data
@@ -22,21 +23,21 @@ public class InvoiceDTO {
     String dateModified;
     private PaidStatus paidStatus;
     private String paidDate;
-    public InvoiceDTO(String invoiceNumber,List<ItemDTO> items,Date dateCreated,String paidDate)
-    {
+
+    public InvoiceDTO(String invoiceNumber, List<ItemDTO> items, Date dateCreated, String paidDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         this.companyInvoiceNumber = invoiceNumber;
         this.items = items;
         this.dateCreated = formatter.format(dateCreated);
         this.dateModified = this.dateCreated;
         this.paidDate = paidDate;
-        if(this.paidDate == "")
+        if (this.paidDate == "")
             this.paidStatus = PaidStatus.UnPaid;
-            else
+        else
             this.paidStatus = PaidStatus.Paid;
     }
-    public InvoiceDTO(List<ItemDTO> items)
-    {
+
+    public InvoiceDTO(List<ItemDTO> items) {
         this.items = items;
     }
 

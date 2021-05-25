@@ -7,17 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.DateTimeException;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-@Table(name="Invoice")
+@Table(name = "Invoice")
 public class InvoiceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,11 +26,11 @@ public class InvoiceEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name="company_invoicenumber")
+    @JoinColumn(name = "company_invoicenumber")
     CompanyEntity companyEntity;
 
     @OneToMany
-    @JoinColumn(name="item_id")
+    @JoinColumn(name = "item_id")
     private List<ItemEntity> items;
     private Date dateCreated;
     private Date dateModified;
@@ -48,7 +46,8 @@ public class InvoiceEntity {
         this.paidStatus = PaidStatus.UnPaid;
         this.paidDate = "";
     }
-    public InvoiceEntity(CompanyEntity companyEntity, List<ItemEntity> items,PaidStatus Status,String paidDate) {
+
+    public InvoiceEntity(CompanyEntity companyEntity, List<ItemEntity> items, PaidStatus Status, String paidDate) {
         this.companyEntity = companyEntity;
         this.items = items;
         this.dateCreated = new Date();

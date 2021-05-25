@@ -1,9 +1,11 @@
 package com.hundred.percent.capstone.Invoicify.invoice.entity;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -11,7 +13,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-@Table(name="Item")
+@Table(name = "Item")
 public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,18 +24,20 @@ public class ItemEntity {
     private int price;
     private int quantity;
     private int fee;
+
     public ItemEntity(String description, int price) {
         this.description = description;
         this.price = price;
         this.feeType = FeeType.FlatFee;
-        this.quantity =1;
+        this.quantity = 1;
         this.fee = price;
 
     }
-    public ItemEntity(String description, int price,int quantity) {
+
+    public ItemEntity(String description, int price, int quantity) {
         this.description = description;
         this.price = price;
-        if(quantity ==1)
+        if (quantity == 1)
             this.feeType = FeeType.FlatFee;
         else
             this.feeType = FeeType.RateBased;

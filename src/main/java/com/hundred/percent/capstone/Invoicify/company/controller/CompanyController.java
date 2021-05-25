@@ -1,7 +1,7 @@
 package com.hundred.percent.capstone.Invoicify.company.controller;
 
-import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
+import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -29,17 +29,13 @@ public class CompanyController {
 
     @GetMapping
     public List<CompanyEntity> getCompanies() {
-
         return companyService.getAllCompanies();
     }
-
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addCompany(@Valid @RequestBody CompanyDTO companyDto) throws CompanyExistsException {
-
         companyService.createCompany(companyDto);
-
     }
 
     @GetMapping("/{companyname}/invoices")
@@ -49,13 +45,11 @@ public class CompanyController {
 
     @GetMapping("/simpleView")
     public List<CompanySimpleViewDTO> getSimpleCompanyView() throws CompanyAddressDoesNotExistsException {
-
         return companyService.getSimpleCompanyView();
     }
 
     @GetMapping("/listView")
     public List<CompanyListViewDTO> getListCompanyView() throws CompanyAddressDoesNotExistsException {
-
         return companyService.getListCompanyView();
     }
 
@@ -67,6 +61,5 @@ public class CompanyController {
     @DeleteMapping("/{name}")
     public String deleteCompany(@PathVariable String name) throws CompanyDoesNotExistsException {
         return companyService.deleteCompany(name);
-
     }
 }

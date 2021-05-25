@@ -24,33 +24,30 @@ public class CompanyService {
     CompanyRepository companyRepository;
 
     public void createCompany(CompanyDTO companyDTO) throws CompanyExistsException {
-        try{
-        Optional<CompanyEntity> companyExistingEntities = companyRepository.findAll()
-                .stream()
-                .filter(companyEntity -> companyEntity.getName().equals(companyDTO.getName()))
-                .findAny();
+        try {
+            Optional<CompanyEntity> companyExistingEntities = companyRepository.findAll()
+                    .stream()
+                    .filter(companyEntity -> companyEntity.getName().equals(companyDTO.getName()))
+                    .findAny();
 
-        if (companyExistingEntities.isPresent()) {
-            Sentry.captureMessage("User tried adding new company - "+companyDTO.getName()+", that already exists.", SentryLevel.INFO);
-            throw new CompanyExistsException();
-        } else {
-            companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContactName(), companyDTO.getContactTitle(), companyDTO.getContactPhoneNumber()));
-            Sentry.captureMessage("User added new company - "+companyDTO.getName(), SentryLevel.INFO);
-        }
-        }catch(Exception e){
+            if (companyExistingEntities.isPresent()) {
+                Sentry.captureMessage("User tried adding new company - " + companyDTO.getName() + ", that already exists.", SentryLevel.INFO);
+                throw new CompanyExistsException();
+            } else {
+                companyRepository.save(new CompanyEntity(companyDTO.getInvoiceNumber(), companyDTO.getName(), companyDTO.getContactName(), companyDTO.getContactTitle(), companyDTO.getContactPhoneNumber()));
+                Sentry.captureMessage("User added new company - " + companyDTO.getName(), SentryLevel.INFO);
+            }
+        } catch (Exception e) {
             Sentry.captureException(e);
         }
     }
 
     public List<CompanyEntity> getAllCompanies() {
-
         return companyRepository.findAll();
-
     }
 
 
     public List<CompanySimpleViewDTO> getSimpleCompanyView() throws CompanyAddressDoesNotExistsException {
-
         List<CompanyEntity> companyEntityList = companyRepository.findAll();
 
         for (CompanyEntity c : companyEntityList) {
@@ -60,7 +57,6 @@ public class CompanyService {
             }
         }
 
-        //return companyRepository.findAll()
         return companyEntityList
                 .stream()
                 .map(companyEntity -> {
@@ -75,7 +71,6 @@ public class CompanyService {
     }
 
     public List<CompanyListViewDTO> getListCompanyView() throws CompanyAddressDoesNotExistsException {
-
         List<CompanyEntity> companyEntityList = companyRepository.findAll();
 
         for (CompanyEntity c : companyEntityList) {
@@ -85,7 +80,6 @@ public class CompanyService {
             }
         }
 
-        //return companyRepository.findAll()
         return companyEntityList
                 .stream()
                 .map(companyEntity -> {
@@ -103,18 +97,16 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) throws CompanyDoesNotExistsException{
+    public CompanyEntity updateCompany(CompanyEntity newCompanyEntity, String name) throws CompanyDoesNotExistsException {
         try {
-
             CompanyEntity oldCompanyEntity = companyRepository.findByName(name);
 
             oldCompanyEntity.setName(newCompanyEntity.getName());
             oldCompanyEntity.setContactName(newCompanyEntity.getContactName());
             oldCompanyEntity.setContactTitle(newCompanyEntity.getContactTitle());
             oldCompanyEntity.setContactPhoneNumber(newCompanyEntity.getContactPhoneNumber());
-            //companyEntity.setAddresses(companyEnt.getAddresses());
             return companyRepository.save(oldCompanyEntity);
-        }catch(Exception e){
+        } catch (Exception e) {
             Sentry.captureException(e);
             throw new CompanyDoesNotExistsException();
         }
@@ -123,11 +115,11 @@ public class CompanyService {
     public String deleteCompany(String name) throws CompanyDoesNotExistsException {
         CompanyEntity companyEntity = companyRepository.findByName(name);
         if (companyEntity == null) {
-            Sentry.captureMessage("User tried deleting company - "+name+", that does not exists.",SentryLevel.INFO);
+            Sentry.captureMessage("User tried deleting company - " + name + ", that does not exists.", SentryLevel.INFO);
             throw new CompanyDoesNotExistsException();
         }
         companyRepository.delete(companyEntity);
-        Sentry.captureMessage("User deleted company - "+name,SentryLevel.WARNING);
+        Sentry.captureMessage("User deleted company - " + name, SentryLevel.WARNING);
         return "{\"message\": \"Company deleted successfully.\"}";
     }
 }

@@ -19,24 +19,19 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-
     @GetMapping
     public List<AddressDTO> getAddresses() {
-
         return addressService.getAllAddresses();
     }
-
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void addAddress(@Valid @RequestBody AddressDTO addressDTO) throws AddressExistsException, CompanyDoesNotExistsException {
-
         addressService.createAddress(addressDTO);
-
     }
 
     @PatchMapping("/{name}")
-    public AddressDTO updateAddress(@PathVariable String name,@Valid @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
+    public AddressDTO updateAddress(@PathVariable String name, @Valid @RequestBody AddressDTO addressDTO) throws CompanyDoesNotExistsException {
         return addressService.updateAddress(addressDTO, name);
     }
 
