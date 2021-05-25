@@ -28,11 +28,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(MockitoExtension.class)
 public class InvoiceServiceTest {
@@ -51,47 +47,47 @@ public class InvoiceServiceTest {
     @Test
     public void getAllInvoicesTest() throws Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
-        items1.add(new ItemEntity("Item1",20));
-        items1.add(new ItemEntity("Item2",30,3));
+        items1.add(new ItemEntity("Item1", 20));
+        items1.add(new ItemEntity("Item2", 30, 3));
 
         List<ItemEntity> items2 = new ArrayList<ItemEntity>();
-        items2.add(new ItemEntity("Item3",20));
-        items2.add(new ItemEntity("Item4",30,5));
+        items2.add(new ItemEntity("Item3", 20));
+        items2.add(new ItemEntity("Item4", 30, 5));
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        itemsDTO1.add(new ItemDTO("Item2",30,3));
+        itemsDTO1.add(new ItemDTO("Item1", 20));
+        itemsDTO1.add(new ItemDTO("Item2", 30, 3));
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item3",20));
-        itemsDTO2.add(new ItemDTO("Item4",30,5));
+        itemsDTO2.add(new ItemDTO("Item3", 20));
+        itemsDTO2.add(new ItemDTO("Item4", 30, 5));
 
         CompanyEntity entity1 = new CompanyEntity("1", "Cognizant",
                 "Sunita", "Accounts Payable", "1-222-333-0000");
         CompanyEntity entity2 = new CompanyEntity("2", "Cognizant", "Rohit",
                 "Accounts Payable", "1-222-333-0000");
 
-        InvoiceEntity d1=new InvoiceEntity(entity1, items1);
-        InvoiceEntity d2=new InvoiceEntity(entity2, items2);
+        InvoiceEntity d1 = new InvoiceEntity(entity1, items1);
+        InvoiceEntity d2 = new InvoiceEntity(entity2, items2);
         when(this.mockInvoiceRepository.findAll())
                 .thenReturn(
                         Arrays.asList(
                                 d1,
                                 d2));
 
-        List<InvoiceDTO> actual=this.invoiceService.getAllInvoices();
+        List<InvoiceDTO> actual = this.invoiceService.getAllInvoices();
         assertThat(actual).isEqualTo(
                 Arrays.asList(
-                        new InvoiceDTO("1", itemsDTO1,new Date(),""),
-                        new InvoiceDTO("2", itemsDTO2,new Date(),"")
+                        new InvoiceDTO("1", itemsDTO1, new Date(), ""),
+                        new InvoiceDTO("2", itemsDTO2, new Date(), "")
                 ));
     }
 
     @Test
-    public void createInvoiceTest() throws  CompanyExistsException , InvalidInputException,CompanyDoesNotExistsException,Exception{
+    public void createInvoiceTest() throws CompanyExistsException, InvalidInputException, CompanyDoesNotExistsException, Exception {
         List<ItemEntity> items1 = new ArrayList<ItemEntity>();
-        items1.add(new ItemEntity("Item1",20));
-        CompanyEntity compEnt = new CompanyEntity("1", "Cognizant","David",
+        items1.add(new ItemEntity("Item1", 20));
+        CompanyEntity compEnt = new CompanyEntity("1", "Cognizant", "David",
                 "Accounts Payable", "1-123-456-7890");
         InvoiceEntity invEnt = new InvoiceEntity(compEnt, items1);
 
@@ -99,39 +95,12 @@ public class InvoiceServiceTest {
                 .thenReturn(compEnt);
         when(mockInvoiceRepository.save(any())).thenReturn(invEnt);
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+        itemsDTO1.add(new ItemDTO("Item1", 20));
+        InvoiceDTO d1 = new InvoiceDTO("1", itemsDTO1, new Date(), "");
         this.invoiceService.createInvoice(d1);
-
-
-        //verify(this.mockInvoiceRepository).save(invEnt);
     }
 
-//    @Test
-//    public void getInvoicesByCompanyName() throws InvalidInputException,CompanyDoesNotExistsException,CompanyExistsException,Exception {
-//
-////        CompanyEntity company = new CompanyEntity("1", "Cognizant", "David",
-////                "Accounts Payable", "1-123-456-7890");
-////        List<ItemEntity> itemsENT1 = new ArrayList<ItemEntity>();
-////        itemsENT1.add(new ItemEntity("Item1",20));
-////        InvoiceEntity ent = new InvoiceEntity(company,itemsENT1);
-////
-////        when(mockInvoiceRepository.findAll()).thenReturn( List.of(ent));
-////        when(mockInvoiceRepository.save(any())).thenReturn(ent);
-////
-////        CompanyDTO companyDTO = new CompanyDTO("1", "Cognizant", "David",
-////                "Accounts Payable", "1-123-456-7890");
-////        this.companyService.createCompany(companyDTO);
-////        List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-////        itemsDTO1.add(new ItemDTO("Item1",20));
-////        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
-////       // this.invoiceService.createInvoice(d1);
-////
-////       // List<InvoiceDTO> actualinvoices = this.invoiceService.getInvoicesByCompanyName("Cognizant");
-////       // assertThat(actualinvoices.get(0).getCompanyInvoiceNumber()).isEqualTo("1");
-//    }
-
-    private void createCompany(String invoiceNumber,String companyName) throws Exception{
+    private void createCompany(String invoiceNumber, String companyName) throws Exception {
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",
                 "Accounts Payable", "1-123-456-7890");
 
@@ -140,26 +109,26 @@ public class InvoiceServiceTest {
     private List<InvoiceDTO> createInvoices(String invoiceNumber) throws Exception {
         List<InvoiceDTO> invoices = new ArrayList<>();
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+        itemsDTO1.add(new ItemDTO("Item1", 20));
+        InvoiceDTO d1 = new InvoiceDTO("1", itemsDTO1, new Date(), "");
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item2",20,3));
-        InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"");
+        itemsDTO2.add(new ItemDTO("Item2", 20, 3));
+        InvoiceDTO d2 = new InvoiceDTO("2", itemsDTO2, new Date(), "");
 
         List<ItemDTO> itemsDTO3 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
-        itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
-        itemsDTO1.add(new ItemDTO("Product Pages",20,3));
+        itemsDTO1.add(new ItemDTO("Brand Website Customization", 1000));
+        itemsDTO1.add(new ItemDTO("Brand Website Customization", 20));
+        itemsDTO1.add(new ItemDTO("Product Pages", 20, 3));
 
-        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+        InvoiceDTO d3 = new InvoiceDTO("1", itemsDTO1, new Date(), "");
 
         List<ItemDTO> itemsDTO4 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item1",40));
-        itemsDTO2.add(new ItemDTO("Item2",40,3));
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item1", 40));
+        itemsDTO2.add(new ItemDTO("Item2", 40, 3));
 
-        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date(),"");
+        InvoiceDTO d4 = new InvoiceDTO("2", itemsDTO1, new Date(), "");
         invoices.add(d1);
         invoices.add(d2);
         invoices.add(d3);

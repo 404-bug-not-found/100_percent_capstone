@@ -46,13 +46,13 @@ public class CompanyIT {
 
 
     @BeforeEach
-    public void beforeEach() throws Exception{
+    public void beforeEach() throws Exception {
         Employee employee = new Employee();
         employee.setEmployeeName("Iqbal");
         employee.setPassword("capstone");
         Map<String, Object> body = new HashMap<>();
-        body.put("employeeName",employee.getEmployeeName());
-        body.put("password",employee.getPassword());
+        body.put("employeeName", employee.getEmployeeName());
+        body.put("password", employee.getPassword());
 
         mockMvc.perform(post("/employee")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +68,7 @@ public class CompanyIT {
                 .andReturn();
 
         Map<String, String> responseBody = objectMapper.readValue(
-                result.getResponse().getContentAsString(),Map.class);
+                result.getResponse().getContentAsString(), Map.class);
         token = responseBody.get("token");
     }
 
@@ -486,7 +486,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void validate_company_attributes_null_test() throws Exception{
+    public void validate_company_attributes_null_test() throws Exception {
         CompanyDTO nullName = new CompanyDTO("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(post("/companies")
@@ -552,7 +552,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void validate_company_attributes_null_while_updating_test() throws Exception{
+    public void validate_company_attributes_null_while_updating_test() throws Exception {
         CompanyEntity nullName = new CompanyEntity("CTS-123", null, "David", "Accounts Payable", "1-123-456-7890");
 
         mockMvc.perform(patch("/companies/Cognizant")

@@ -24,44 +24,44 @@ import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT
  */
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-  @Autowired
-  private JwtManager jwtManager;
+    @Autowired
+    private JwtManager jwtManager;
 
-  public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
-    super(authenticationManager);
-  }
-
-  @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-
-    String authorizationHeader = request.getHeader(JWT_HEADER);
-
-    if(authorizationHeader != null && authorizationHeader.startsWith(JWT_PREFIX)) {
-      SecurityContextHolder.getContext().setAuthentication(getAuthentication(authorizationHeader));
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
     }
 
-    chain.doFilter(request, response);
-  }
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
+        String authorizationHeader = request.getHeader(JWT_HEADER);
 
-  /*
-   * This is utilizes the token manager to parse the token, then sets up the authentication object if able.
-   * Returning null from this method will cause authorization to fail.
-   */
-  @ExcludeGeneratedFromJaCoCo
-  private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-    try {
-      JwtToken jwt = jwtManager.getToken(token.replace(JWT_PREFIX, ""));
+        if (authorizationHeader != null && authorizationHeader.startsWith(JWT_PREFIX)) {
+            SecurityContextHolder.getContext().setAuthentication(getAuthentication(authorizationHeader));
+        }
 
-      System.out.println("JWT Valid? " + jwt.isValid());
-
-      if(!jwt.isValid()) {
-        return null;
-      }
-
-      return new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, new ArrayList<>());
-    } catch(JwtException e) {
-      return null;
+        chain.doFilter(request, response);
     }
-  }
+
+
+    /*
+     * This is utilizes the token manager to parse the token, then sets up the authentication object if able.
+     * Returning null from this method will cause authorization to fail.
+     */
+    @ExcludeGeneratedFromJaCoCo
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+        try {
+            JwtToken jwt = jwtManager.getToken(token.replace(JWT_PREFIX, ""));
+
+            System.out.println("JWT Valid? " + jwt.isValid());
+
+            if (!jwt.isValid()) {
+                return null;
+            }
+
+            return new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, new ArrayList<>());
+        } catch (JwtException e) {
+            return null;
+        }
+    }
 }

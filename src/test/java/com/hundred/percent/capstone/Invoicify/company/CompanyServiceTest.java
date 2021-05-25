@@ -3,8 +3,6 @@ package com.hundred.percent.capstone.Invoicify.company;
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
-import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
-import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -36,14 +34,8 @@ public class CompanyServiceTest {
     @Mock
     CompanyRepository mockCompanyRepository;
 
-    @Mock
-    AddressRepository mockAddressRepository;
-
     @InjectMocks
     CompanyService companyService;
-
-    @InjectMocks
-    AddressService addressService;
 
 
     @Test
@@ -196,7 +188,7 @@ public class CompanyServiceTest {
     public void updateCompanyThrowsException() {
         when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
         assertThrows(CompanyDoesNotExistsException.class, () -> {
-            companyService.updateCompany(new CompanyEntity(),null);
+            companyService.updateCompany(new CompanyEntity(), null);
         });
     }
 }

@@ -26,70 +26,70 @@ import java.util.Map;
  */
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-  @Autowired
-  private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-  @Autowired
-  private JwtManager jwtManager;
+    @Autowired
+    private JwtManager jwtManager;
 
-  /*
-   * Providing a RequestMatcher constructor allows us to specify a route on that will
-   * have this filter applied when instantiated.
-   */
-  public JwtAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
-    super(requiresAuthenticationRequestMatcher);
-  }
-
-  /*
-   * The logic here allows you to send the username and password via JSON instead of the default
-   * form data format.
-   */
-  @ExcludeGeneratedFromJaCoCo
-  @Override
-  public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-    UsernamePasswordAuthenticationToken authRequest;
-
-    try (InputStream body = request.getInputStream()) {
-      Map<String, Object> jsonBody = objectMapper.readValue(body, Map.class);
-      authRequest = new UsernamePasswordAuthenticationToken(jsonBody.get("employeeName"), jsonBody.get("password"));
-    } catch (IOException e) {
-      // If there is an exception, print it then create a failing (empty) authentication object
-      e.printStackTrace();
-      authRequest = new UsernamePasswordAuthenticationToken("", "");
+    /*
+     * Providing a RequestMatcher constructor allows us to specify a route on that will
+     * have this filter applied when instantiated.
+     */
+    public JwtAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+        super(requiresAuthenticationRequestMatcher);
     }
 
-    return getAuthenticationManager().authenticate(authRequest);
-  }
+    /*
+     * The logic here allows you to send the username and password via JSON instead of the default
+     * form data format.
+     */
+    @ExcludeGeneratedFromJaCoCo
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        UsernamePasswordAuthenticationToken authRequest;
 
-  /*
-   * Return a JSON web token on successful authentication.
-   */
-  @Override
-  protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, AuthenticationException {
-    response.setStatus(200);
-    response.setContentType("application/json;charset=UTF-8");
+        try (InputStream body = request.getInputStream()) {
+            Map<String, Object> jsonBody = objectMapper.readValue(body, Map.class);
+            authRequest = new UsernamePasswordAuthenticationToken(jsonBody.get("employeeName"), jsonBody.get("password"));
+        } catch (IOException e) {
+            // If there is an exception, print it then create a failing (empty) authentication object
+            e.printStackTrace();
+            authRequest = new UsernamePasswordAuthenticationToken("", "");
+        }
 
-    JwtToken jwt = jwtManager.generateToken((SecurityUser) authentication.getPrincipal());
+        return getAuthenticationManager().authenticate(authRequest);
+    }
 
-    response
-        .getWriter()
-        .write(objectMapper.writeValueAsString(jwt));
-  }
+    /*
+     * Return a JSON web token on successful authentication.
+     */
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, AuthenticationException {
+        response.setStatus(200);
+        response.setContentType("application/json;charset=UTF-8");
 
-  /*
-   * This override helps provide better error feedback when authentication fails.
-   */
-  @Override
-  protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-    response.setContentType("application/json;charset=UTF-8");
+        JwtToken jwt = jwtManager.generateToken((SecurityUser) authentication.getPrincipal());
 
-    Map<String, Object> body = new HashMap<>();
-    body.put("timestamp", Calendar.getInstance().getTime());
-    body.put("error", exception.getMessage());
+        response
+                .getWriter()
+                .write(objectMapper.writeValueAsString(jwt));
+    }
 
-    response
-        .getOutputStream()
-        .println(objectMapper.writeValueAsString(body));
-  }
+    /*
+     * This override helps provide better error feedback when authentication fails.
+     */
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json;charset=UTF-8");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", Calendar.getInstance().getTime());
+        body.put("error", exception.getMessage());
+
+        response
+                .getOutputStream()
+                .println(objectMapper.writeValueAsString(body));
+    }
 }
