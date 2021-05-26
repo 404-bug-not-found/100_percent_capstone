@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class InvoicifyController implements ErrorController {
     @GetMapping("/")
     @ResponseStatus(HttpStatus.FOUND)
-    public void redirectToDocs(HttpServletResponse httpServletResponse){
+    public void redirectToDocs(HttpServletResponse httpServletResponse) {
         //httpServletResponse.setHeader("Location", "/docs/index.html");
         httpServletResponse.setHeader("Location", "/home.html");
     }
@@ -45,7 +45,7 @@ public class InvoicifyController implements ErrorController {
                         "</br>\n" +
                         "</br>\n" +
                         "</br>\n" +
-                        "<center><b><p style=\"color:black\">INVPOCIFY: A CAPSTONE PROJECT</p></b></center>\n" +
+                        "<center><b><p style=\"color:black\">INVOICIFY: A CAPSTONE PROJECT</p></b></center>\n" +
                         "</br>\n" +
                         "<center><b><p style=\"color:red\">HTTP: <span>404</span></p></b></center>\n" +
                         "</br>\n" +
@@ -72,7 +72,7 @@ public class InvoicifyController implements ErrorController {
                         "</br>\n" +
                         "</br>\n" +
                         "</br>\n" +
-                        "<center><b><p style=\"color:black\">INVPOCIFY: A CAPSTONE PROJECT</p></b></center>\n" +
+                        "<center><b><p style=\"color:black\">INVOICIFY: A CAPSTONE PROJECT</p></b></center>\n" +
                         "</br>\n" +
                         "<center><b><p style=\"color:red\">500: INTERNAL SERVER ERROR</p></b></center>\n" +
                         "</br>\n" +
@@ -99,7 +99,7 @@ public class InvoicifyController implements ErrorController {
                         "</br>\n" +
                         "</br>\n" +
                         "</br>\n" +
-                        "<center><b><p style=\"color:black\">INVPOCIFY: A CAPSTONE PROJECT</p></b></center>\n" +
+                        "<center><b><p style=\"color:black\">INVOICIFY: A CAPSTONE PROJECT</p></b></center>\n" +
                         "</br>\n" +
                         "<center><code style=\"color:blue\">Uh oh, something unexpected happened.</code></center>\n" +
                         "</br>\n" +
@@ -119,7 +119,7 @@ public class InvoicifyController implements ErrorController {
                         "</br>\n" +
                         "</br>\n" +
                         "</br>\n" +
-                        "<center><b><p style=\"color:black\">INVPOCIFY: A CAPSTONE PROJECT</p></b></center>\n" +
+                        "<center><b><p style=\"color:black\">INVOICIFY: A CAPSTONE PROJECT</p></b></center>\n" +
                         "</br>\n" +
                         "<center><b><p style=\"color:red\">400: BAD REQUEST</p></b></center>\n" +
                         "</br>\n" +
@@ -142,7 +142,7 @@ public class InvoicifyController implements ErrorController {
                         "</br>\n" +
                         "</br>\n" +
                         "</br>\n" +
-                        "<center><b><p style=\"color:black\">INVPOCIFY: A CAPSTONE PROJECT</p></b></center>\n" +
+                        "<center><b><p style=\"color:black\">INVOICIFY: A CAPSTONE PROJECT</p></b></center>\n" +
                         "</br>\n" +
                         "<center><b><p style=\"color:red\">401: NOT AUTHORIZED</p></b></center>\n" +
                         "</br>\n" +

@@ -9,9 +9,9 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, UUID> {
-  Optional<Employee> findById(UUID id);
+    Optional<Employee> findById(UUID id);
 
-  List<Employee> findAll();
+    List<Employee> findAll();
 
-  Optional<Employee> findByEmployeeName(String employeeName);
+    Optional<Employee> findByEmployeeName(String employeeName);
 }

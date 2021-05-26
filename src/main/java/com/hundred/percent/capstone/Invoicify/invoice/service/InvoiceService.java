@@ -1,7 +1,6 @@
 package com.hundred.percent.capstone.Invoicify.invoice.service;
 
 
-import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
 import com.hundred.percent.capstone.Invoicify.company.entity.CompanyEntity;
 import com.hundred.percent.capstone.Invoicify.company.exception.CompanyDoesNotExistsException;
 import com.hundred.percent.capstone.Invoicify.company.repository.CompanyRepository;
@@ -33,61 +32,56 @@ public class InvoiceService {
     CompanyRepository companyRepository;
     @Autowired
     ItemRepository itemRepository;
-    @Autowired
-    AddressRepository addressRepository;
 
-    public Long createInvoice(InvoiceDTO invoiceDTO) throws CompanyDoesNotExistsException, Exception, InvalidInputException {
-        ArrayList<ItemEntity> items = new ArrayList<ItemEntity>(invoiceDTO.getItems()
+
+    public Long createInvoice(InvoiceDTO invoiceDTO) throws CompanyDoesNotExistsException, InvalidInputException {
+        ArrayList<ItemEntity> items = new ArrayList<>(invoiceDTO.getItems()
                 .stream()
                 .map(itemDTO -> {
-                    ItemEntity e =new ItemEntity(itemDTO.getDescription(),
-                            itemDTO.getPrice(),itemDTO.getQuantity());
+                    ItemEntity e = new ItemEntity(itemDTO.getDescription(),
+                            itemDTO.getPrice(), itemDTO.getQuantity());
                     this.itemRepository.save(e);
                     return e;
                 }).collect(Collectors.toList()));
 
         ValidateInvoiceDTO(invoiceDTO);
-        CompanyEntity companyEntity =  this.companyRepository.findByInvoiceNumber(invoiceDTO.getCompanyInvoiceNumber());
-        if(companyEntity == null)
+        CompanyEntity companyEntity = this.companyRepository.findByInvoiceNumber(invoiceDTO.getCompanyInvoiceNumber());
+        if (companyEntity == null)
             throw new CompanyDoesNotExistsException();
-        InvoiceEntity entToSave = new InvoiceEntity(companyEntity,items,invoiceDTO.getPaidStatus(),invoiceDTO.getPaidDate());
+        InvoiceEntity entToSave = new InvoiceEntity(companyEntity, items, invoiceDTO.getPaidStatus(), invoiceDTO.getPaidDate());
         entToSave = this.invoiceRepository.save(entToSave);
         this.invoiceRepository.flush();
         return (entToSave).getId();
     }
-    private  void ValidateInvoiceDTO(InvoiceDTO invoice) throws InvalidInputException
-    {
-        try{
-            Integer invoiceNumber = Integer.parseInt( invoice.getCompanyInvoiceNumber());
+
+    private void ValidateInvoiceDTO(InvoiceDTO invoice) throws InvalidInputException {
+        try {
+            Integer invoiceNumber = Integer.parseInt(invoice.getCompanyInvoiceNumber());
             SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-            if( invoice.getPaidDate() != "" )
+            if (invoice.getPaidDate() != "")
                 formatter.parse(invoice.getPaidDate());
             Date createdDate = formatter.parse(invoice.getDateCreated());
             Date modifiedDate = formatter.parse(invoice.getDateModified());
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new InvalidInputException();
         }
     }
 
-    public List<InvoiceDTO> getAllInvoices()
-    {
+    public List<InvoiceDTO> getAllInvoices() {
         List<InvoiceEntity> invoicesEnts = invoiceRepository.findAll()
                 .stream()
                 .collect(Collectors.toList());
         List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
-        for(InvoiceEntity invoiceEntity:invoicesEnts)
-        {
-            ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+        for (InvoiceEntity invoiceEntity : invoicesEnts) {
+            ArrayList<ItemDTO> items = new ArrayList<>(invoiceEntity.getItems()
                     .stream()
                     .map(itemEntity -> {
-                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                        ItemDTO e = new ItemDTO(itemEntity.getDescription(),
                                 itemEntity.getPrice(), itemEntity.getQuantity()
-                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                                , itemEntity.getFeeType(), itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(), items, invoiceEntity.getDateCreated(), invoiceEntity.getPaidDate()));
 
         }
         return invoiceDTOS;
@@ -99,17 +93,16 @@ public class InvoiceService {
                 .stream().filter(invEnt -> invEnt.getId().equals(input))
                 .collect(Collectors.toList());
         List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
-        for(InvoiceEntity invoiceEntity:invoicesForCompany)
-        {
+        for (InvoiceEntity invoiceEntity : invoicesForCompany) {
             ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
                     .stream()
                     .map(itemEntity -> {
-                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                        ItemDTO e = new ItemDTO(itemEntity.getDescription(),
                                 itemEntity.getPrice(), itemEntity.getQuantity()
-                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                                , itemEntity.getFeeType(), itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(), items, invoiceEntity.getDateCreated(), invoiceEntity.getPaidDate()));
 
         }
 
@@ -123,24 +116,23 @@ public class InvoiceService {
                 .stream().filter(invEnt -> invEnt.getCompanyEntity().getName().equals(companyName))
                 .collect(Collectors.toList());
         List<InvoiceDTO> invoiceDTOS = new ArrayList<>();
-        for(InvoiceEntity invoiceEntity:invoicesForCompany)
-        {
-            ArrayList<ItemDTO> items = new ArrayList<ItemDTO>(invoiceEntity.getItems()
+        for (InvoiceEntity invoiceEntity : invoicesForCompany) {
+            ArrayList<ItemDTO> items = new ArrayList<>(invoiceEntity.getItems()
                     .stream()
                     .map(itemEntity -> {
-                        ItemDTO e =new ItemDTO(itemEntity.getDescription(),
+                        ItemDTO e = new ItemDTO(itemEntity.getDescription(),
                                 itemEntity.getPrice(), itemEntity.getQuantity()
-                                ,itemEntity.getFeeType(),itemEntity.getFee());
+                                , itemEntity.getFeeType(), itemEntity.getFee());
                         return e;
                     }).collect(Collectors.toList()));
-            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(),items,invoiceEntity.getDateCreated(),invoiceEntity.getPaidDate()));
+            invoiceDTOS.add(new InvoiceDTO(invoiceEntity.getCompanyEntity().getInvoiceNumber(), items, invoiceEntity.getDateCreated(), invoiceEntity.getPaidDate()));
 
         }
 
         return invoiceDTOS;
     }
 
-    public void updateInvoice(Long input,InvoiceDTO invoiceDto) {
+    public void updateInvoice(Long input, InvoiceDTO invoiceDto) {
         List<InvoiceEntity> invoiceEntList = invoiceRepository.findAll()
                 .stream().filter(invEnt -> invEnt.getId().equals(input))
                 .collect(Collectors.toList());
@@ -148,11 +140,11 @@ public class InvoiceService {
         List<ItemEntity> existingItems = invoiceEnt.getItems();
 
 
-        ArrayList<ItemEntity> itemsUpdate = new ArrayList<ItemEntity>(invoiceDto.getItems()
+        ArrayList<ItemEntity> itemsUpdate = new ArrayList<>(invoiceDto.getItems()
                 .stream()
                 .map(itemDTO -> {
-                    ItemEntity e =new ItemEntity(itemDTO.getDescription(),
-                            itemDTO.getPrice(),itemDTO.getQuantity());
+                    ItemEntity e = new ItemEntity(itemDTO.getDescription(),
+                            itemDTO.getPrice(), itemDTO.getQuantity());
                     this.itemRepository.save(e);
                     return e;
                 }).collect(Collectors.toList()));
@@ -163,17 +155,18 @@ public class InvoiceService {
 
         this.invoiceRepository.save(invoiceEnt);
     }
-    public void deleteInvoice(long Id) throws UnpaidInvoiceDeleteException,Exception{
-         InvoiceEntity ent = invoiceRepository.findAll()
+
+    public void deleteInvoice(long Id) throws UnpaidInvoiceDeleteException, Exception {
+        InvoiceEntity ent = invoiceRepository.findAll()
                 .stream().filter(invEnt -> invEnt.getId().equals(Id))
                 .collect(Collectors.toList()).get(0);
-         Date paidDate = new SimpleDateFormat("yyyy-MM-dd").parse(ent.getPaidDate()==""?"2099-20-02":ent.getPaidDate());
-            long diffInMillies = Math.abs((new Date()).getTime() - paidDate.getTime());
-            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        Date paidDate = new SimpleDateFormat("yyyy-MM-dd").parse(ent.getPaidDate() == "" ? "2099-20-02" : ent.getPaidDate());
+        long diffInMillies = Math.abs((new Date()).getTime() - paidDate.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
-         if(ent.getPaidStatus().equals(PaidStatus.UnPaid) || (diff < 365  && ent.getPaidStatus().equals(PaidStatus.Paid)) )
-             throw new UnpaidInvoiceDeleteException();
-         else
+        if (ent.getPaidStatus().equals(PaidStatus.UnPaid) || (diff < 365 && ent.getPaidStatus().equals(PaidStatus.Paid)))
+            throw new UnpaidInvoiceDeleteException();
+        else
             invoiceRepository.delete(ent);
     }
 

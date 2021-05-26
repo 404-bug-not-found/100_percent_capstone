@@ -1,19 +1,12 @@
 package com.hundred.percent.capstone.Invoicify.invoice;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hundred.percent.capstone.Invoicify.Employee.Employee;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.InvoiceDTO;
 import com.hundred.percent.capstone.Invoicify.invoice.dto.ItemDTO;
-import com.hundred.percent.capstone.Invoicify.invoice.entity.InvoiceEntity;
-import com.hundred.percent.capstone.Invoicify.invoice.entity.ItemEntity;
-import com.hundred.percent.capstone.Invoicify.invoice.repository.InvoiceRepository;
-import com.hundred.percent.capstone.Invoicify.invoice.service.InvoiceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,10 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.util.Assert;
-
-import javax.transaction.Transactional;
-
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,7 +22,6 @@ import java.util.*;
 import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_HEADER;
 import static com.hundred.percent.capstone.Invoicify.Security.Jwt.JwtManager.JWT_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -56,13 +44,13 @@ public class InvoiceIT {
     ObjectMapper objectMapper;
 
     @BeforeEach
-    public void beforeEach() throws Exception{
+    public void beforeEach() throws Exception {
         Employee employee = new Employee();
         employee.setEmployeeName("Iqbal");
         employee.setPassword("capstone");
         Map<String, Object> body = new HashMap<>();
-        body.put("employeeName",employee.getEmployeeName());
-        body.put("password",employee.getPassword());
+        body.put("employeeName", employee.getEmployeeName());
+        body.put("password", employee.getPassword());
 
         mockMvc.perform(post("/employee")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +66,7 @@ public class InvoiceIT {
                 .andReturn();
 
         Map<String, String> responseBody = objectMapper.readValue(
-                result.getResponse().getContentAsString(),Map.class);
+                result.getResponse().getContentAsString(), Map.class);
         token = responseBody.get("token");
     }
 
@@ -88,18 +76,19 @@ public class InvoiceIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(0))
                 .andDo(print())
-        .andDo(document("getInvoice"));
+                .andDo(document("getInvoice"));
     }
+
     @Test
-    public void createSingleInvoiceTest() throws Exception{
+    public void createSingleInvoiceTest() throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String expected = formatter.format(new Date());
 
-        createCompany("2","TCS");
+        createCompany("2", "TCS");
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("2", itemsDTO1,new Date(),"");
+        itemsDTO1.add(new ItemDTO("Item1", 20));
+        InvoiceDTO d1 = new InvoiceDTO("2", itemsDTO1, new Date(), "");
 
         MvcResult result = mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
@@ -114,15 +103,15 @@ public class InvoiceIT {
     }
 
     @Test
-    public void createSingleInvoiceInputTest() throws Exception{
+    public void createSingleInvoiceInputTest() throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String expected = formatter.format(new Date());
 
-        createCompany("2","TCS");
+        createCompany("2", "TCS");
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1WE", itemsDTO1,new Date(),"@#$$");
+        itemsDTO1.add(new ItemDTO("Item1", 20));
+        InvoiceDTO d1 = new InvoiceDTO("1WE", itemsDTO1, new Date(), "@#$$");
 
         MvcResult result = mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
@@ -136,7 +125,7 @@ public class InvoiceIT {
     }
 
     @Test
-    public void createAndGetInvoiceTest() throws Exception{
+    public void createAndGetInvoiceTest() throws Exception {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String expected = formatter.format(new Date());
         initialCompanyInvoiceSetUp();
@@ -166,7 +155,7 @@ public class InvoiceIT {
     }
 
     @Test
-    public void getInvoicesById() throws Exception{
+    public void getInvoicesById() throws Exception {
         initialCompanyInvoiceSetUp();
         mockMvc.perform(get("/invoices/3"))
                 .andExpect(status().isOk())
@@ -181,7 +170,7 @@ public class InvoiceIT {
     }
 
     @Test
-    public void getInvoicesByCompanyName() throws Exception{
+    public void getInvoicesByCompanyName() throws Exception {
         initialCompanyInvoiceSetUp();
         mockMvc.perform(get("/companies/Cognizant/invoices"))
                 .andExpect(status().isOk())
@@ -213,7 +202,7 @@ public class InvoiceIT {
     }
 
     @Test
-    public void createAndGetInvoicesWithSameDescItems() throws Exception{
+    public void createAndGetInvoicesWithSameDescItems() throws Exception {
         initialCompanyInvoiceSetUp();
         mockMvc.perform(get("/invoices"))
                 .andExpect(status().isOk())
@@ -240,15 +229,16 @@ public class InvoiceIT {
                 .andExpect(jsonPath("$.[0].items.[3].fee").value("60"))
                 .andDo(document("createAndGetInvoicesWithSameDescItems"));
     }
+
     @Test
     public void updateAnExistingInvoiceByInvoiceNumberWithItems() throws Exception {
-        createCompany("1","TCS");
+        createCompany("1", "TCS");
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item2",40));
-        itemsDTO2.add(new ItemDTO("Item3",40,3));
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item2", 40));
+        itemsDTO2.add(new ItemDTO("Item3", 40, 3));
 
-        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+        InvoiceDTO d4 = new InvoiceDTO("1", itemsDTO2, new Date(), "");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
@@ -258,8 +248,8 @@ public class InvoiceIT {
                 .andDo(document("postInvoice"));
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item4",30));
-        InvoiceDTO d5=new InvoiceDTO(itemsDTO1);
+        itemsDTO1.add(new ItemDTO("Item4", 30));
+        InvoiceDTO d5 = new InvoiceDTO(itemsDTO1);
 
         mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(d5))
@@ -278,13 +268,13 @@ public class InvoiceIT {
 
     @Test
     public void updateAnExistingInvoiceWithPaidStatus() throws Exception {
-        createCompany("1","TCS");
+        createCompany("1", "TCS");
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item2",40));
-        itemsDTO2.add(new ItemDTO("Item3",40,3));
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item2", 40));
+        itemsDTO2.add(new ItemDTO("Item3", 40, 3));
 
-        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+        InvoiceDTO d4 = new InvoiceDTO("1", itemsDTO2, new Date(), "");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
@@ -295,8 +285,8 @@ public class InvoiceIT {
 
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item4",30));
-        InvoiceDTO d5=new InvoiceDTO(itemsDTO1);
+        itemsDTO1.add(new ItemDTO("Item4", 30));
+        InvoiceDTO d5 = new InvoiceDTO(itemsDTO1);
 
         mockMvc.perform(post("/invoices/2")
                 .content(objectMapper.writeValueAsString(d5))
@@ -314,14 +304,14 @@ public class InvoiceIT {
     }
 
     @Test
-    public void deleteUnpaidInvoiceTest() throws Exception{
-        createCompany("1","TCS");
+    public void deleteUnpaidInvoiceTest() throws Exception {
+        createCompany("1", "TCS");
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item2",40));
-        itemsDTO2.add(new ItemDTO("Item3",40,3));
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item2", 40));
+        itemsDTO2.add(new ItemDTO("Item3", 40, 3));
 
-        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"");
+        InvoiceDTO d4 = new InvoiceDTO("1", itemsDTO2, new Date(), "");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
@@ -340,14 +330,14 @@ public class InvoiceIT {
     }
 
     @Test
-    public void deletepaidInvoiceLessThanYearTest() throws Exception{
-        createCompany("1","TCS");
+    public void deletepaidInvoiceLessThanYearTest() throws Exception {
+        createCompany("1", "TCS");
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item2",40));
-        itemsDTO2.add(new ItemDTO("Item3",40,3));
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item2", 40));
+        itemsDTO2.add(new ItemDTO("Item3", 40, 3));
 
-        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"2021-05-21");
+        InvoiceDTO d4 = new InvoiceDTO("1", itemsDTO2, new Date(), "2021-05-21");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
@@ -365,15 +355,16 @@ public class InvoiceIT {
 
 
     }
-    @Test
-    public void deletepaidInvoiceMoreThanYearTest() throws Exception{
-        createCompany("1","TCS");
-        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item2",40));
-        itemsDTO2.add(new ItemDTO("Item3",40,3));
 
-        InvoiceDTO d4=new InvoiceDTO("1", itemsDTO2,new Date(),"2019-05-21");
+    @Test
+    public void deletepaidInvoiceMoreThanYearTest() throws Exception {
+        createCompany("1", "TCS");
+        List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item2", 40));
+        itemsDTO2.add(new ItemDTO("Item3", 40, 3));
+
+        InvoiceDTO d4 = new InvoiceDTO("1", itemsDTO2, new Date(), "2019-05-21");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d4))
@@ -393,7 +384,7 @@ public class InvoiceIT {
     }
 
 
-    private void createCompany(String invoiceNumber,String companyName) throws Exception{
+    private void createCompany(String invoiceNumber, String companyName) throws Exception {
         CompanyDTO companyDTO = new CompanyDTO(invoiceNumber, companyName, "David",
                 "Accounts Payable", "1-123-456-7890");
 
@@ -405,32 +396,33 @@ public class InvoiceIT {
                 .andDo(print())
                 .andDo(document("postCompany"));
     }
+
     private void initialCompanyInvoiceSetUp() throws Exception {
 
-       createCompany("1","Cognizant");
-       createCompany("2","TCS");
+        createCompany("1", "Cognizant");
+        createCompany("2", "TCS");
 
         List<ItemDTO> itemsDTO1 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Item1",20));
-        InvoiceDTO d1=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+        itemsDTO1.add(new ItemDTO("Item1", 20));
+        InvoiceDTO d1 = new InvoiceDTO("1", itemsDTO1, new Date(), "");
 
         List<ItemDTO> itemsDTO2 = new ArrayList<ItemDTO>();
         itemsDTO2.add(new ItemDTO("Item2",20,3));
         InvoiceDTO d2=new InvoiceDTO("2", itemsDTO2,new Date(),"05-05-2021");
 
         List<ItemDTO> itemsDTO3 = new ArrayList<ItemDTO>();
-        itemsDTO1.add(new ItemDTO("Brand Website Customization",1000));
-        itemsDTO1.add(new ItemDTO("Brand Website Customization",20));
-        itemsDTO1.add(new ItemDTO("Product Pages",20,3));
+        itemsDTO1.add(new ItemDTO("Brand Website Customization", 1000));
+        itemsDTO1.add(new ItemDTO("Brand Website Customization", 20));
+        itemsDTO1.add(new ItemDTO("Product Pages", 20, 3));
 
-        InvoiceDTO d3=new InvoiceDTO("1", itemsDTO1,new Date(),"");
+        InvoiceDTO d3 = new InvoiceDTO("1", itemsDTO1, new Date(), "");
 
         List<ItemDTO> itemsDTO4 = new ArrayList<ItemDTO>();
-        itemsDTO2.add(new ItemDTO("Item1",2000));
-        itemsDTO2.add(new ItemDTO("Item1",40));
-        itemsDTO2.add(new ItemDTO("Item2",40,3));
+        itemsDTO2.add(new ItemDTO("Item1", 2000));
+        itemsDTO2.add(new ItemDTO("Item1", 40));
+        itemsDTO2.add(new ItemDTO("Item2", 40, 3));
 
-        InvoiceDTO d4=new InvoiceDTO("2", itemsDTO1,new Date(),"");
+        InvoiceDTO d4 = new InvoiceDTO("2", itemsDTO1, new Date(), "");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d1))
@@ -463,11 +455,11 @@ public class InvoiceIT {
     }
 
     @Test
-    public void testForItemDTOCodeCoverage() throws Exception{
-        createCompany("2","TCS");
+    public void testForItemDTOCodeCoverage() throws Exception {
+        createCompany("2", "TCS");
         List<ItemDTO> itemsDTO = new ArrayList<ItemDTO>();
-        itemsDTO.add(new ItemDTO("Item1",2000,1));
-        InvoiceDTO d= new InvoiceDTO("2", itemsDTO,new Date(),"");
+        itemsDTO.add(new ItemDTO("Item1", 2000, 1));
+        InvoiceDTO d = new InvoiceDTO("2", itemsDTO, new Date(), "");
 
         mockMvc.perform(post("/invoices")
                 .content(objectMapper.writeValueAsString(d))

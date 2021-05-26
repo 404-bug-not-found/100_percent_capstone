@@ -1,4 +1,3 @@
-
 package com.hundred.percent.capstone.Invoicify.company.dto;
 
 import lombok.AllArgsConstructor;

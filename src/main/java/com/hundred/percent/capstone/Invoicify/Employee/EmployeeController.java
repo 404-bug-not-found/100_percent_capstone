@@ -10,17 +10,17 @@ import java.util.UUID;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-  @Autowired
-  EmployeeService employeeService;
+    @Autowired
+    EmployeeService employeeService;
 
-  @PostMapping
-  public Employee createEmployee(@RequestBody Employee employee) {
-    return employeeService.save(employee);
-  }
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeService.save(employee);
+    }
 
-  @GetMapping("/{id}")
-  public Optional<Employee> getById(@PathVariable(value = "id") UUID id) {
-    return employeeService.get(id);
-  }
+    @GetMapping("/{id}")
+    public Optional<Employee> getById(@PathVariable(value = "id") UUID id) {
+        return employeeService.get(id);
+    }
 
 }

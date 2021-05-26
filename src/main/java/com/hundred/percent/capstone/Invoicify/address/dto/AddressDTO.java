@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDTO {
-
     @NotNull
     String addressLine1;
     @NotNull
@@ -22,5 +21,4 @@ public class AddressDTO {
     String zip;
     @NotNull
     String companyName;
-
 }

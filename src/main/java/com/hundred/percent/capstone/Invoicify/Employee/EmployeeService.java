@@ -13,22 +13,22 @@ import java.util.UUID;
 @Transactional
 public class EmployeeService {
 
-  @Autowired
-  EmployeeRepository repository;
+    @Autowired
+    EmployeeRepository repository;
 
-  @Autowired
-  PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-  public List<Employee> getAll() {
-    return repository.findAll();
-  }
+    public List<Employee> getAll() {
+        return repository.findAll();
+    }
 
-  public Optional<Employee> get(UUID id) {
-    return repository.findById(id);
-  }
+    public Optional<Employee> get(UUID id) {
+        return repository.findById(id);
+    }
 
-  public Employee save(Employee employee) {
-    employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-    return repository.save(employee);
-  }
+    public Employee save(Employee employee) {
+        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+        return repository.save(employee);
+    }
 }

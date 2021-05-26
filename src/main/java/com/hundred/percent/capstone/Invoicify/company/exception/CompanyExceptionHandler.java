@@ -13,7 +13,6 @@ public class CompanyExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public @ResponseBody
     String handleCompanyNameFoundException() {
-
         return "{\"message\": \"Company already exist.\"}";
     }
 
@@ -21,7 +20,6 @@ public class CompanyExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public @ResponseBody
     String handleCompanyNotFoundException() {
-
         return "{\"message\": \"Company does not exist.\"}";
     }
 

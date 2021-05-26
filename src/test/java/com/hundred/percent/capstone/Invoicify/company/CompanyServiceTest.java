@@ -3,8 +3,6 @@ package com.hundred.percent.capstone.Invoicify.company;
 import com.hundred.percent.capstone.Invoicify.address.entity.AddressEntity;
 import com.hundred.percent.capstone.Invoicify.address.exception.AddressExistsException;
 import com.hundred.percent.capstone.Invoicify.address.exception.CompanyAddressDoesNotExistsException;
-import com.hundred.percent.capstone.Invoicify.address.repository.AddressRepository;
-import com.hundred.percent.capstone.Invoicify.address.service.AddressService;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanyListViewDTO;
 import com.hundred.percent.capstone.Invoicify.company.dto.CompanySimpleViewDTO;
@@ -36,32 +34,26 @@ public class CompanyServiceTest {
     @Mock
     CompanyRepository mockCompanyRepository;
 
-    @Mock
-    AddressRepository mockAddressRepository;
-
     @InjectMocks
     CompanyService companyService;
-
-    @InjectMocks
-    AddressService addressService;
 
 
     @Test
     public void createTest() throws CompanyExistsException {
-        CompanyDTO companyDTO = new CompanyDTO("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-456-7890");
 
         companyService.createCompany(companyDTO);
 
         verify(mockCompanyRepository).save(
-                new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-456-7890")
+                new CompanyEntity("123", "Cognizant", "Iqbal", "Accounts Payable", "1-123-456-7890")
         );
     }
 
     @Test
     public void findAllTest() {
 
-        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyEntity entity1 = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity entity2 = new CompanyEntity("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1, entity2));
 
@@ -75,8 +67,8 @@ public class CompanyServiceTest {
     @Test
     public void duplicateCompanyNameTest() {
 
-        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
-        CompanyDTO companyDTO = new CompanyDTO("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity entity1 = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyDTO companyDTO = new CompanyDTO("222", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
 
@@ -88,12 +80,12 @@ public class CompanyServiceTest {
     @Test
     public void getSimpleCompanyDTOList() throws CompanyAddressDoesNotExistsException {
 
-        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity entity1 = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         List<AddressEntity> addressEntities = new ArrayList<>();
         addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", entity1));
         entity1.setAddresses(addressEntities);
 
-        CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyEntity entity2 = new CompanyEntity("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
         List<AddressEntity> addressEntities2 = new ArrayList<>();
         addressEntities2.add(new AddressEntity("456 St", "Tampa", "FL", "33333", entity2));
         entity2.setAddresses(addressEntities2);
@@ -113,7 +105,7 @@ public class CompanyServiceTest {
     @Test
     public void companySimpleView_Fail_Test() {
 
-        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity entity1 = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
 
@@ -124,12 +116,12 @@ public class CompanyServiceTest {
 
     @Test
     public void companyViewDTO_ListView_test() throws CompanyAddressDoesNotExistsException {
-        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity entity1 = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
         List<AddressEntity> addressEntities = new ArrayList<>();
         addressEntities.add(new AddressEntity("123 St", "Dallas", "TX", "33333", entity1));
         entity1.setAddresses(addressEntities);
 
-        CompanyEntity entity2 = new CompanyEntity("CTS-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+        CompanyEntity entity2 = new CompanyEntity("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
         List<AddressEntity> addressEntities2 = new ArrayList<>();
         addressEntities2.add(new AddressEntity("456 St", "Tampa", "FL", "33333", entity2));
         entity2.setAddresses(addressEntities2);
@@ -149,7 +141,7 @@ public class CompanyServiceTest {
     @Test
     public void companyListView_Fail_Test() {
 
-        CompanyEntity entity1 = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
+        CompanyEntity entity1 = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-123-456-7890");
 
         when(mockCompanyRepository.findAll()).thenReturn(List.of(entity1));
 
@@ -160,12 +152,12 @@ public class CompanyServiceTest {
 
     @Test
     public void updateCompanyDetailsTest() throws AddressExistsException, CompanyDoesNotExistsException {
-        CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
+        CompanyEntity oldCompanyEntity = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
         List<AddressEntity> oldAddressEntities = new ArrayList<>();
         oldAddressEntities.add(new AddressEntity("123 St", "Houston", "TX", "33333", oldCompanyEntity));
         oldCompanyEntity.setAddresses(oldAddressEntities);
 
-        CompanyEntity newCompanyEntity = new CompanyEntity("FDM-123", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
+        CompanyEntity newCompanyEntity = new CompanyEntity("111", "Cognizant", "Iqbal", "Accounts Payable", "1-222-222-2222");
 
         when(mockCompanyRepository.findByName(anyString())).thenReturn(oldCompanyEntity);
         when(mockCompanyRepository.save(any())).thenReturn(newCompanyEntity);
@@ -177,7 +169,7 @@ public class CompanyServiceTest {
 
     @Test
     public void deleteCompanyTest() throws CompanyDoesNotExistsException {
-        CompanyEntity oldCompanyEntity = new CompanyEntity("FDM-123", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
+        CompanyEntity oldCompanyEntity = new CompanyEntity("111", "Freddie Mac", "Zxander", "Accounts Payable", "1-111-111-1111");
         when(mockCompanyRepository.findByName(anyString())).thenReturn(oldCompanyEntity);
 
         String actual = companyService.deleteCompany("Freddie Mac");
@@ -196,7 +188,7 @@ public class CompanyServiceTest {
     public void updateCompanyThrowsException() {
         when(mockCompanyRepository.findByName(anyString())).thenReturn(null);
         assertThrows(CompanyDoesNotExistsException.class, () -> {
-            companyService.updateCompany(new CompanyEntity(),null);
+            companyService.updateCompany(new CompanyEntity(), null);
         });
     }
 }

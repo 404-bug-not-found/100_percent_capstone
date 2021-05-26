@@ -12,7 +12,6 @@ public class CompanyListViewDTO {
     String contactName;
     String contactTitle;
     String contactPhoneNumber;
-
     String addressLine1;
     String city;
     String state;

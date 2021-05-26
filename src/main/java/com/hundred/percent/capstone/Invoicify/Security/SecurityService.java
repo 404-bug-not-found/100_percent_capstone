@@ -18,16 +18,16 @@ import java.util.Optional;
 @Service
 public class SecurityService implements UserDetailsService {
 
-  @Autowired
-  private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-  @Override
-  public UserDetails loadUserByUsername(String employeeName) throws UsernameNotFoundException {
+    @Override
+    public UserDetails loadUserByUsername(String employeeName) throws UsernameNotFoundException {
 
-    Optional<Employee> employee = employeeRepository.findByEmployeeName(employeeName);
+        Optional<Employee> employee = employeeRepository.findByEmployeeName(employeeName);
 
-    employee.orElseThrow(() -> new UsernameNotFoundException(employeeName + " not found."));
+        employee.orElseThrow(() -> new UsernameNotFoundException(employeeName + " not found."));
 
-    return employee.map(SecurityUser::new).get();
-  }
+        return employee.map(SecurityUser::new).get();
+    }
 }

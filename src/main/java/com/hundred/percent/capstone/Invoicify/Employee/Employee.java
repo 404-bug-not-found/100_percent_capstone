@@ -13,35 +13,36 @@ import java.util.UUID;
 @Entity
 @Data
 public class Employee {
-  @Id
-  @GeneratedValue(strategy= GenerationType.AUTO)
-  private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
-  @NonNull
-  private String employeeName;
+    @NonNull
+    private String employeeName;
 
-  @NonNull
-  // Prevents the password from being serialized but allows deserialization
-  // for employee JSON from incoming requests
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private String password;
+    @NonNull
+    // Prevents the password from being serialized but allows deserialization
+    // for employee JSON from incoming requests
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
-  @NonNull
-  private String roles = "EMPLOYEE";
+    @NonNull
+    private String roles = "EMPLOYEE";
 
-  private boolean isActive = true;
+    private boolean isActive = true;
 
-  public Employee() {}
+    public Employee() {
+    }
 
-  public Employee(String employeeName, String password) {
-    this.employeeName = employeeName;
-    this.password = password;
-  }
+    public Employee(String employeeName, String password) {
+        this.employeeName = employeeName;
+        this.password = password;
+    }
 
-  public Employee(String employeeName, String password, boolean isActive, String roles) {
-    this.employeeName = employeeName;
-    this.password = password;
-    this.isActive = isActive;
-    this.roles = roles;
-  }
+    public Employee(String employeeName, String password, boolean isActive, String roles) {
+        this.employeeName = employeeName;
+        this.password = password;
+        this.isActive = isActive;
+        this.roles = roles;
+    }
 }
