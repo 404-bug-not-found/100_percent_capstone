@@ -42,6 +42,10 @@ public class CompanyController {
     public List<InvoiceDTO> getInvoicesByCompanyName(@PathVariable String companyname) {
         return this.invoiceService.getInvoicesByCompanyName(companyname);
     }
+    @GetMapping("/{companyname}/UnPaidInvoices")
+    public List<InvoiceDTO> getUnPaidInvoicesByCompanyName(@PathVariable String companyname) {
+        return this.invoiceService.getUnPaidInvoicesByCompanyName(companyname);
+    }
 
     @GetMapping("/simpleView")
     public List<CompanySimpleViewDTO> getSimpleCompanyView() throws CompanyAddressDoesNotExistsException {
