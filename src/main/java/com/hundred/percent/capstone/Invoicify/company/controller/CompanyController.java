@@ -66,4 +66,9 @@ public class CompanyController {
     public String deleteCompany(@PathVariable String name) throws CompanyDoesNotExistsException {
         return companyService.deleteCompany(name);
     }
+
+    @GetMapping("/simpleView/{companyName}")
+    public CompanySimpleViewDTO getSimpleCompanyView(@PathVariable String cName) throws CompanyAddressDoesNotExistsException {
+        return companyService.getSimpleIndividualCompanyView();
+    }
 }

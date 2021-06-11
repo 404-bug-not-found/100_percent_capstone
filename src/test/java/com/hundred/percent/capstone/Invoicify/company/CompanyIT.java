@@ -606,4 +606,39 @@ public class CompanyIT {
                 .andExpect(jsonPath("message").value("One or more inputs are missing from the request."));
     }
 
+    @Test
+    public void getSimpleIndividualCompanyView() throws Exception {
+        CompanyDTO input1 = new CompanyDTO("222", "Cognizant", "Iqbal", "Accounts Payable", "1-222-333-0000");
+
+        mockMvc.perform(post("/companies")
+                .content(objectMapper.writeValueAsString(input1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+
+        AddressDTO addrDTO1 = new AddressDTO("456 str", "Tampa", "FL", "5555", "Cognizant");
+
+        mockMvc.perform(post("/addresses")
+                .content(objectMapper.writeValueAsString(addrDTO1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(JWT_HEADER, JWT_PREFIX + token))
+                .andExpect(status().isCreated())
+                .andDo(print());
+
+        mockMvc.perform(get("/companies/simpleView/Cognizant"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(2))
+                .andExpect(jsonPath("name").value("Cognizant"))
+                .andExpect(jsonPath("city").value("Tampa"))
+                .andExpect(jsonPath("state").value("FL"))
+                .andDo(print())
+                .andDo(document("simpleView", responseFields(
+                        fieldWithPath("name").description("Cognizant"),
+                        fieldWithPath("city").description("Tampa"),
+                        fieldWithPath("state").description("FL")
+                )));
+    }
+
 }
