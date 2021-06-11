@@ -122,4 +122,13 @@ public class CompanyService {
         Sentry.captureMessage("User deleted company - " + name, SentryLevel.WARNING);
         return "{\"message\": \"Company deleted successfully.\"}";
     }
+
+    public CompanySimpleViewDTO getSimpleIndividualCompanyView(String companyName) throws CompanyAddressDoesNotExistsException {
+        CompanyEntity companyEntity = companyRepository.findByName(companyName);
+
+        return new CompanySimpleViewDTO(companyEntity.getName(),
+                                        companyEntity.getAddresses().get(0).getCity(),
+                                        companyEntity.getAddresses().get(0).getState());
+    }
+
 }

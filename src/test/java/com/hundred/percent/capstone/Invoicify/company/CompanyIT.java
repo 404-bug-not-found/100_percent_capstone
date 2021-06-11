@@ -629,12 +629,11 @@ public class CompanyIT {
 
         mockMvc.perform(get("/companies/simpleView/Cognizant"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("length()").value(2))
                 .andExpect(jsonPath("name").value("Cognizant"))
                 .andExpect(jsonPath("city").value("Tampa"))
                 .andExpect(jsonPath("state").value("FL"))
                 .andDo(print())
-                .andDo(document("simpleView", responseFields(
+                .andDo(document("simpleIndividualView", responseFields(
                         fieldWithPath("name").description("Cognizant"),
                         fieldWithPath("city").description("Tampa"),
                         fieldWithPath("state").description("FL")

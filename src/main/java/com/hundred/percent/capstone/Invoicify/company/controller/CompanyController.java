@@ -68,7 +68,7 @@ public class CompanyController {
     }
 
     @GetMapping("/simpleView/{companyName}")
-    public CompanySimpleViewDTO getSimpleCompanyView(@PathVariable String cName) throws CompanyAddressDoesNotExistsException {
-        return companyService.getSimpleIndividualCompanyView();
+    public CompanySimpleViewDTO getSimpleCompanyView(@PathVariable String companyName) throws CompanyAddressDoesNotExistsException {
+        return companyService.getSimpleIndividualCompanyView(companyName);
     }
 }
